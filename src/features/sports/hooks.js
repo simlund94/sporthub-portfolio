@@ -5,7 +5,7 @@ import {SportsApi} from './api';
 // 1) Växla mock/live här:
 //    - sätt till 'true' för mock
 //    - eller styr via env: VITE_USE_MOCK=true
-const USE_MOCK = (import.meta.env?.VITE_USE_MOCK ?? 'true') === 'false';
+const USE_MOCK = (import.meta.env?.VITE_USE_MOCK ?? 'false') === 'true';
 
 // 2) Mock-data (justera fritt)
 const MOCK = {
@@ -73,10 +73,12 @@ export function useSports() {
     return {data, loading, err};
 }
 
-export function useLeagues(sportId) {
+export function useLeagues(sportId, query) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
+    console.log(sportId);
+
 
     useEffect(() => {
         let live = true;
@@ -94,7 +96,8 @@ export function useLeagues(sportId) {
                     if (!live) return;
                     setData(MOCK.leaguesBySport[sportId] ?? []);
                 } else {
-                    const res = await SportsApi.leaguesBySport(sportId); // svar: { metadata, leagues: [...] }
+                    const res = await SportsApi.leaguesBySport(sportId,query); // svar: { metadata, leagues: [...] }
+                    console.log(res);
                     if (!live) return;
                     setData(pickList(res, 'leagues'));
                 }
