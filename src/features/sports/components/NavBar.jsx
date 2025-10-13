@@ -1,8 +1,8 @@
 import React, {useState} from "react";
 import {useLeagues} from "../hooks.js";
-import ThemeButton from "./ThemeButton.jsx";
+import ThemeButton from "./icons etc/ThemeButton.jsx";
 
-import IconFactory from "./icons/IconFactory.jsx";
+import IconFactory from "./icons etc/IconFactory.jsx";
 
 
 export default function Navbar() {
@@ -38,7 +38,7 @@ export default function Navbar() {
     const DropdownItem = ({ item, isMobile }) => {
 
         return (
-            <li className="dropdown">
+            <li className="dropdown z-10">
                 <details
                     open={openDropdown === item.key}
                     onClick={(e) => {
@@ -48,7 +48,7 @@ export default function Navbar() {
                     }}
                 >
                     <summary
-                        className={`cursor-pointer flex items-center gap-2 ${isMobile ? "text-lg" : ""}`}
+                        className={`cursor-pointer container items-center gap-4 pb-2 justify-items-start ${isMobile ? "text-lg" : ""}`}
                         onClick={(e) => {
                             if (isMobile) e.stopPropagation();
                         }}
@@ -56,12 +56,14 @@ export default function Navbar() {
                         {item.name}
                         <IconFactory
                             name={item.icon}
-                            className={`h-max w-max stroke-current ${isMobile ? "w-3 h-3" : ""}`}
-
+                            className={`inline-block ${
+                                isMobile ? "w-5 h-5" : "w-8 h-8"
+                            } stroke-current shrink-0`}
                         />
                     </summary>
 
                     <ul className="p-2">
+
                         {leaguesData[item.leagueKey]?.map((l) => (
                             <li key={l.id}>
               <span>
@@ -70,6 +72,11 @@ export default function Navbar() {
               </span>
                             </li>
                         ))}
+                        <li key="alla-ligor" className="font-bold">
+                            <span>Alla ligor i {item.name} </span>
+                        </li>
+
+
                     </ul>
                 </details>
             </li>
@@ -109,7 +116,7 @@ export default function Navbar() {
                     </ul>
                 </div>
                 {/* Desktop */}
-                <ul className="menu menu-horizontal px-1 hidden lg:flex">
+                <ul className="menu menu-horizontal px-1 hidden lg:flex textarea-md pb-0">
                     {MENU_ITEMS.map((item) => (
                         <DropdownItem key={item.key} item={item}/>
                     ))}

@@ -6,11 +6,8 @@ const IconFactory = ({ name, className }) => {
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+
                     viewBox="0 0 16 16"
-
-
                     fill="none"
                     stroke="currentColor"
                     className={className}
@@ -28,12 +25,11 @@ const IconFactory = ({ name, className }) => {
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    viewBox="0 0 24 24"
-                    className={className}
+
+                    viewBox="0 0 16 16"
                     fill="none"
                     stroke="currentColor"
+                    className={className}
                 >
 
                     <path d="M1.73649 0.503845L6.84737 9.44789L6.53186 10H4.85938L1.90735e-06 1.49612L1.73649 0.503845Z" fill="currentColor"/>
@@ -46,8 +42,7 @@ const IconFactory = ({ name, className }) => {
             return (
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
+
                     viewBox="0 0 44 44"
 
                     className={className}
