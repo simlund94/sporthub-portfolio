@@ -1,24 +1,38 @@
 import React, {useState} from "react";
 import {useLeagues} from "../hooks.js";
 import ThemeButton from "./icons etc/ThemeButton.jsx";
-
 import IconFactory from "./icons etc/IconFactory.jsx";
 
-
 export default function Navbar() {
-    const leagueValues = new Map([
-        ["fotboll", 10],
-        ["floorball", 4],
-        ["hockey", 2],
-    ]);
-
     const currentYear = new Date().getFullYear();
 
-    const MENU_ITEMS = [
-        {name: "Fotboll", icon: "Soccer", key: "football", leagueKey: "fotboll"},
-         {name: "Hockey", icon: "Hockey", key: "hockey", leagueKey: "hockey"},
-         {name: "Innebandy", icon: "Floorball", key: "floorball", leagueKey: "floorball"},
+    const SPORTS = [
+        {
+            name: "Fotboll",
+            key: "football",
+            leagueKey: "fotboll",
+            icon: "Soccer",
+            sportId: 10,
+            activeYearOffset: 0,
+        },
+        {
+            name: "Hockey",
+            key: "hockey",
+            leagueKey: "hockey",
+            icon: "Hockey",
+            sportId: 2,
+            activeYearOffset: 1,
+        },
+        {
+            name: "Innebandy",
+            key: "floorball",
+            leagueKey: "floorball",
+            icon: "Floorball",
+            sportId: 4,
+            activeYearOffset: 1,
+        },
     ];
+
 
     const [openDropdown, setOpenDropdown] = useState(null);
 
@@ -27,15 +41,24 @@ export default function Navbar() {
     };
 
     const leaguesData = {};
-    for (const [key, value] of leagueValues.entries()) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const raw = useLeagues(value, `&activeDate=${currentYear + +(key !== "fotboll" ? 1 : 0)}`);
-        leaguesData[key] = raw.data.filter(
-            (l) => !/final/i.test(l.name) && !/kval/i.test(l.name)
-        );
-    }
+    const errors = {};
+    let loading = false;
 
-    const DropdownItem = ({ item, isMobile }) => {
+    SPORTS.forEach((sport) => {
+        const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
+        leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
+        errors[sport.leagueKey] = result.error;
+        loading = loading || result.loading;
+    });
+
+
+
+
+
+
+    const DropdownItem = ({item, isMobile}) => {
+        const leagues = leaguesData[item.leagueKey];
+        const error = errors[item.leagueKey];
 
         return (
             <li className="dropdown z-10">
@@ -56,33 +79,28 @@ export default function Navbar() {
                         {item.name}
                         <IconFactory
                             name={item.icon}
-                            className={`inline-block ${
-                                isMobile ? "w-5 h-5" : "w-8 h-8"
-                            } stroke-current shrink-0`}
+                            className={`inline-block ${isMobile ? "w-5 h-5" : "w-8 h-8"} stroke-current shrink-0`}
                         />
                     </summary>
 
                     <ul className="p-2">
-
-                        {leaguesData[item.leagueKey]?.map((l) => (
+                        {loading && <li>Laddar<span className="loading loading-dots loading-xs"/></li>}
+                        {error && <li className="text-red-500">Error loading leagues</li>}
+                        {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-              <span>
-                {l.name}
-                  {l.season && <> ({l.season.startYear}/{l.season.endYear})</>}
-              </span>
+                <span>
+                  {l.name} {l.season && <>({l.season.startYear}/{l.season.endYear})</>}
+                </span>
                             </li>
                         ))}
                         <li key="alla-ligor" className="font-bold">
-                            <span>Alla ligor i {item.name} </span>
+                            <span>Alla ligor i {item.name}</span>
                         </li>
-
-
                     </ul>
                 </details>
             </li>
         );
     };
-
 
     return (
         <div className="navbar bg-base-100 shadow-sm">
@@ -91,13 +109,8 @@ export default function Navbar() {
                 {/* Mobile menu */}
                 <div className="dropdown lg:hidden">
                     <div tabIndex={0} role="button" className="btn btn-ghost">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            className="h-5 w-5"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke="currentColor"
-                        >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24"
+                             stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2"
                                   d="M4 6h16M4 12h8m-8 6h16"/>
                         </svg>
@@ -105,9 +118,9 @@ export default function Navbar() {
                     <ul
                         tabIndex={0}
                         className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
-                        onClick={(e) => e.stopPropagation()} // prevent menu from closing when interacting inside
+                        onClick={(e) => e.stopPropagation()}
                     >
-                        {MENU_ITEMS.map((item) => (
+                        {SPORTS.map((item) => (
                             <DropdownItem key={item.key} item={item} isMobile/>
                         ))}
                         <li>
@@ -115,9 +128,10 @@ export default function Navbar() {
                         </li>
                     </ul>
                 </div>
-                {/* Desktop */}
+
+                {/* Desktop menu */}
                 <ul className="menu menu-horizontal px-1 hidden lg:flex textarea-md pb-0">
-                    {MENU_ITEMS.map((item) => (
+                    {SPORTS.map((item) => (
                         <DropdownItem key={item.key} item={item}/>
                     ))}
                 </ul>

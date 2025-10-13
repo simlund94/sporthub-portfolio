@@ -10,24 +10,28 @@ const USE_MOCK = (import.meta.env?.VITE_USE_MOCK ?? 'false') === 'true';
 // 2) Mock-data (justera fritt)
 const MOCK = {
     sports: [
-        {id: 10, name: 'Fotboll'},
-        {id: 2, name: 'Ishockey'},
-        {id: 4, name: 'Innebandy'},
+        { id: 10, name: 'Fotboll' },
+        { id: 2, name: 'Ishockey' },
+        { id: 4, name: 'Innebandy' },
     ],
     leaguesBySport: {
         10: [
-            {id: 124439, name: 'Allsvenskan'},
-            {id: 123935, name: 'Damallsvenskan'},
+            { id: 134439, name: 'Allsvenskan', teamClass: 'MEN', sport: { id: 10, name: 'Fotboll' }, season: { startYear: 2023, endYear: 2024 } }
+            ,
+            { id: 124439, name: 'Allsvenskan D', teamClass: 'WOMEN', sport: { id: 10, name: 'Fotboll' }, season: { startYear: 2023, endYear: 2024 } }
+            ,
         ],
-        2: [{id: 125472, name: 'SHL'},
-            {id: 125554, name: 'SDHL'}],
-        4: [{id: 121413, name: 'Superligan'}],
+        2: [{ id: 125472, name: 'SHL'  , teamClass: 'MEN' ,sport: { id: 2, name: 'Ishockey' }, season: { startYear: 2023, endYear: 2024 }},
+            { id: 125554, name: 'SDHL',teamClass: 'WOMEN',sport: { id: 2, name: 'Ishockey' }, season: { startYear: 2023, endYear: 2024 }}],
+        4: [{ id: 121413, name: 'Superligan', teamClass: 'MEN',sport: { id: 4, name: 'Innebandy' }, season: { startYear: 2023, endYear: 2024 } },
+            { id: 121413, name: 'Superligan W', teamClass: 'WOMEN',sport: { id: 4, name: 'Innebandy' }, season: { startYear: 2023, endYear: 2024 } }
+        ],
     },
     teamsByLeague: {
-        124439: [{id: 9367, name: 'AIK'}, {id: 9368, name: 'Djurgården'}],
-        123935: [{id: 3, name: 'AIK DFF'}],
-        125472: [{id: 1171, name: 'Brynäs IF'}, {id: 6, name: 'Färjestad'}],
-        121413: [{id: 14392, name: 'IBF Falun'}, {id: 14563, name: 'Storvreta'}],
+        124439: [{ id: 9367, name: 'AIK' }, { id: 9368, name: 'Djurgården' }],
+        123935: [{ id: 3, name: 'AIK DFF' }],
+        125472: [{ id: 1171, name: 'Brynäs IF' }, { id: 6, name: 'Färjestad' }],
+        121413: [{ id: 14392, name: 'IBF Falun' }, { id: 14563, name: 'Storvreta' }],
     },
 };
 
@@ -84,7 +88,7 @@ export function useLeagues(sportId, query) {
         let live = true;
         if (!sportId) {
             setData([]);
-            setErr(null);
+            setErr(true);
             setLoading(false);
             return;
         }
