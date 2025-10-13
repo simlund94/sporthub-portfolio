@@ -48,7 +48,7 @@ const IconFactory = ({ name, className }) => {
                     xmlns="http://www.w3.org/2000/svg"
                     width="20"
                     height="20"
-                    viewBox="0 0 44.069 44.069"
+                    viewBox="0 0 44 44"
 
                     className={className}
                     fill="none"
