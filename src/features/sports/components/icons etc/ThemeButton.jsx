@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 export default function ThemeButton() {
 
     const getInitialTheme = () => {
-        if (typeof window === "undefined") return "light"; // SSR safety
+        if (typeof window === "undefined") return "light";
         const stored = localStorage.getItem("theme");
         if (stored) return stored;
         const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
@@ -31,7 +31,7 @@ export default function ThemeButton() {
             className="flex items-center gap-3 cursor-pointer select-none"
             onClick={(e) => e.stopPropagation()}
         >
-            {/* Sun Icon */}
+            {/* Sol Icon */}
             <div className="flex items-center justify-center w-5 h-5">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -47,7 +47,6 @@ export default function ThemeButton() {
                 </svg>
             </div>
 
-            {/* The toggle */}
             <input
                 type="checkbox"
                 className="toggle toggle-sm border-base-content"
@@ -55,7 +54,7 @@ export default function ThemeButton() {
                 onChange={toggleTheme}
             />
 
-            {/* Moon Icon */}
+            {/* Måne Icon */}
             <div className="flex items-center justify-center w-5 h-5">
                 <svg
                     xmlns="http://www.w3.org/2000/svg"
