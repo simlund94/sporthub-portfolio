@@ -1,21 +1,23 @@
-import { defineConfig } from 'vite'
-import react from '@vitejs/plugin-react'
-import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
+import svgr from "vite-plugin-svgr";
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [
-      tailwindcss(),
-      react()],
+    plugins: [
+        tailwindcss(),
+        react(),
+        svgr(),
+    ],
     server: {
         proxy: {
-            '/api': {
-                target: 'https://api.everysport.com', // ingen /v1 här
+            "/api": {
+                target: "https://api.everysport.com",
                 changeOrigin: true,
                 secure: true,
-                // Byt ledande '/api' till '/v1' (utan regex)
-                rewrite: (p) => p.startsWith('/api') ? '/v1' + p.slice(4) : p,
+                rewrite: (p) =>
+                    p.startsWith("/api") ? "/v1" + p.slice(4) : p,
             },
-        }}
-
-})
+        },
+    },
+});
