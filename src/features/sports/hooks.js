@@ -156,6 +156,8 @@ export function useTeams(leagueId) {
     }, [leagueId]);
 
     return {data, loading, err};
+
+
 }
 
 export function useEvents(date, gender) {

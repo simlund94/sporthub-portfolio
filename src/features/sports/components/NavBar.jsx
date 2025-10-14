@@ -48,6 +48,7 @@ export default function Navbar() {
     //flytta useLeague ut från loopen...
 
     SPORTS.forEach((sport) => {
+
         const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
         errors[sport.leagueKey] = result.error;

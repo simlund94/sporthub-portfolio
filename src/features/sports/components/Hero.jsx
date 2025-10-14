@@ -1,6 +1,6 @@
 export default function Hero() {
     return (
-        <div className="hero bg-base-200 h-[60vh] glass">
+        <div className="hero bg-base-200 h-[60vh] glass mb-4">
             <div className="hero-content flex-col lg:flex-row">
                 <img
                     src="logo.png"

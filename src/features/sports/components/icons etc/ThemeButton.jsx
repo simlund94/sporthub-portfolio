@@ -49,7 +49,7 @@ export default function ThemeButton() {
 
             <input
                 type="checkbox"
-                className="toggle toggle-sm border-base-content"
+                className="toggle toggle-sm border-base-content theme-controller"
                 checked={theme === "dark"}
                 onChange={toggleTheme}
             />
