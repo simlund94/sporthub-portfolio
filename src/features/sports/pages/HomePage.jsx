@@ -1,13 +1,12 @@
-    import Hero from "../components/Hero.jsx";
+import Hero from "../components/Hero.jsx";
 
+export default function HomePage() {
 
-    export default function HomePage() {
-
-        return (
-            <>
+    return (
+        <>
             <Hero/>
-        <h2 className="text-2xl font-bold mb-4 mx-10">Senaste matcherna från de högsta ligorna:</h2>
+            <h2 className="text-2xl font-bold mb-4 mx-10">Senaste matcherna från de högsta ligorna:</h2>
 
-            </>
+        </>
     )
-    }
+}
