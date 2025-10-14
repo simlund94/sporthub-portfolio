@@ -5,7 +5,7 @@ import IconFactory from "./icons etc/IconFactory.jsx";
 import {Link} from "react-router-dom";
 import SPORTS from "../../../config.js";
 
-export default function Navbar() {
+export default function Navbar(leagueIds, setLeagueIds) {
     const currentYear = new Date().getFullYear();
 
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -24,6 +24,8 @@ export default function Navbar() {
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;
     });
+
+    console.log(leaguesData);
 
     const DropdownItem = ({item, isMobile}) => {
         const leagues = leaguesData[item.leagueKey];
@@ -57,10 +59,10 @@ export default function Navbar() {
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-                <Link to={"/" + l.name}>
-                  {l.name} {l.name.includes("Superligan") ?
-                    (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
-                </Link>
+                                <Link to={"/" + l.id}>
+                                    {l.name} {l.name.includes("Superligan") ?
+                                    (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
+                                </Link>
                             </li>
                         ))}
                         <li key="alla-ligor" className="font-bold">
@@ -100,7 +102,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Desktop menu */}
-                <ul className="menu menu-horizontal px-1 hidden lg:flex textarea-md pb-0">
+                <ul className="menu menu-horizontal flex-nowrap px-1 hidden lg:flex textarea-md pb-0">
                     {SPORTS.map((item) => (
                         <DropdownItem key={item.key} item={item}/>
                     ))}
