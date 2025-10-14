@@ -157,3 +157,36 @@ export function useTeams(leagueId) {
 
     return {data, loading, err};
 }
+
+export function useEvents(date, gender) {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.sports);
+                } else {
+                    const res = await SportsApi.events(date, gender); // kan vara {sports:[...]} eller [...]
+                    if (!live) return;
+                    setData(pickList(res, 'events'));
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+        return () => {
+            live = false;
+        };
+    }, [date, gender]);
+
+    return {data, loading, err};
+}
