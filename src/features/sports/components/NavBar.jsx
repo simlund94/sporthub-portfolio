@@ -56,6 +56,7 @@ export default function Navbar() {
 
 
 
+
     const DropdownItem = ({item, isMobile}) => {
         const leagues = leaguesData[item.leagueKey];
         const error = errors[item.leagueKey];

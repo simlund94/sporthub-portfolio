@@ -9,6 +9,10 @@ function App() {
             <Navbar />
             <main className="flex-grow">
                 <HomePage />
+
+
+
+
             </main>
             <Footer />
         </div>
