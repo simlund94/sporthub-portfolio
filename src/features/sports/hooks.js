@@ -112,7 +112,7 @@ export function useLeagues(sportId, query) {
         return () => {
             live = false;
         };
-    }, [sportId]);
+    }, [sportId,query]);
 
     return {data, loading, err};
 }

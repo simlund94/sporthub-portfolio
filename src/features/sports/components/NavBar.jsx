@@ -20,7 +20,6 @@ export default function Navbar(leagueIds, setLeagueIds) {
 
     //TODO
     //flytta useLeague ut från loopen...
-
     SPORTS.forEach((sport) => {
 
         const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
