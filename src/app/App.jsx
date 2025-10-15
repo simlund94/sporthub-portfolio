@@ -2,21 +2,28 @@ import './App.css'
 import HomePage from "../features/sports/pages/HomePage.jsx";
 import Navbar from "../features/sports/components/NavBar.jsx";
 import Footer from "../features/sports/components/Footer.jsx";
+import {BrowserRouter, Route, Router, Routes} from "react-router-dom";
+import {useState} from "react";
 
 function App() {
+
+    const [leagueIds, setLeagueIds] = useState();
+
     return (
-        <div className="flex flex-col min-h-screen">
-            <Navbar />
-            <main className="flex-grow">
-                <HomePage />
+        <BrowserRouter>
+            <div className="max-w-7xl mx-auto flex flex-col min-h-screen">
+                <Navbar leagueIds={leagueIds} setLeagueIds={setLeagueIds}/>
+                <main className="flex-grow">
+                    <Routes>
 
+                        <Route path={"/"} element={<HomePage/>} />
+                    </Routes>
+                </main>
+                <Footer/>
+            </div>
+        </BrowserRouter>
 
-
-
-            </main>
-            <Footer />
-        </div>
-    )
+)
 }
 
 export default App

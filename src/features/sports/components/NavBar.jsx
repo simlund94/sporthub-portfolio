@@ -2,37 +2,11 @@ import React, {useState} from "react";
 import {useLeagues} from "../hooks.js";
 import ThemeButton from "./icons etc/ThemeButton.jsx";
 import IconFactory from "./icons etc/IconFactory.jsx";
+import {Link} from "react-router-dom";
+import SPORTS from "../../../config.js";
 
-export default function Navbar() {
+export default function Navbar(leagueIds, setLeagueIds) {
     const currentYear = new Date().getFullYear();
-
-    const SPORTS = [
-        {
-            name: "Fotboll",
-            key: "football",
-            leagueKey: "fotboll",
-            icon: "Soccer",
-            sportId: 10,
-            activeYearOffset: 0,
-        },
-        {
-            name: "Hockey",
-            key: "hockey",
-            leagueKey: "hockey",
-            icon: "Hockey",
-            sportId: 2,
-            activeYearOffset: 1,
-        },
-        {
-            name: "Innebandy",
-            key: "floorball",
-            leagueKey: "floorball",
-            icon: "Floorball",
-            sportId: 4,
-            activeYearOffset: 1,
-        },
-    ];
-
 
     const [openDropdown, setOpenDropdown] = useState(null);
 
@@ -55,11 +29,7 @@ export default function Navbar() {
         loading = loading || result.loading;
     });
 
-
-
-
-
-
+    console.log(leaguesData);
 
     const DropdownItem = ({item, isMobile}) => {
         const leagues = leaguesData[item.leagueKey];
@@ -93,9 +63,10 @@ export default function Navbar() {
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-                <span>
-                  {l.name} {l.season && <>({l.season.startYear}/{l.season.endYear})</>}
-                </span>
+                                <Link to={"/" + l.id}>
+                                    {l.name} {l.name.includes("Superligan") ?
+                                    (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
+                                </Link>
                             </li>
                         ))}
                         <li key="alla-ligor" className="font-bold">
@@ -135,7 +106,7 @@ export default function Navbar() {
                 </div>
 
                 {/* Desktop menu */}
-                <ul className="menu menu-horizontal px-1 hidden lg:flex textarea-md pb-0">
+                <ul className="menu menu-horizontal flex-nowrap px-1 hidden lg:flex textarea-md pb-0">
                     {SPORTS.map((item) => (
                         <DropdownItem key={item.key} item={item}/>
                     ))}
@@ -143,7 +114,7 @@ export default function Navbar() {
             </div>
 
             <div className="navbar-center">
-                <a className="btn btn-ghost text-4xl">SportHub</a>
+                <Link to={"/"} className="btn btn-ghost text-4xl">SportHub</Link>
             </div>
 
             <div className="navbar-end hidden lg:flex">
