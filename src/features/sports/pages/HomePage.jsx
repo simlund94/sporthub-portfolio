@@ -9,7 +9,7 @@ export default function HomePage() {
     const currentDate = new Date()
     const date = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate()
     console.log('Dagens datum ' + date)
-    const [chosenGender, setChosenGender] = useState("MEN")
+    const [chosenGender, setChosenGender] = useState("ALL")
     const events = useEvents(date, chosenGender)
     return (
         <>
@@ -28,7 +28,7 @@ export default function HomePage() {
                 </button>
                 <button
                     type="button"
-                    className="btn btn-warning"
+                    className="btn btn-warning mr-4"
                     onClick={() => {
                         setChosenGender("WOMEN")
                     }}

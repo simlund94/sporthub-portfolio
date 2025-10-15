@@ -5,7 +5,12 @@ export default function Table({
                                   loading = false,
                                   error = null,
                               }) {
-    if (loading) {return (<li>Laddar<span className="loading loading-dots loading-xs" /></li>);
+    if (loading) {
+        return (
+            <li>
+                Laddar<span className="loading loading-dots loading-xs"/>
+            </li>
+        );
     }
 
     if (error) {
@@ -18,8 +23,10 @@ export default function Table({
 
     return (
         <div className="p-4">
-            <div className="container max-w-3xl px-2 overflow-x-auto rounded-lg shadow">
-                <table className="table table-zebra w-full">
+            <div className="container max-w-3xl h-96 px-2 overflow-x-auto rounded-lg shadow">
+
+                {/* Desktop table */}
+                <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
                     <thead>
                     <tr>
                         <th>Sport</th>
@@ -33,7 +40,7 @@ export default function Table({
                     {items.map((item, index) => (
                         <tr key={index}>
                             <td>
-                                <IconFactory name={item.league.sport.name} className="h-5 w-5" />
+                                <IconFactory name={item.league.sport.name} className="h-5 w-5"/>
                             </td>
                             <td>{item.league.name}</td>
                             <td className="flex items-center gap-2">
@@ -63,6 +70,45 @@ export default function Table({
                     ))}
                     </tbody>
                 </table>
+
+                {/* Mobile table (logos + time only) */}
+                <table className="table table-compact w-full text-xs md:hidden">
+                    <thead>
+                    <tr>
+                        <th>Match</th>
+                        <th>Tid</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {items.map((item, index) => (
+                        <tr key={index}>
+
+                            <td className="flex items-center justify-center gap-2">
+
+                                <span className="text-sm">{item.league.name}</span>
+                                <img
+                                    className="w-6 h-6 object-contain"
+                                    src={item.homeTeam.logo}
+                                    alt={item.homeTeam.abbreviation}
+                                />
+                                <span>-</span>
+                                <img
+                                    className="w-6 h-6 object-contain"
+                                    src={item.visitingTeam.logo}
+                                    alt={item.visitingTeam.abbreviation}
+                                />
+                            </td>
+                            <td className="text-center"> {new Date(item.startDate).toLocaleTimeString("sv-SE", {
+                                hour: "2-digit",
+                                minute: "2-digit",
+                                timeZone: "Europe/Stockholm",
+                            })}
+                            </td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+
             </div>
         </div>
     );
