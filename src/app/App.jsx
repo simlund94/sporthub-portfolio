@@ -4,6 +4,7 @@ import Navbar from "../features/sports/components/NavBar.jsx";
 import Footer from "../features/sports/components/Footer.jsx";
 import {BrowserRouter, Route, Router, Routes} from "react-router-dom";
 import {useState} from "react";
+import EventPage from "../features/sports/pages/EventPage.jsx";
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
                     <Routes>
 
                         <Route path={"/"} element={<HomePage/>} />
+                        <Route path="/event/:eventId" element={<EventPage />} />
                     </Routes>
                 </main>
                 <Footer/>

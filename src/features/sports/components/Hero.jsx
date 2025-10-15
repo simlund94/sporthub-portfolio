@@ -18,7 +18,7 @@ export default function Hero() {
                     </h1>
 
                     <p className="py-4 text-sm sm:text-base md:text-lg max-w-prose">
-                        En kraftfull plattform som hämtar sportdata via API:er och gör det enkelt att analysera
+                        En kraftfull plattform som hämtar sportdata via API från <a className="link link-hover text-warning" href="https://www.everysport.com/">Everysport.com</a> och gör det enkelt att analysera
                         och följa matcher i realtid. Håll dig alltid steget före! Vi samlar in live-data om dina
                         favoritlag och sporter – allt på ett ställe.
                     </p>
