@@ -1,15 +1,13 @@
 import IconFactory from "./icons etc/IconFactory.jsx";
 
-export default function Table({
+export default function GamesTable({
                                   items = [],
                                   loading = false,
                                   error = null,
                               }) {
     if (loading) {
         return (
-            <li>
-                Laddar<span className="loading loading-dots loading-xs" />
-            </li>
+            <p className="mx-6 text-xl">Laddar <span className="loading loading-dots loading-xl text-warning" /></p>
         );
     }
 
@@ -73,39 +71,47 @@ export default function Table({
                     </tbody>
                 </table>
 
-                {/* Mobile table (logos + time only) */}
+                {/* Mobile table */}
                 <table className="table table-compact w-full text-xs md:hidden">
                     <thead>
                     <tr>
                         <th>Match</th>
-
+                        <th>Tid</th>
+                        <th></th>
                     </tr>
                     </thead>
                     <tbody>
                     {items.map((item, index) => (
                         <tr key={index}>
-                            <td className="flex items-center justify-center gap-2">
-                                {item.homeTeam.shortName}
-                                <img
-                                    className="w-8 h-8 object-contain"
-                                    src={item.homeTeam.logo}
-                                    alt={item.homeTeam.abbreviation}
-                                />
-                                <td className="text-center text-warning font-semibold">
-                                    {new Date(item.startDate).toLocaleTimeString("sv-SE", {
-                                        hour: "2-digit",
-                                        minute: "2-digit",
-                                        timeZone: "Europe/Stockholm",
-                                    })}
-                                </td>
-                                <img
-                                    className="w-8 h-8 object-contain"
-                                    src={item.visitingTeam.logo}
-                                    alt={item.visitingTeam.abbreviation}
-                                />
-                                {item.visitingTeam.shortName}
+                            <td>
+                                <div className="flex items-center justify-center gap-2">
+                                    <span>{item.homeTeam.shortName}</span>
+                                    <img
+                                        className="w-8 h-8 object-contain"
+                                        src={item.homeTeam.logo}
+                                        alt={item.homeTeam.abbreviation}
+                                    />
+                                </div>
                             </td>
 
+                            <td className="text-center text-warning font-semibold">
+                                {new Date(item.startDate).toLocaleTimeString("sv-SE", {
+                                    hour: "2-digit",
+                                    minute: "2-digit",
+                                    timeZone: "Europe/Stockholm",
+                                })}
+                            </td>
+
+                            <td>
+                                <div className="flex items-center justify-center gap-2">
+                                    <img
+                                        className="w-8 h-8 object-contain"
+                                        src={item.visitingTeam.logo}
+                                        alt={item.visitingTeam.abbreviation}
+                                    />
+                                    <span>{item.visitingTeam.shortName}</span>
+                                </div>
+                            </td>
                         </tr>
                     ))}
                     </tbody>

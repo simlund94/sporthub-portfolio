@@ -1,7 +1,8 @@
 import Hero from "../components/Hero.jsx";
-import Table from "../components/Table.jsx";
+import Table from "../components/GamesTable.jsx";
 import {useEvents} from "../hooks.js";
 import {useState} from "react";
+import GamesTable from "../components/GamesTable.jsx";
 
 
 export default function HomePage() {
@@ -16,7 +17,7 @@ export default function HomePage() {
             <Hero/>
 
             <div className="container mx-auto mt-4 max-w-4xl px-4">
-                <h2 className="text-2xl font-bold mt-4 mx-6">Dagens matcher:</h2>
+                <h2 className="text-2xl font-bold my-4 mx-6">Dagens matcher:</h2>
                 <button
                     type="button"
                     className="btn btn-warning mr-4 ml-5"
@@ -45,11 +46,17 @@ export default function HomePage() {
                     ALL
                 </button>
 
-                <Table
+                <GamesTable
                     items={events.data}
                     loading={events.loading}
                     error={events.err}
                 />
+            </div>
+            <div className="container mt-4">
+                <p className="text-lg font-bold mt-4 ">
+                    NEXT
+                </p>
+
             </div>
 
         </>
