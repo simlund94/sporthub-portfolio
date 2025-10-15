@@ -103,7 +103,11 @@ export default function GamesTable({
                     </thead>
                     <tbody>
                     {items.map((item, index) => (
-                        <tr key={index}>
+                        <tr
+                            key={index}
+                            className="hover:bg-base-300 cursor-pointer"
+                            onClick={() => navigate(`/event/${item.id}`)}
+                        >
                             <td>
                                 <div className="flex items-center justify-center gap-2">
                                     <span>{item.homeTeam.shortName}</span>
