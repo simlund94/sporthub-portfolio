@@ -9,7 +9,13 @@ export default function EventPage() {
     const { data, loading, err } = useEventId(id);
     const event = data?.event;
 
-    if (loading) return <p>Loading...</p>;
+    if (loading) return (<div className="max-w-3xl mx-auto flex flex-col min-h-screen space-y-4 p-4">
+            <div className="skeleton h-96 w-full rounded-lg"></div>
+            <div className="skeleton h-62 w-full rounded-md"></div>
+            <div className="skeleton h-62 w-full rounded-md"></div>
+            <div className="skeleton h-62 w-full rounded-md"></div>
+        </div>
+    );
     if (err) return <p className="text-red-500">Error loading event</p>;
     if (!event) return <p>No event found</p>;
 
