@@ -5,5 +5,5 @@ export const SportsApi = {
   leaguesBySport: (sportId,query) => api(`/leagues?sport=${sportId}${query}`),
   teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
     events: (date, gender) => api(`/events?fromDate=${date}&teamClass=${gender}&toDate=${date}`),
-  eventsById: (id) => api(`/events/${id}`),
+  eventsById: (id) => api(`/events/${id}?fields=all`),
 };

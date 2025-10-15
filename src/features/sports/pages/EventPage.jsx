@@ -4,18 +4,13 @@ import IconFactory from "../components/icons etc/IconFactory.jsx";
 import Divider from "daisyui/components/divider/index.js";
 
 export default function EventPage() {
-    const location = useLocation();
+    const { id } = useParams();
+    console.log("ID i URL:",id);
+    const { data, loading, err } = useEventId(id);
+    const event = data?.event;
 
-
-    const eventFromState = location.state?.event;
-    //Hämtar endast om det inte finns redan från state.
-    const shouldFetch = !eventFromState;
-    const {data: eventFetched, loading, error} = useEventId(location.state.id);
-
-    const event = eventFromState || eventFetched;
-
-    if (loading && shouldFetch) return <p>Loading...</p>;
-    if (error) return <p className="text-red-500">Error loading event</p>;
+    if (loading) return <p>Loading...</p>;
+    if (err) return <p className="text-red-500">Error loading event</p>;
     if (!event) return <p>No event found</p>;
 
     const RenderScoreBasedOnStatus = () => {
@@ -35,6 +30,51 @@ export default function EventPage() {
                 return null;
         }
     };
+    const EventDetails = () => {
+        if (!event) return null;
+        console.log("Events", event.gameEvents);
+        const gameEvents = event.gameEvents ?? [];
+
+
+        return (
+            <div className="p-4">
+                <h2 className="text-xl font-bold mb-3 text-center">Matchhändelser</h2>
+
+                {gameEvents.length === 0 ? (
+                    <p className="text-center text-gray-500">Inga registrerade matchhändelser</p>
+                ) : (
+                    <ul className="space-y-2">
+                        {gameEvents.map((ev, i) => (
+                            <li
+                                key={i}
+                                className="flex items-center justify-between bg-base-200 p-2 rounded shadow-sm"
+                            >
+
+
+                                <div className="flex flex-col">
+                                    <img src={ev.team?.logo} className="w-10 h-10 object-contain"
+                                         alt={ev.team?.name}/>
+                                <span className="font-bold">
+                                   {ev.type === "GOAL" ? "Mål" : ev.type}  {ev.count == 1 ? "": 'x' + ev.count}
+                                </span>
+                                    <span className="text-md">
+
+                                    {ev.player?.name ?? "Okänd spelare"}
+                                </span>
+                                </div>
+                                <div className="text-right">
+                                    <span className="font-medium">{ev.team?.name ?? "Okänt lag"}</span>
+                                </div>
+                            </li>
+                        ))}
+                    </ul>
+                )}
+            </div>
+        );
+    };
+
+
+
 
     return (
         <div className="p-4 max-w-3xl mx-auto">
@@ -42,6 +82,7 @@ export default function EventPage() {
                 {event.homeTeam.name} vs {event.visitingTeam.name}
             </h1>
             <p className="text-center text-lg mb-2">{event.league.name}</p>
+            <p className="text-center text-lg mb-2"> Omgång: {event.round ?? "Okänd"}</p>
             <p className="text-center text-warning mb-4">
                 {new Date(event.startDate).toLocaleString("sv-SE", {
                     hour: "2-digit",
@@ -66,16 +107,18 @@ export default function EventPage() {
             </div>
             <ul className="flex flex-col items-center justify-center space-y-2 p-2 list-none">
                 <li className="flex items-center gap-2">
-                    <IconFactory name="arena" className="h-8 w-8" />
+                    <IconFactory name="arena" className="h-8 w-8"/>
                     <span>{event.facts?.arena?.name ?? "Okänd"}</span>
                 </li>
-                <li className="text-sm text-center">
-                    Åskådare: {event.facts?.spectators ?? "Okänd"}
+                <li className="flex items-center gap-2">
+                    <IconFactory name="åskådare" className="h-8 w-8"/>
+                    <span>Åskådare: {event.facts?.spectators ?? "Okänd"}</span>
+                </li>
+                <li className="flex items-center gap-2">
                 </li>
             </ul>
-
-
-
+            <div className="divider">Matchfakta</div>
+                    <EventDetails />
         </div>
-);
+    );
 }

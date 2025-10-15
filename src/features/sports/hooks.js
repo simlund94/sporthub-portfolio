@@ -81,7 +81,6 @@ export function useLeagues(sportId, query) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
-    console.log(sportId);
 
 
     useEffect(() => {
@@ -101,7 +100,6 @@ export function useLeagues(sportId, query) {
                     setData(MOCK.leaguesBySport[sportId] ?? []);
                 } else {
                     const res = await SportsApi.leaguesBySport(sportId,query); // svar: { metadata, leagues: [...] }
-                    console.log(res);
                     if (!live) return;
                     setData(pickList(res, 'leagues'));
                 }
@@ -193,36 +191,38 @@ export function useEvents(date, gender) {
     return {data, loading, err};
 }
 
-    export function useEventId(id) {
-        const [data, setData] = useState([]);
-        const [loading, setLoading] = useState(true);
-        const [err, setErr] = useState(null);
+export function useEventId(id) {
+    const [data, setData] = useState(null); // <-- null, not []
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
 
-        useEffect(() => {
-            let live = true;
-            (async () => {
-                try {
-                    setLoading(true);
-                    if (USE_MOCK) {
-                        await delay(150);
-                        if (!live) return;
-                        setData(MOCK.sports);
-                    } else {
-                        const res = await SportsApi.eventsById(id); // kan vara {sports:[...]} eller [...]
-                        if (!live) return;
-                        setData(pickList(res, 'events'));
-                    }
-                } catch (e) {
-                    if (live) setErr(e);
-                } finally {
-                    if (live) setLoading(false);
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.eventsById[id]); // or whichever mock matches
+                } else {
+                    const res = await SportsApi.eventsById(id);
+                    console.log("Resultat av hämtning", res); // { event: {...} }
+                    if (!live) return;
+                    setData(res); // store the object directly
                 }
-            })();
-            return () => {
-                live = false;
-            };
-        }, [id]);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
 
-        return {data, loading, err};
-    }
+        return () => {
+            live = false;
+        };
+    }, [id]);
+
+    return { data, loading, err };
+}
 

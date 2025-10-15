@@ -29,7 +29,6 @@ export default function Navbar(leagueIds, setLeagueIds) {
         loading = loading || result.loading;
     });
 
-    console.log(leaguesData);
 
     const DropdownItem = ({item, isMobile}) => {
         const leagues = leaguesData[item.leagueKey];

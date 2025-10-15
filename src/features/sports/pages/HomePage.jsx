@@ -9,7 +9,6 @@ export default function HomePage() {
 
     const currentDate = new Date()
     const date = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate()
-    console.log('Dagens datum ' + date)
     const [chosenGender, setChosenGender] = useState("ALL")
     const [selectedDate, setSelectedDate] = useState(date)
     const events = useEvents(selectedDate, chosenGender)

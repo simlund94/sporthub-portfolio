@@ -23,7 +23,6 @@ export default function GamesTable({
     }
 
     const RenderScoreOrTimeBasedOnEventStatus = (item) => {
-        console.log(item);
         switch (item.item.status) {
             case "FINISHED":
                 return <p className="text-sm font-bold">{item.item.homeTeamScore} - {item.item.visitingTeamScore}</p> ;
@@ -60,7 +59,7 @@ export default function GamesTable({
                         <tr
                             key={index}
                             className="hover:bg-base-300 cursor-pointer"
-                            onClick={() => navigate(`/event/${item.id}`, { state: { event: item } })}
+                            onClick={() => navigate(`/event/${item.id}`)}
                         >
                             <td className="text-center">
                                 <IconFactory name={item.league.sport.name} className="h-5 w-5 mx-auto" />
