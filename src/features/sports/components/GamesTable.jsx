@@ -10,7 +10,16 @@ export default function GamesTable({
     items = items.filter(item => item.league.sport.name !== "Bowling");
     if (loading) {
         return (
-            <p className="mx-2 text-xl">Laddar <span className="loading loading-dots loading-xl text-warning" /></p>
+            <div className="container max-w-4xl h-96 px-2 rounded-lg ">
+                <table className="table table-zebra w-full table-pin-cols table-pin-rows">
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                </table>
+            </div>
         );
     }
 
