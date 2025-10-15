@@ -1,5 +1,5 @@
 import IconFactory from "./icons etc/IconFactory.jsx";
-import {Link, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function GamesTable({
                                   items = [],

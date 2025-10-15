@@ -1,7 +1,7 @@
-import {useLocation, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import {useEventId} from "../hooks";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
-import Divider from "daisyui/components/divider/index.js";
+
 
 export default function EventPage() {
     const { id } = useParams();
@@ -61,7 +61,7 @@ export default function EventPage() {
                                     <img src={ev.team?.logo} className="w-10 h-10 object-contain"
                                          alt={ev.team?.name}/>
                                 <span className="font-bold">
-                                   {ev.type === "GOAL" ? "Mål" : ev.type}  {ev.count == 1 ? "": 'x' + ev.count}
+                                   {ev.type === "GOAL" ? "Mål" : ev.type}  {ev.count === 1 ? "": 'x' + ev.count}
                                 </span>
                                     <span className="text-md">
 

@@ -2,7 +2,7 @@ import './App.css'
 import HomePage from "../features/sports/pages/HomePage.jsx";
 import Navbar from "../features/sports/components/NavBar.jsx";
 import Footer from "../features/sports/components/Footer.jsx";
-import {BrowserRouter, Route, Router, Routes} from "react-router-dom";
+import {BrowserRouter, Route, Routes} from "react-router-dom";
 import {useState} from "react";
 import EventPage from "../features/sports/pages/EventPage.jsx";
 
