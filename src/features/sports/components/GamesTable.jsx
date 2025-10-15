@@ -7,7 +7,7 @@ export default function GamesTable({
                               }) {
     if (loading) {
         return (
-            <p className="mx-6 text-xl">Laddar <span className="loading loading-dots loading-xl text-warning" /></p>
+            <p className="mx-2 text-xl">Laddar <span className="loading loading-dots loading-xl text-warning" /></p>
         );
     }
 
@@ -28,10 +28,10 @@ export default function GamesTable({
                     <thead>
                     <tr>
                         <th>Sport</th>
-                        <th>League</th>
-                        <th>Home</th>
-                        <th>Time</th>
-                        <th>Away</th>
+                        <th>Liga</th>
+                        <th>Hemma</th>
+                        <th>Tid</th>
+                        <th>Borta</th>
                         <th>Arena</th>
                     </tr>
                     </thead>

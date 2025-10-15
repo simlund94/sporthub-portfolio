@@ -17,34 +17,43 @@ export default function HomePage() {
             <Hero/>
 
             <div className="container mx-auto mt-4 max-w-4xl px-4">
-                <h2 className="text-2xl font-bold my-4 mx-6">Dagens matcher:</h2>
+                <h2 className="text-2xl font-bold my-4 mx-2">Dagens matcher:</h2>
+
                 <button
                     type="button"
-                    className="btn btn-warning mr-4 ml-5"
-                    onClick={() => {
-                        setChosenGender("MEN")
-                    }}
-                >
-                    MEN
-                </button>
-                <button
-                    type="button"
-                    className="btn btn-warning mr-4"
-                    onClick={() => {
-                        setChosenGender("WOMEN")
-                    }}
-                >
-                    WOMEN
-                </button>
-                <button
-                    type="button"
-                    className="btn btn-warning"
+                    className={`btn mx-2 transition-colors duration-200 ${
+                    chosenGender === "ALL" ? "btn-warning" : "btn-outline btn-warning"
+                }`}
                     onClick={() => {
                         setChosenGender("ALL")
                     }}
                 >
-                    ALL
+                    Alla
                 </button>
+
+                <button
+                    type="button"
+                    className={`btn mx-2 transition-colors duration-200 ${
+                        chosenGender === "MEN" ? "btn-warning" : "btn-outline btn-warning"
+                    }`}
+                    onClick={() => {
+                        setChosenGender("MEN")
+                    }}
+                >
+                    Herr
+                </button>
+                <button
+                    type="button"
+                    className={`btn mx-2 transition-colors duration-200 ${
+                        chosenGender === "WOMEN" ? "btn-warning" : "btn-outline btn-warning"
+                    }`}
+                    onClick={() => {
+                        setChosenGender("WOMEN")
+                    }}
+                >
+                    Dam
+                </button>
+
 
                 <GamesTable
                     items={events.data}
