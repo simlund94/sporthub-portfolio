@@ -11,13 +11,14 @@ export default function HomePage() {
     const date = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate()
     console.log('Dagens datum ' + date)
     const [chosenGender, setChosenGender] = useState("ALL")
-    const events = useEvents(date, chosenGender)
+    const [selectedDate, setSelectedDate] = useState(date)
+    const events = useEvents(selectedDate, chosenGender)
     return (
         <>
             <Hero/>
 
             <div className="container mx-auto mt-4 max-w-4xl px-4">
-                <h2 className="text-2xl font-bold my-4 mx-2">Dagens matcher:</h2>
+                <h2 className="text-2xl font-bold my-4 mx-2">Matcher i alla sporter:</h2>
 
                 <button
                     type="button"
@@ -53,7 +54,10 @@ export default function HomePage() {
                 >
                     Dam
                 </button>
-
+                <input type="date"
+                       className="input input-warning mx-2"
+                       value={selectedDate}
+                       onChange={(e) => setSelectedDate(e.target.value)}/>
 
                 <GamesTable
                     items={events.data}
@@ -61,12 +65,7 @@ export default function HomePage() {
                     error={events.err}
                 />
             </div>
-            <div className="container mt-4">
-                <p className="text-lg font-bold mt-4 ">
-                    NEXT
-                </p>
 
-            </div>
 
         </>
     )

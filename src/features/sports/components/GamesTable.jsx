@@ -5,6 +5,11 @@ export default function GamesTable({
                                   loading = false,
                                   error = null,
                               }) {
+    items.forEach((item) => {
+        if(item.league.sport.name === "Bowling"){
+            items.remove(item)
+        }
+    })
     if (loading) {
         return (
             <p className="mx-2 text-xl">Laddar <span className="loading loading-dots loading-xl text-warning" /></p>
@@ -16,7 +21,7 @@ export default function GamesTable({
     }
 
     if (!items.length) {
-        return <div className="p-4 text-center text-gray-500">No data available</div>;
+        return <div className="p-4 text-center text-gray-500">Inga matcher idag</div>;
     }
 
     return (
@@ -57,6 +62,7 @@ export default function GamesTable({
                                     timeZone: "Europe/Stockholm",
                                 })}
                             </td>
+
                             <td className="flex items-center gap-2">
                                 <span>{item.visitingTeam.name}</span>
                                 <img
