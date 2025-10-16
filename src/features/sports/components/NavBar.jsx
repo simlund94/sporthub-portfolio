@@ -1,11 +1,11 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {useLeagues} from "../hooks.js";
 import ThemeButton from "./icons etc/ThemeButton.jsx";
 import IconFactory from "./icons etc/IconFactory.jsx";
 import {Link} from "react-router-dom";
 import SPORTS from "../../../config.js";
 
-export default function Navbar(leagueIds, setLeagueIds) {
+export default function Navbar() {
     const currentYear = new Date().getFullYear();
 
     const [openDropdown, setOpenDropdown] = useState(null);
@@ -18,8 +18,6 @@ export default function Navbar(leagueIds, setLeagueIds) {
     const errors = {};
     let loading = false;
 
-    //TODO
-    //flytta useLeague ut från loopen...
     SPORTS.forEach((sport) => {
 
         const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
@@ -27,7 +25,6 @@ export default function Navbar(leagueIds, setLeagueIds) {
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;
     });
-
 
     const DropdownItem = ({item, isMobile}) => {
         const leagues = leaguesData[item.leagueKey];
@@ -61,7 +58,7 @@ export default function Navbar(leagueIds, setLeagueIds) {
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-                                <Link to={"/" + l.id}>
+                                <Link to={"/league/" + l.id}>
                                     {l.name} {l.name.includes("Superligan") ?
                                     (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
                                 </Link>

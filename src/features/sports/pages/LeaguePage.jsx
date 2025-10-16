@@ -1,8 +1,8 @@
-const LeaguePage = (leagueName, leagueKey) => {
+const LeaguePage = ( {leagueName, leagueId} ) => {
 
     return (
         <div>
-            Detta är en page för {leagueName}
+            Detta är en page för {leagueName} med id {leagueId}
         </div>
     )
 }
