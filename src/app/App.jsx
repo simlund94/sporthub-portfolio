@@ -22,7 +22,7 @@ function App() {
         loading = loading || result.loading;
     });
 
-    function generateLeagueRoutes() {
+    function generateLeaguePageRoutes() {
         return Object.keys(leaguesData).flatMap(key =>
             leaguesData[key].map(league => (
                 <Route
@@ -30,7 +30,6 @@ function App() {
                     path={`/league/${league.id}`}
                     element={
                         <LeaguePage
-                            leagueName={league.name}
                             leagueId={league.id}
                         />
                     }
@@ -39,22 +38,20 @@ function App() {
         );
     }
 
-
     return (
         <BrowserRouter>
             <div className="max-w-7xl mx-auto flex flex-col min-h-screen">
                 <Navbar/>
                 <main className="flex-grow">
                     <Routes>
-                        {generateLeagueRoutes()}
                         <Route path={"/"} element={<HomePage/>}/>
                         <Route path="/event/:id" element={<EventPage/>}/>
+                        {generateLeaguePageRoutes()}
                     </Routes>
                 </main>
                 <Footer/>
             </div>
         </BrowserRouter>
-
     )
 }
 

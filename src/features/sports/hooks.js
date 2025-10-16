@@ -154,8 +154,6 @@ export function useTeams(leagueId) {
     }, [leagueId]);
 
     return {data, loading, err};
-
-
 }
 
 export function useEvents(date, gender) {
@@ -192,7 +190,7 @@ export function useEvents(date, gender) {
 }
 
 export function useEventId(id) {
-    const [data, setData] = useState(null); // <-- null, not []
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
 
@@ -224,5 +222,44 @@ export function useEventId(id) {
     }, [id]);
 
     return { data, loading, err };
+}
+
+export function useLeague(leagueId) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        let live = true;
+        if (!leagueId) {
+            setData([]);
+            setErr(true);
+            setLoading(false);
+            return;
+        }
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.leaguesBySport[leagueId] ?? []);
+                } else {
+                    const res = await SportsApi.leagueById(leagueId);
+                    if (!live) return;
+                    console.log("Resultat av hämtning", res);
+                    setData(res);
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+    return {data, loading, err};
 }
 

@@ -6,20 +6,18 @@ import {Link} from "react-router-dom";
 import SPORTS from "../../../config.js";
 
 export default function Navbar() {
-    const currentYear = new Date().getFullYear();
-
     const [openDropdown, setOpenDropdown] = useState(null);
 
     const handleToggle = (key) => {
         setOpenDropdown((prev) => (prev === key ? null : key));
     };
 
+    const currentYear = new Date().getFullYear();
     const leaguesData = {};
     const errors = {};
     let loading = false;
 
     SPORTS.forEach((sport) => {
-
         const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
         errors[sport.leagueKey] = result.error;
