@@ -7,6 +7,7 @@ import EventPage from "../features/sports/pages/EventPage.jsx";
 import SPORTS from "../config.js";
 import {useLeagues} from "../features/sports/hooks.js";
 import LeaguePage from "../features/sports/pages/LeaguePage.jsx";
+import TeamPage from "../features/sports/pages/TeamPage.jsx";
 
 function App() {
 
@@ -49,6 +50,8 @@ function App() {
                         {generateLeagueRoutes()}
                         <Route path={"/"} element={<HomePage/>}/>
                         <Route path="/event/:id" element={<EventPage/>}/>
+                        <Route path="/team/:id" element={<TeamPage/>}/>
+
                     </Routes>
                 </main>
                 <Footer/>

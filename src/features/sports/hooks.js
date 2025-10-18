@@ -226,3 +226,72 @@ export function useEventId(id) {
     return { data, loading, err };
 }
 
+export function useTeamId(id) {
+    const [data, setData] = useState(null); // <-- null, not []
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    //if (!live) return;
+                    //setData(MOCK.teamById[id]); // or whichever mock matches
+                } else {
+                    const res = await SportsApi.teamById(id);
+                    console.log("Resultat av hämtning", res); // { event: {...} }
+                    if (!live) return;
+                    setData(res); // store the object directly
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+
+        return () => {
+            live = false;
+        };
+    }, [id]);
+
+    return { data, loading, err };
+}
+
+export function useTeamEvents(teamId, status) {
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.sports);
+                } else {
+                    const res = await SportsApi.eventsByTeam(teamId,status)
+                    if (!live) return;
+                    setData(pickList(res, 'events'));
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+        return () => {
+            live = false;
+        };
+    }, [teamId, status]);
+
+    return {data, loading, err};
+}
+
+

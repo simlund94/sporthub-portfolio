@@ -1,9 +1,11 @@
 import {useParams} from "react-router-dom";
 import {useEventId} from "../hooks";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
+import {useNavigate} from "react-router-dom";
 
 
 export default function EventPage() {
+    const navigate = useNavigate();
     const { id } = useParams();
     console.log("ID i URL:",id);
     const { data, loading, err } = useEventId(id);
@@ -100,12 +102,14 @@ export default function EventPage() {
             </p>
 
             <div className="flex justify-around items-center">
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center hover:bg-base-300 cursor-pointer"
+                     onClick={() => navigate(`/team/${event.homeTeam.id}`)}>
                     <img src={event.homeTeam.logo} className="w-20 h-20 object-contain" alt={event.homeTeam.name}/>
                     <span>{event.homeTeam.name}</span>
                 </div>
                 <RenderScoreBasedOnStatus/>
-                <div className="flex flex-col items-center">
+                <div className="flex flex-col items-center hover:bg-base-300 cursor-pointer"
+                     onClick={() => navigate(`/team/${event.visitingTeam.id}`)}>
                     <img src={event.visitingTeam.logo} className="w-20 h-20 object-contain"
                          alt={event.visitingTeam.name}/>
                     <span>{event.visitingTeam.name}</span>
