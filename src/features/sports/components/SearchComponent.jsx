@@ -19,7 +19,6 @@ export default function SearchComponent() {
     const navigate = useNavigate();
 
     const allTeams = Array.isArray(teamData?.teams) ? teamData.teams : [];
-    const allLeagues = Array.isArray(leagueData?.leagues) ? leagueData.leagues : [];
 
     const loading = teamsLoading || leaguesLoading;
     const error = teamsError || leaguesError;
@@ -32,12 +31,12 @@ export default function SearchComponent() {
             t.name?.toLowerCase().includes(lower)
         );
 
-        const filteredLeagues = allLeagues.filter((l) =>
+        const filteredLeagues = leagueData.filter((l) =>
             l.name?.toLowerCase().includes(lower)
         );
 
         return { teams: filteredTeams, leagues: filteredLeagues };
-    }, [query, allTeams, allLeagues]);
+    }, [query, allTeams, leagueData]);
 
     const handleSelect = (type, id) => {
         setQuery("");
@@ -75,7 +74,7 @@ export default function SearchComponent() {
             </label>
 
             {/* Results dropdown */}
-            {query.length >= 1 && (
+            {query.length >= 3 && (
                 <div className="absolute mt-2 bg-base-100 border border-base-300 rounded-lg shadow-lg w-full z-50">
                     {loading && (
                         <div className="p-2 text-sm text-center text-gray-500">
@@ -110,20 +109,11 @@ export default function SearchComponent() {
                                             onClick={() => handleSelect("league", league.id)}
                                             className="p-2 hover:bg-base-200 cursor-pointer"
                                         >
-                                            {league.logo && (
-                                                <img
-                                                    src={league.logo}
-                                                    alt={league.name}
-                                                    className="w-6 h-6 inline-block mr-2 object-contain"
-                                                />
-                                            )}
-                                            {league.name}
+                                            {league.name} <span className="textarea-sm text-warning">{league.season.startYear}/{league.season.endYear}</span>
                                         </li>
                                     ))}
                                 </>
                             )}
-
-                            {/* Teams */}
                             {results.teams.length > 0 && (
                                 <>
                                     <li className="px-3 py-1 text-xs font-bold text-gray-500">

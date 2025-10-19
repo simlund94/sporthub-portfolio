@@ -80,7 +80,7 @@ function pickList(res, field) {
     return [];
 }
 
-export function useSports() {
+export function useLeaguesId(id) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
@@ -95,9 +95,9 @@ export function useSports() {
                     if (!live) return;
                     setData(MOCK.sports);
                 } else {
-                    const res = await SportsApi.sports(); // kan vara {sports:[...]} eller [...]
+                    const res = await SportsApi.leagueById(id); // kan vara {sports:[...]} eller [...]
                     if (!live) return;
-                    setData(pickList(res, 'sports'));
+                    setData(pickList(res, 'League'));
                 }
             } catch (e) {
                 if (live) setErr(e);
@@ -153,46 +153,46 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
     return {data, loading, err};
 }
 
-export function useTeams(leagueId) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        if (!leagueId) {
-            setData([]);
-            setErr(null);
-            setLoading(false);
-            return;
-        }
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.teamsByLeague[leagueId] ?? []);
-                } else {
-                    const res = await SportsApi.teamsByLeague(leagueId); // { metadata, teams: [...] }
-                    if (!live) return;
-                    setData(pickList(res, 'teams'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        })();
-        return () => {
-            live = false;
-        };
-    }, [leagueId]);
-
-    return {data, loading, err};
-
-
-}
+// export function useTeams(leagueId) {
+//     const [data, setData] = useState([]);
+//     const [loading, setLoading] = useState(false);
+//     const [err, setErr] = useState(null);
+//
+//     useEffect(() => {
+//         let live = true;
+//         if (!leagueId) {
+//             setData([]);
+//             setErr(null);
+//             setLoading(false);
+//             return;
+//         }
+//         (async () => {
+//             try {
+//                 setLoading(true);
+//                 if (USE_MOCK) {
+//                     await delay(150);
+//                     if (!live) return;
+//                     setData(MOCK.teamsByLeague[leagueId] ?? []);
+//                 } else {
+//                     const res = await SportsApi.teamsByLeague(leagueId); // { metadata, teams: [...] }
+//                     if (!live) return;
+//                     setData(pickList(res, 'teams'));
+//                 }
+//             } catch (e) {
+//                 if (live) setErr(e);
+//             } finally {
+//                 if (live) setLoading(false);
+//             }
+//         })();
+//         return () => {
+//             live = false;
+//         };
+//     }, [leagueId]);
+//
+//     return {data, loading, err};
+//
+//
+// }
 
 export function useEvents(date, gender) {
     const [data, setData] = useState([]);
@@ -243,7 +243,6 @@ export function useEventId(id) {
                     setData(MOCK.eventsById[id]); // or whichever mock matches
                 } else {
                     const res = await SportsApi.eventsById(id);
-                    console.log("Resultat av hämtning", res); // { event: {...} }
                     if (!live) return;
                     setData(res); // store the object directly
                 }
@@ -278,7 +277,6 @@ export function useTeamId(id) {
                     //setData(MOCK.teamById[id]); // or whichever mock matches
                 } else {
                     const res = await SportsApi.teamById(id);
-                    console.log("Resultat av hämtning", res); // { event: {...} }
                     if (!live) return;
                     setData(res); // store the object directly
                 }
@@ -324,8 +322,6 @@ export function useTeamStandings(teamId) {
 
                 if (!live) return;
 
-                console.log("API response:", res);
-
                 const leagues = res.data?.leagues || res.leagues || [];
                 const processedLeagues = leagues.map(league => {
                     const standingsArray = [];
@@ -341,8 +337,6 @@ export function useTeamStandings(teamId) {
                         standings: standingsArray
                     };
                 });
-
-                console.log("Processed leagues with standings:", processedLeagues);
                 setLeaguesData(processedLeagues);
 
             } catch (e) {
@@ -416,7 +410,6 @@ export function useAllTeams(){
                     const res = await SportsApi.allTeams();
                     if (!live) return;
                     setData(res);
-                    console.log("API response:", res);
                 }
             } catch (e) {
                 if (live) setErr(e);
@@ -430,4 +423,39 @@ export function useAllTeams(){
     }, []);
 
     return {data, loading, err};
+}
+export function useAllLeagues(){
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+
+                } else {
+                    const res = await SportsApi.allLeagues(); // svar: { metadata, leagues: [...] }
+                    if (!live) return;
+                    setData(pickList(res, 'leagues'));
+
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+        return () => {
+            live = false;
+        };
+    }, []);
+
+    return {data, loading, err};
+
 }

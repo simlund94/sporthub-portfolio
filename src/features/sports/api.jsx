@@ -3,6 +3,7 @@ import { api } from '../../lib/fetcher';
 export const SportsApi = {
     sports: () => api('/sports'), // [ {id, name} ]
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),
+    leagueById: (id) => api(`/leagues/${id}`),
     teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
     events: (date, gender) => api(`/events?fromDate=${date}&teamClass=${gender}&toDate=${date}`),
     eventsById: (id) => api(`/events/${id}?fields=all`),

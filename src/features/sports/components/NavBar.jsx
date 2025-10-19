@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useState} from "react";
 import {useLeaguesWithSportIdAndQuery} from "../hooks.js";
 import ThemeButton from "./icons etc/ThemeButton.jsx";
 import IconFactory from "./icons etc/IconFactory.jsx";
