@@ -297,7 +297,6 @@ export function useTeamId(id) {
     return {data, loading, err};
 }
 
-
 export function useTeamStandings(teamId) {
     const [leaguesData, setLeaguesData] = useState([]);  // full league objects with standings
     const [loading, setLoading] = useState(true);
