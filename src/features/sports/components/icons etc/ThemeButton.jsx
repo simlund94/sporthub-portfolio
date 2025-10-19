@@ -28,7 +28,7 @@ export default function ThemeButton() {
 
     return (
         <label
-            className="flex items-center gap-3 cursor-pointer select-none"
+            className="flex items-center gap-3 cursor-pointer select-none ml-2"
             onClick={(e) => e.stopPropagation()}
         >
             {/* Sol Icon */}

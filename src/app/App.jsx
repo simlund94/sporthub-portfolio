@@ -5,7 +5,7 @@ import Footer from "../features/sports/components/Footer.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import EventPage from "../features/sports/pages/EventPage.jsx";
 import SPORTS from "../config.js";
-import {useLeagues} from "../features/sports/hooks.js";
+import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks.js";
 import LeaguePage from "../features/sports/pages/LeaguePage.jsx";
 import TeamPage from "../features/sports/pages/TeamPage.jsx";
 
@@ -17,7 +17,7 @@ function App() {
     const errors = {};
     let loading = false;
     SPORTS.forEach((sport) => {
-        const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
+        const result = useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;

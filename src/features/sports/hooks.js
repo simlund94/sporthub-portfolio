@@ -113,7 +113,7 @@ export function useSports() {
     return {data, loading, err};
 }
 
-export function useLeagues(sportId, query) {
+export function useLeaguesWithSportIdAndQuery(sportId, query) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
@@ -394,6 +394,40 @@ export function useTeamEvents(teamId, status) {
             live = false;
         };
     }, [teamId, status]);
+
+    return {data, loading, err};
+}
+
+export function useAllTeams(){
+    const [data, setData] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.sports);
+                } else {
+                    const res = await SportsApi.allTeams();
+                    if (!live) return;
+                    setData(res);
+                    console.log("API response:", res);
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+        return () => {
+            live = false;
+        };
+    }, []);
 
     return {data, loading, err};
 }

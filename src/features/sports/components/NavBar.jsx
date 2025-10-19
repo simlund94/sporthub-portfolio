@@ -1,9 +1,10 @@
 import React, {useEffect, useState} from "react";
-import {useLeagues} from "../hooks.js";
+import {useLeaguesWithSportIdAndQuery} from "../hooks.js";
 import ThemeButton from "./icons etc/ThemeButton.jsx";
 import IconFactory from "./icons etc/IconFactory.jsx";
 import {Link} from "react-router-dom";
 import SPORTS from "../../../config.js";
+import SearchComponent from "./SearchComponent.jsx";
 
 export default function Navbar() {
     const currentYear = new Date().getFullYear();
@@ -20,7 +21,7 @@ export default function Navbar() {
 
     SPORTS.forEach((sport) => {
 
-        const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
+        const result = useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;
@@ -95,8 +96,12 @@ export default function Navbar() {
                             <DropdownItem key={item.key} item={item} isMobile/>
                         ))}
                         <li>
+                            <SearchComponent/>
+                        </li>
+                        <li>
                             <ThemeButton/>
                         </li>
+
                     </ul>
                 </div>
 
@@ -113,6 +118,7 @@ export default function Navbar() {
             </div>
 
             <div className="navbar-end hidden lg:flex">
+                <SearchComponent/>
                 <ThemeButton/>
             </div>
         </div>
