@@ -8,4 +8,5 @@ export const SportsApi = {
     eventsById: (id) => api(`/events/${id}?fields=all`),
     eventsByTeam: (teamId, status) => api(`/events?limit=5&status=${status}&team=${teamId}&sort=startDate:desc`),
     teamById: (id) => api(`/teams/${id}`),
+    teamStandings: (teamId) => api(`/teams/${teamId}/leagues`),
 };

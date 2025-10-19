@@ -2,23 +2,24 @@ import IconFactory from "./icons etc/IconFactory.jsx";
 import {useNavigate} from "react-router-dom";
 
 export default function GamesTable({
-                                  items = [],
-                                  loading = false,
-                                  error = null,
-                              }) {
+                                       items = [],
+                                       loading = false,
+                                       error = null,
+                                       showDate = false,
+                                   }) {
     const navigate = useNavigate();
     items = items.filter(item => item.league.sport.name !== "Bowling");
     if (loading) {
         return (
             <div className="container max-w-4xl h-96 px-2 rounded-lg ">
-                <table className="table table-zebra w-full table-pin-cols table-pin-rows">
-                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                </table>
+
+                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+
             </div>
         );
     }
@@ -34,16 +35,28 @@ export default function GamesTable({
     const RenderScoreOrTimeBasedOnEventStatus = (item) => {
         switch (item.item.status) {
             case "FINISHED":
-                return <p className="text-sm font-bold">{item.item.homeTeamScore} - {item.item.visitingTeamScore}</p> ;
+                return <p className="text-sm font-bold">{item.item.homeTeamScore} - {item.item.visitingTeamScore}</p>;
             case "ONGOING":
                 return <p className="text-sm font-bold">Matchen spelas fortfarande</p>;
-            case "UPCOMING":
-                return <p className="text-sm font-bold">{new Date(item.item.startDate).toLocaleString("sv-SE", {
-                    hour: "2-digit",
-                    minute: "2-digit",
+            case "UPCOMING": {
+                const date = new Date(item.item.startDate);
 
-                    timeZone: "Europe/Stockholm",
-                })}</p>;
+                const formatted = showDate
+                    ? date.toLocaleString("sv-SE", {
+                        day: "2-digit",
+                        month: "short",
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZone: "Europe/Stockholm",
+                    })
+                    : date.toLocaleTimeString("sv-SE", {
+                        hour: "2-digit",
+                        minute: "2-digit",
+                        timeZone: "Europe/Stockholm",
+                    });
+
+                return <p className="text-sm font-bold">{formatted}</p>;
+            }
         }
     };
 
@@ -71,7 +84,7 @@ export default function GamesTable({
                             onClick={() => navigate(`/event/${item.id}`)}
                         >
                             <td className="text-center">
-                                <IconFactory name={item.league.sport.name} className="h-5 w-5 mx-auto" />
+                                <IconFactory name={item.league.sport.name} className="h-5 w-5 mx-auto"/>
                             </td>
                             <td>{item.league.name}</td>
                             <td className="flex items-center gap-2">
@@ -83,7 +96,7 @@ export default function GamesTable({
                                 <span className="float-right">{item.homeTeam.name}</span>
                             </td>
                             <td className="text-center text-warning font-semibold">
-                                <RenderScoreOrTimeBasedOnEventStatus item={item} />
+                                <RenderScoreOrTimeBasedOnEventStatus item={item}/>
                             </td>
 
                             <td className="flex items-center gap-2">
@@ -129,7 +142,7 @@ export default function GamesTable({
                             </td>
 
                             <td className="text-center text-warning font-semibold">
-                                <RenderScoreOrTimeBasedOnEventStatus item={item} />
+                                <RenderScoreOrTimeBasedOnEventStatus item={item}/>
                             </td>
 
                             <td>

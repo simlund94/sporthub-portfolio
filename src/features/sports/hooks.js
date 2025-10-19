@@ -10,28 +10,64 @@ const USE_MOCK = (import.meta.env?.VITE_USE_MOCK ?? 'false') === 'true';
 // 2) Mock-data (justera fritt)
 const MOCK = {
     sports: [
-        { id: 10, name: 'Fotboll' },
-        { id: 2, name: 'Ishockey' },
-        { id: 4, name: 'Innebandy' },
+        {id: 10, name: 'Fotboll'},
+        {id: 2, name: 'Ishockey'},
+        {id: 4, name: 'Innebandy'},
     ],
     leaguesBySport: {
         10: [
-            { id: 134439, name: 'Allsvenskan', teamClass: 'MEN', sport: { id: 10, name: 'Fotboll' }, season: { startYear: 2023, endYear: 2024 } }
+            {
+                id: 134439,
+                name: 'Allsvenskan',
+                teamClass: 'MEN',
+                sport: {id: 10, name: 'Fotboll'},
+                season: {startYear: 2023, endYear: 2024}
+            }
             ,
-            { id: 124439, name: 'Allsvenskan D', teamClass: 'WOMEN', sport: { id: 10, name: 'Fotboll' }, season: { startYear: 2023, endYear: 2024 } }
+            {
+                id: 124439,
+                name: 'Allsvenskan D',
+                teamClass: 'WOMEN',
+                sport: {id: 10, name: 'Fotboll'},
+                season: {startYear: 2023, endYear: 2024}
+            }
             ,
         ],
-        2: [{ id: 125472, name: 'SHL'  , teamClass: 'MEN' ,sport: { id: 2, name: 'Ishockey' }, season: { startYear: 2023, endYear: 2024 }},
-            { id: 125554, name: 'SDHL',teamClass: 'WOMEN',sport: { id: 2, name: 'Ishockey' }, season: { startYear: 2023, endYear: 2024 }}],
-        4: [{ id: 121413, name: 'Superligan', teamClass: 'MEN',sport: { id: 4, name: 'Innebandy' }, season: { startYear: 2023, endYear: 2024 } },
-            { id: 121413, name: 'Superligan W', teamClass: 'WOMEN',sport: { id: 4, name: 'Innebandy' }, season: { startYear: 2023, endYear: 2024 } }
+        2: [{
+            id: 125472,
+            name: 'SHL',
+            teamClass: 'MEN',
+            sport: {id: 2, name: 'Ishockey'},
+            season: {startYear: 2023, endYear: 2024}
+        },
+            {
+                id: 125554,
+                name: 'SDHL',
+                teamClass: 'WOMEN',
+                sport: {id: 2, name: 'Ishockey'},
+                season: {startYear: 2023, endYear: 2024}
+            }],
+        4: [{
+            id: 121413,
+            name: 'Superligan',
+            teamClass: 'MEN',
+            sport: {id: 4, name: 'Innebandy'},
+            season: {startYear: 2023, endYear: 2024}
+        },
+            {
+                id: 121413,
+                name: 'Superligan W',
+                teamClass: 'WOMEN',
+                sport: {id: 4, name: 'Innebandy'},
+                season: {startYear: 2023, endYear: 2024}
+            }
         ],
     },
     teamsByLeague: {
-        124439: [{ id: 9367, name: 'AIK' }, { id: 9368, name: 'Djurgården' }],
-        123935: [{ id: 3, name: 'AIK DFF' }],
-        125472: [{ id: 1171, name: 'Brynäs IF' }, { id: 6, name: 'Färjestad' }],
-        121413: [{ id: 14392, name: 'IBF Falun' }, { id: 14563, name: 'Storvreta' }],
+        124439: [{id: 9367, name: 'AIK'}, {id: 9368, name: 'Djurgården'}],
+        123935: [{id: 3, name: 'AIK DFF'}],
+        125472: [{id: 1171, name: 'Brynäs IF'}, {id: 6, name: 'Färjestad'}],
+        121413: [{id: 14392, name: 'IBF Falun'}, {id: 14563, name: 'Storvreta'}],
     },
 };
 
@@ -99,7 +135,7 @@ export function useLeagues(sportId, query) {
                     if (!live) return;
                     setData(MOCK.leaguesBySport[sportId] ?? []);
                 } else {
-                    const res = await SportsApi.leaguesBySport(sportId,query); // svar: { metadata, leagues: [...] }
+                    const res = await SportsApi.leaguesBySport(sportId, query); // svar: { metadata, leagues: [...] }
                     if (!live) return;
                     setData(pickList(res, 'leagues'));
                 }
@@ -112,7 +148,7 @@ export function useLeagues(sportId, query) {
         return () => {
             live = false;
         };
-    }, [sportId,query]);
+    }, [sportId, query]);
 
     return {data, loading, err};
 }
@@ -223,7 +259,7 @@ export function useEventId(id) {
         };
     }, [id]);
 
-    return { data, loading, err };
+    return {data, loading, err};
 }
 
 export function useTeamId(id) {
@@ -258,8 +294,77 @@ export function useTeamId(id) {
         };
     }, [id]);
 
-    return { data, loading, err };
+    return {data, loading, err};
 }
+
+
+export function useTeamStandings(teamId) {
+    const [leaguesData, setLeaguesData] = useState([]);  // full league objects with standings
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!teamId) return;
+
+        let live = true;
+
+        (async () => {
+            try {
+                setLoading(true);
+                setErr(null);
+
+                let res;
+
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    res = MOCK.standings;
+                } else {
+                    res = await SportsApi.teamStandings(teamId);
+                }
+
+                if (!live) return;
+
+                console.log("API response:", res);
+
+                const leagues = res.data?.leagues || res.leagues || [];
+                const processedLeagues = leagues.map(league => {
+                    const standingsArray = [];
+
+                    (league.groups || []).forEach(group => {
+                        if (Array.isArray(group.standings)) {
+                            standingsArray.push(...group.standings);
+                        }
+                    });
+
+                    return {
+                        ...league,          // keep all league metadata
+                        standings: standingsArray // add flattened standings array
+                    };
+                });
+
+                console.log("Processed leagues with standings:", processedLeagues);
+                setLeaguesData(processedLeagues);
+
+            } catch (e) {
+                if (live) setErr(e.message || "Unknown error");
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+
+        return () => {
+            live = false;
+        };
+    }, [teamId]);
+
+    return { leagues: leaguesData, loading, err };
+}
+
+
+
+
+
 
 export function useTeamEvents(teamId, status) {
     const [data, setData] = useState([]);
@@ -276,7 +381,7 @@ export function useTeamEvents(teamId, status) {
                     if (!live) return;
                     setData(MOCK.sports);
                 } else {
-                    const res = await SportsApi.eventsByTeam(teamId,status)
+                    const res = await SportsApi.eventsByTeam(teamId, status)
                     if (!live) return;
                     setData(pickList(res, 'events'));
                 }
@@ -293,5 +398,3 @@ export function useTeamEvents(teamId, status) {
 
     return {data, loading, err};
 }
-
-

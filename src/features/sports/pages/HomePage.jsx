@@ -62,6 +62,7 @@ export default function HomePage() {
                     items={events.data}
                     loading={events.loading}
                     error={events.err}
+                    showDate={false}
                 />
             </div>
 

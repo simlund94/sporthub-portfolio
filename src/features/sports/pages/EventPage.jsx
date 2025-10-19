@@ -46,6 +46,7 @@ export default function EventPage() {
 
         return (
             <div className="p-4">
+
                 <h2 className="text-xl font-bold mb-3 text-center">Matchhändelser</h2>
 
                 {gameEvents.length === 0 ? (
@@ -86,6 +87,9 @@ export default function EventPage() {
 
     return (
         <div className="p-4 max-w-3xl mx-auto">
+            <a className="link cursor-pointer" onClick={() => navigate(-1)}>
+                Tillbaka
+            </a>
             <h1 className="text-3xl font-bold text-center mb-4">
                 {event.homeTeam.name} vs {event.visitingTeam.name}
             </h1>
