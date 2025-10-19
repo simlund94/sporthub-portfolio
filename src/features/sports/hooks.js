@@ -338,8 +338,8 @@ export function useTeamStandings(teamId) {
                     });
 
                     return {
-                        ...league,          // keep all league metadata
-                        standings: standingsArray // add flattened standings array
+                        ...league,
+                        standings: standingsArray
                     };
                 });
 
