@@ -2,7 +2,6 @@ import {useNavigate, useParams} from "react-router-dom";
 import {useTeamEvents, useTeamId, useTeamStandings} from "../hooks.js";
 import {useState} from "react";
 import GamesTable from "../components/GamesTable.jsx";
-import Table from "daisyui/components/table/index.js";
 import StandingsTable from "../components/StandningsTable.jsx";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
 
