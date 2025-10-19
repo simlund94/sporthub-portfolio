@@ -12,26 +12,27 @@ function App() {
 
     // TODO duplicerad kod, skicka ner till Navbar på något vis?
     const currentYear = new Date().getFullYear();
+    const leagueResults = SPORTS.map((sport) => useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
     const errors = {};
     let loading = false;
-    SPORTS.forEach((sport) => {
-        const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
+
+    SPORTS.forEach((sport, index) => {
+        const result = leagueResults[index];
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;
     });
+
 
     function generateLeaguePageRoutes() {
         return Object.keys(leaguesData).flatMap(key =>
             leaguesData[key].map(league => (
                 <Route
                     key={league.id}
-                    path={`/league/${league.id}`}
+                    path={`/league/${league.name.toLowerCase()}/${league.teamClass.toLowerCase()}`}
                     element={
-                        <LeaguePage
-                            leagueId={league.id}
-                        />
+                        <LeaguePage initialLeagueId={league.id}/>
                     }
                 />
             ))
@@ -41,7 +42,7 @@ function App() {
     return (
         <BrowserRouter>
             <div className="max-w-7xl mx-auto flex flex-col min-h-screen">
-                <Navbar/>
+                <Navbar />
                 <main className="flex-grow">
                     <Routes>
                         <Route path={"/"} element={<HomePage/>}/>

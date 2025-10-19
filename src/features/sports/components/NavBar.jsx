@@ -13,12 +13,12 @@ export default function Navbar() {
     };
 
     const currentYear = new Date().getFullYear();
+    const leagueResults = SPORTS.map((sport) => useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
     const errors = {};
     let loading = false;
-
-    SPORTS.forEach((sport) => {
-        const result = useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`);
+    SPORTS.forEach((sport, index) => {
+        const result = leagueResults[index];
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;
@@ -56,7 +56,7 @@ export default function Navbar() {
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-                                <Link to={"/league/" + l.id}>
+                                <Link to={`/league/${l.name.toLowerCase()}/${l.teamClass.toLowerCase()}`}>
                                     {l.name} {l.name.includes("Superligan") ?
                                     (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
                                 </Link>

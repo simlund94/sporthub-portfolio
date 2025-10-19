@@ -4,7 +4,6 @@ import {useEvents} from "../hooks.js";
 import {useState} from "react";
 import GamesTable from "../components/GamesTable.jsx";
 
-
 export default function HomePage() {
 
     const currentDate = new Date()
@@ -64,7 +63,6 @@ export default function HomePage() {
                     error={events.err}
                 />
             </div>
-
 
         </>
     )
