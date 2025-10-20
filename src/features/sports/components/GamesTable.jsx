@@ -13,12 +13,12 @@ export default function GamesTable({
         return (
             <div className="container max-w-4xl h-96 px-2 rounded-lg ">
 
-                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-                    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
 
             </div>
         );
@@ -74,6 +74,7 @@ export default function GamesTable({
                         <th>Tid/Resultat</th>
                         <th>Borta</th>
                         <th>Arena</th>
+                        <th>Datum</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -108,6 +109,16 @@ export default function GamesTable({
                                 />
                             </td>
                             <td>{item.facts?.arena?.name ?? "Okänd arena"}</td>
+                            <td><span>
+  {new Date(item.startDate).toLocaleString("sv-SE", {
+      day: "2-digit",
+      month: "short",
+      year: "numeric",
+      timeZone: "Europe/Stockholm"
+  })}
+</span>
+
+                            </td>
                         </tr>
 
                     ))}
