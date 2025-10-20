@@ -1,18 +1,14 @@
-import { useState, useMemo } from "react";
-import { useNavigate } from "react-router-dom";
-import { useAllTeams, useAllLeagues } from "../hooks.js"; // make sure this exists
+import {useState, useMemo} from "react";
+import {useNavigate} from "react-router-dom";
+import {useAllTeams, useAllLeagues} from "../hooks.js";
 
 export default function SearchComponent() {
     const {
-        data: teamData,
-        loading: teamsLoading,
-        error: teamsError,
+        data: teamData, loading: teamsLoading, error: teamsError,
     } = useAllTeams();
 
     const {
-        data: leagueData,
-        loading: leaguesLoading,
-        error: leaguesError,
+        data: leagueData, loading: leaguesLoading, error: leaguesError,
     } = useAllLeagues();
 
     const [query, setQuery] = useState("");
@@ -24,28 +20,22 @@ export default function SearchComponent() {
     const error = teamsError || leaguesError;
 
     const results = useMemo(() => {
-        if (!query.trim()) return { teams: [], leagues: [] };
+        if (!query.trim()) return {teams: [], leagues: []};
         const lower = query.toLowerCase();
 
-        const filteredTeams = allTeams.filter((t) =>
-            t.name?.toLowerCase().includes(lower)
-        );
+        const filteredTeams = allTeams.filter((t) => t.name?.toLowerCase().includes(lower));
 
-        const filteredLeagues = leagueData.filter((l) =>
-            l.name?.toLowerCase().includes(lower)
-        );
+        const filteredLeagues = leagueData.filter((l) => l.name?.toLowerCase().includes(lower));
 
-        return { teams: filteredTeams, leagues: filteredLeagues };
+        return {teams: filteredTeams, leagues: filteredLeagues};
     }, [query, allTeams, leagueData]);
 
     const handleSelect = (type, id) => {
         setQuery("");
-        if (type === "team") navigate(`/team/${id}`);
-        else if (type === "league") navigate(`/league/${id}`);
+        if (type === "team") navigate(`/team/${id}`); else if (type === "league") navigate(`/league/${id}`);
     };
 
-    return (
-        <div className="relative w-full max-w-md mx-auto">
+    return (<div className="relative w-full max-w-md mx-auto">
             {/* Search input */}
             <label className="input input-bordered flex items-center gap-2">
                 <svg
@@ -76,62 +66,49 @@ export default function SearchComponent() {
             {/* Results dropdown */}
             {query.length >= 3 && (
                 <div className="absolute mt-2 bg-base-100 border border-base-300 rounded-lg shadow-lg w-full z-50">
-                    {loading && (
-                        <div className="p-2 text-sm text-center text-gray-500">
+                    {loading && (<div className="p-2 text-sm text-center text-gray-500">
                             Laddar resultat...
-                            <span className="loading loading-dots loading-xs ml-1" />
-                        </div>
-                    )}
+                            <span className="loading loading-dots loading-xs ml-1"/>
+                        </div>)}
 
-                    {error && (
-                        <div className="p-2 text-sm text-red-500">
+                    {error && (<div className="p-2 text-sm text-red-500">
                             {error || "Kunde inte hämta data"}
-                        </div>
-                    )}
+                        </div>)}
 
                     {!loading && !error && results.teams.length === 0 && results.leagues.length === 0 && (
                         <div className="p-2 text-sm text-gray-500">
                             Inga resultat hittades
-                        </div>
-                    )}
+                        </div>)}
 
-                    {!loading && !error && (
-                        <ul className="max-h-60 overflow-y-auto divide-y divide-base-300">
+                    {!loading && !error && (<ul className="max-h-60 overflow-y-auto divide-y divide-base-300">
                             {/* Leagues */}
-                            {results.leagues.length > 0 && (
-                                <>
+                            {results.leagues.length > 0 && (<>
                                     <li className="px-3 py-1 text-xs font-bold text-gray-500">
                                         Ligor
                                     </li>
-                                    {results.leagues.map((league) => (
-                                        <li
+                                    {results.leagues.map((league) => (<li
                                             key={`league-${league.id}`}
                                             onClick={() => handleSelect("league", league.id)}
                                             className="p-2 hover:bg-base-200 cursor-pointer"
                                         >
-                                            {league.name} <span className="textarea-sm text-warning">{league.season.startYear}/{league.season.endYear}</span>
-                                        </li>
-                                    ))}
-                                </>
-                            )}
-                            {results.teams.length > 0 && (
-                                <>
+                                            {league.name} <span
+                                            className="textarea-sm text-warning">{league.season.startYear}/{league.season.endYear}</span>
+                                        </li>))}
+                                </>)}
+                            {results.teams.length > 0 && (<>
                                     <li className="px-3 py-1 text-xs font-bold text-gray-500">
                                         Lag
                                     </li>
-                                    {results.teams.map((team) => (
-                                        <li
+                                    {results.teams.map((team) => (<li
                                             key={`team-${team.id}`}
                                             onClick={() => handleSelect("team", team.id)}
                                             className="p-2 flex items-center gap-2 hover:bg-base-200 cursor-pointer transition-colors"
                                         >
-                                            {team.logo && (
-                                                <img
+                                            {team.logo && (<img
                                                     src={team.logo}
                                                     alt={team.name}
                                                     className="w-6 h-6 object-contain"
-                                                />
-                                            )}
+                                                />)}
                                             <span>
                                                 {team.name}{" "}
                                                 <span className="text-gray-500 text-xs">
@@ -141,14 +118,9 @@ export default function SearchComponent() {
                                                     {team.sport.name}
                                                 </span>
                                             </span>
-                                        </li>
-                                    ))}
-                                </>
-                            )}
-                        </ul>
-                    )}
-                </div>
-            )}
-        </div>
-    );
+                                        </li>))}
+                                </>)}
+                        </ul>)}
+                </div>)}
+        </div>);
 }
