@@ -135,7 +135,10 @@ export default function SearchComponent() {
                                             <span>
                                                 {team.name}{" "}
                                                 <span className="text-gray-500 text-xs">
-                                                    ({team.teamClass === "MEN" ? "Herr" : "Dam"})
+                                                    ({team.teamClass === "MEN" ? "Herr" : "Dam"}){" "}
+                                                </span>
+                                                <span className="text-gray-200 text-xs">
+                                                    {team.sport.name}
                                                 </span>
                                             </span>
                                         </li>
