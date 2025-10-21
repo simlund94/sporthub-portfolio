@@ -25,6 +25,8 @@ export default function Navbar() {
         loading = loading || result.loading;
     });
 
+    const themeComponent = <ThemeButton/>
+
     const DropdownItem = ({item, isMobile}) => {
         const leagues = leaguesData[item.leagueKey];
         const error = errors[item.leagueKey];
@@ -97,7 +99,7 @@ export default function Navbar() {
                             <SearchComponent/>
                         </li>
                         <li>
-                            <ThemeButton/>
+                            {themeComponent}
                         </li>
 
                     </ul>
@@ -117,7 +119,7 @@ export default function Navbar() {
 
             <div className="navbar-end hidden lg:flex">
                 <SearchComponent/>
-                <ThemeButton/>
+                {themeComponent}
             </div>
         </div>
     );

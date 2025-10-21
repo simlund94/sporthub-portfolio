@@ -97,8 +97,7 @@ const IconFactory = ({name, className}) => {
                  id="Layer_1"
                  className={className}
                  xmlns="http://www.w3.org/2000/svg"
-                 xmlns:xlink="http://www.w3.org/1999/xlink"
-                 viewBox="0 0 511.957 511.957" xml:space="preserve">
+                 viewBox="0 0 511.957 511.957">
             <g>
             <g>
             <path d="M507.691,110.215l-42.667-32c-3.221-2.411-7.552-2.816-11.157-1.003c-3.605,1.813-5.888,5.504-5.888,9.536v95.637

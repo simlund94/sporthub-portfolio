@@ -40,7 +40,7 @@ export default function SearchComponent() {
         if (type === "team") navigate(`/team/${id}`); else if (type === "league") navigate(`/league/${id}`);
     };
 
-    return (<div className="relative w-full max-w-md mx-auto">
+    return (<div className="relative w-full max-w-md mx-auto pl-10">
             {/* Search input */}
             <label className="input input-bordered flex items-center gap-2">
                 <svg

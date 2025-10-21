@@ -150,7 +150,7 @@ export function useAllTeams(){
                 } else {
                     const res = await SportsApi.allTeams();
                     if (!live) return;
-                    setData(res);
+                    setData(pickList(res,'teams'));
                 }
             } catch (e) {
                 if (live) setErr(e);
