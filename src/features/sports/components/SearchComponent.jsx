@@ -1,5 +1,6 @@
 import {useState, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
+import IconFactory from "./icons etc/IconFactory.jsx";
 import {useAllTeams} from "../hooks/TeamHooks.jsx";
 import {useAllLeagues} from "../hooks/LeagueHooks.jsx";
 
@@ -7,15 +8,18 @@ export default function SearchComponent() {
     const {
         data: teamData, loading: teamsLoading, error: teamsError,
     } = useAllTeams();
+    const currentTeams = teamData.filter((t) => t?.sport.name !== "Bowling");
+    const currentYear = new Date().getFullYear();
 
     const {
         data: leagueData, loading: leaguesLoading, error: leaguesError,
     } = useAllLeagues();
+    const leagueCurrentYear  = leagueData.filter((l) => l?.season.startYear === currentYear && l?.sport.name !== "Bowling");
 
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
 
-    const allTeams = Array.isArray(teamData?.teams) ? teamData.teams : [];
+   // const allTeams = Array.isArray(teamData?.teams) ? teamData.teams : [];
 
     const loading = teamsLoading || leaguesLoading;
     const error = teamsError || leaguesError;
@@ -24,12 +28,12 @@ export default function SearchComponent() {
         if (!query.trim()) return {teams: [], leagues: []};
         const lower = query.toLowerCase();
 
-        const filteredTeams = allTeams.filter((t) => t.name?.toLowerCase().includes(lower));
+        const filteredTeams = currentTeams.filter((t) => t.name?.toLowerCase().includes(lower));
 
-        const filteredLeagues = leagueData.filter((l) => l.name?.toLowerCase().includes(lower));
+        const filteredLeagues = leagueCurrentYear.filter((l) => l.name?.toLowerCase().includes(lower));
 
         return {teams: filteredTeams, leagues: filteredLeagues};
-    }, [query, allTeams, leagueData]);
+    }, [query, teamData, leagueData]);
 
     const handleSelect = (type, id) => {
         setQuery("");
@@ -65,7 +69,7 @@ export default function SearchComponent() {
             </label>
 
             {/* Results dropdown */}
-            {query.length >= 3 && (
+            {query.length >= 2 && (
                 <div className="absolute mt-2 bg-base-100 border border-base-300 rounded-lg shadow-lg w-full z-50">
                     {loading && (<div className="p-2 text-sm text-center text-gray-500">
                             Laddar resultat...
@@ -90,11 +94,12 @@ export default function SearchComponent() {
                                     {results.leagues.map((league) => (<li
                                             key={`league-${league.id}`}
                                             onClick={() => handleSelect("league", league.id)}
-                                            className="p-2 hover:bg-base-200 cursor-pointer"
+                                            className="p-2 flex items-center gap-2 hover:bg-base-200 cursor-pointer transition-colors"
                                         >
-                                            {league.name} <span
-                                            className="textarea-sm text-warning">{league.season.startYear}/{league.season.endYear}</span>
-                                        </li>))}
+                                        <IconFactory name={league.sport.name} className="h-5 w-5"/>
+                                        <span>{league.name} {league.name.includes("Superligan") ?
+                                        (league.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
+                                        </span></li>))}
                                 </>)}
                             {results.teams.length > 0 && (<>
                                     <li className="px-3 py-1 text-xs font-bold text-gray-500">
