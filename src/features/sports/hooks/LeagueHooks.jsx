@@ -96,7 +96,7 @@ export function useLeaguesId(id) {
         return () => {
             live = false;
         };
-    }, []);
+    }, [id]);
 
     return {data, loading, err};
 }
