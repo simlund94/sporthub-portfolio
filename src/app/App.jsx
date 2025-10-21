@@ -13,6 +13,7 @@ function App() {
 
     // TODO duplicerad kod, skicka ner till Navbar på något vis?
     const currentYear = new Date().getFullYear();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const leagueResults = SPORTS.map((sport) => useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
     const errors = {};
