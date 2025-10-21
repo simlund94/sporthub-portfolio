@@ -1,4 +1,4 @@
-import {useLeagueAllSeasonsById, useLeagueStandingsById, useLeagueWithTeamsById} from "../hooks.js";
+import {useLeagueAllSeasonsById, useLeagueStandingsById} from "../hooks/LeagueHooks.jsx";
 import {useEffect, useState} from "react";
 import LeagueStandingsTable from "../components/LeagueStandingsTableWithSeasons.jsx";
 

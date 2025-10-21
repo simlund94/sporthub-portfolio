@@ -1,6 +1,7 @@
 import {useState, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
-import {useAllTeams, useAllLeagues} from "../hooks.js";
+import {useAllTeams} from "../hooks/TeamHooks.jsx";
+import {useAllLeagues} from "../hooks/LeagueHooks.jsx";
 
 export default function SearchComponent() {
     const {

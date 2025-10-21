@@ -5,7 +5,7 @@ import Footer from "../features/sports/components/Footer.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import EventPage from "../features/sports/pages/EventPage.jsx";
 import SPORTS from "../config.js";
-import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks.js";
+import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks/LeagueHooks.jsx";
 import LeaguePage from "../features/sports/pages/LeaguePage.jsx";
 import TeamPage from "../features/sports/pages/TeamPage.jsx";
 
@@ -13,6 +13,7 @@ function App() {
 
     // TODO duplicerad kod, skicka ner till Navbar på något vis?
     const currentYear = new Date().getFullYear();
+    // eslint-disable-next-line react-hooks/rules-of-hooks
     const leagueResults = SPORTS.map((sport) => useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
     const errors = {};

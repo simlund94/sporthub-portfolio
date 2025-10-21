@@ -1,6 +1,6 @@
 import Hero from "../components/Hero.jsx";
 
-import {useEvents} from "../hooks.js";
+import {useEvents} from "../hooks/EventHooks.jsx";
 import {useState} from "react";
 import GamesTable from "../components/GamesTable.jsx";
 
