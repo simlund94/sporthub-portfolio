@@ -52,10 +52,20 @@ export default function HomePage() {
                 >
                     Dam
                 </button>
-                <input type="date"
-                       className="input input-warning mx-2"
-                       value={selectedDate}
-                       onChange={(e) => setSelectedDate(e.target.value)}/>
+                <input
+                    type="date"
+                    className="input input-warning mx-2"
+                    value={selectedDate}
+                    onChange={(e) => {
+                        const value = e.target.value;
+                        if (value === "") {
+                            setSelectedDate(date);
+                        } else {
+                            setSelectedDate(value);
+                        }
+                    }}
+                />
+
 
                 <GamesTable
                     items={events.data}
