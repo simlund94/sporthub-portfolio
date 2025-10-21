@@ -173,10 +173,10 @@ export function useLeagueAllSeasonsById(leagueId) {
                 setLoading(true);
                 if (USE_MOCK) {
                     await delay(150);
-                    if (!live) return;
+                    if (!live) return MOCK;
                 } else {
                     const res = await SportsApi.leagueAllSeasonsById(leagueId);
-                    if (!live) return;
+                    if (!live) return MOCK;
                     console.log("Resultat av hämtning", res);
                     setData(res);
                 }
