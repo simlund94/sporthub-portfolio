@@ -1,4 +1,4 @@
-import {useLeagueAllSeasonsById, useLeagueStandingsById, useLeagueWithTeamsById} from "../hooks/LeagueHooks.jsx";
+import {useLeagueAllSeasonsById, useLeagueStandingsById} from "../hooks/LeagueHooks.jsx";
 import {useEffect, useState} from "react";
 
 const LeaguePage = ({initialLeagueId}) => {
