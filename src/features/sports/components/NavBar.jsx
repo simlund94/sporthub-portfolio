@@ -59,7 +59,7 @@ export default function Navbar() {
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-                                <Link to={`/league/${l.id}`}>
+                                <Link to={`/league/${l.name.toLowerCase()}/${l.teamClass.toLowerCase()}`}>
                                     {l.name} {l.name.includes("Superligan") ?
                                     (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
                                 </Link>

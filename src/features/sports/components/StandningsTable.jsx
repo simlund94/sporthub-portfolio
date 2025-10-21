@@ -69,7 +69,7 @@ export default function StandingsTable({
                             return (
                                 <tr
                                     key={teamEntry.team?.id || idx}
-                                    className={`cursor-pointer hover:bg-base-200 ${isCurrentTeam ? "font-bold" : ""} ${borderClass}`}
+                                    className={`cursor-pointer hover:bg-base-200 ${isCurrentTeam ? "text-warning" : ""} ${borderClass}`}
                                     onClick={() => navigate(`/team/${teamEntry.team.id}`)}
                                 >
                                     <td>{teamEntry.position}</td>

@@ -35,10 +35,14 @@ export default function SearchComponent() {
         return {teams: filteredTeams, leagues: filteredLeagues};
     }, [query, teamData, leagueData]);
 
-    const handleSelect = (type, id) => {
+    const handleSelectTeam = (id) => {
         setQuery("");
-        if (type === "team") navigate(`/team/${id}`); else if (type === "league") navigate(`/league/${id}`);
+        navigate(`/team/${id}`);
     };
+
+    const handleSelectLeague = (league) => {
+        navigate(`/league/${league.name.toLowerCase()}/${league.teamClass.toLowerCase()}`);
+    }
 
     return (<div className="relative w-full max-w-md mx-auto pl-10">
             {/* Search input */}
@@ -93,7 +97,7 @@ export default function SearchComponent() {
                                     </li>
                                     {results.leagues.map((league) => (<li
                                             key={`league-${league.id}`}
-                                            onClick={() => handleSelect("league", league.id)}
+                                            onClick={() => handleSelectLeague(league)}
                                             className="p-2 flex items-center gap-2 hover:bg-base-200 cursor-pointer transition-colors"
                                         >
                                         <IconFactory name={league.sport.name} className="h-5 w-5"/>
@@ -107,7 +111,7 @@ export default function SearchComponent() {
                                     </li>
                                     {results.teams.map((team) => (<li
                                             key={`team-${team.id}`}
-                                            onClick={() => handleSelect("team", team.id)}
+                                            onClick={() => handleSelectTeam(team.id)}
                                             className="p-2 flex items-center gap-2 hover:bg-base-200 cursor-pointer transition-colors"
                                         >
                                             {team.logo && (<img
