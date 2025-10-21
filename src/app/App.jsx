@@ -13,7 +13,7 @@ function App() {
 
     // TODO duplicerad kod, skicka ner till Navbar på något vis?
     const currentYear = new Date().getFullYear();
-    const leagueResults = SPORTS.map((sport) => useLeagues(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
+    const leagueResults = SPORTS.map((sport) => useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
     const errors = {};
     let loading = false;
