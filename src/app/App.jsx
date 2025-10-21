@@ -5,7 +5,7 @@ import Footer from "../features/sports/components/Footer.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import EventPage from "../features/sports/pages/EventPage.jsx";
 import SPORTS from "../config.js";
-import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks.js";
+import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks/LeagueHooks.jsx";
 import LeaguePage from "../features/sports/pages/LeaguePage.jsx";
 import TeamPage from "../features/sports/pages/TeamPage.jsx";
 

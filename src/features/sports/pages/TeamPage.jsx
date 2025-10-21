@@ -1,5 +1,5 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useTeamEvents, useTeamId, useTeamStandings} from "../hooks.js";
+import {useTeamEvents, useTeamId, useTeamStandings} from "../hooks/TeamHooks.jsx";
 import {useState} from "react";
 import GamesTable from "../components/GamesTable.jsx";
 import StandingsTable from "../components/StandningsTable.jsx";

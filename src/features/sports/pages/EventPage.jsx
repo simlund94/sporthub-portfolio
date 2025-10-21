@@ -1,5 +1,5 @@
 import {useParams} from "react-router-dom";
-import {useEventId} from "../hooks";
+import {useEventId} from "../hooks/EventHooks.jsx";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
 import {useNavigate} from "react-router-dom";
 
