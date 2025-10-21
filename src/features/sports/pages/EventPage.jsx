@@ -7,9 +7,9 @@ import {useNavigate} from "react-router-dom";
 export default function EventPage() {
     const navigate = useNavigate();
     const { id } = useParams();
-    console.log("ID i URL:",id);
     const { data, loading, err } = useEventId(id);
     const event = data?.event;
+    console.log("Event facts", event?.facts);
 
     if (loading) return (<div className="max-w-3xl mx-auto flex flex-col min-h-screen space-y-4 p-4">
             <div className="skeleton h-96 w-full rounded-lg"></div>
@@ -40,7 +40,6 @@ export default function EventPage() {
     };
     const EventDetails = () => {
         if (!event) return null;
-        console.log("Events", event.gameEvents);
         const gameEvents = event.gameEvents ?? [];
 
 
@@ -82,6 +81,37 @@ export default function EventPage() {
         );
     };
 
+    const shotsDisplay = () => {
+        if(event?.facts?.shots == null) {
+            return(null);
+        }
+        const allShots = event?.facts?.shots
+
+        const totalPart = allShots.split(' ')[0];
+
+        const [homeTeamShots, awayTeamShots] = totalPart.split('-').map(s => parseInt(s.trim()));
+
+        const totalAmountOfShots = homeTeamShots + awayTeamShots;
+
+
+        return (
+            <>
+            <li className="flex items-center">Antal skott</li>
+            <li className="flex items-center">
+                <span className="font-semibold text-sm">{homeTeamShots}</span>
+
+                <progress
+                    className="progress progress-current w-56"
+                    value={homeTeamShots}
+                    max={totalAmountOfShots}
+                ></progress>
+
+                <span className="font-semibold text-sm">{awayTeamShots}</span>
+            </li>
+            </>
+        );
+    }
+
 
 
 
@@ -120,6 +150,7 @@ export default function EventPage() {
                 </div>
             </div>
             <ul className="flex flex-col items-center justify-center space-y-2 p-2 list-none">
+              {shotsDisplay()}
                 <li className="flex items-center gap-2">
                     <IconFactory name="arena" className="h-8 w-8"/>
                     <span>{event.facts?.arena?.name ?? "Okänd"}</span>
