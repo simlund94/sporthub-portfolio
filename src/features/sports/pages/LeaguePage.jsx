@@ -1,5 +1,6 @@
 import {useLeagueAllSeasonsById, useLeagueStandingsById, useLeagueWithTeamsById} from "../hooks.js";
 import {useEffect, useState} from "react";
+import LeagueStandingsTable from "../components/LeagueStandingsTableWithSeasons.jsx";
 
 const LeaguePage = ({initialLeagueId}) => {
     const [leagueId, setLeagueId] = useState(initialLeagueId);
@@ -28,62 +29,14 @@ const LeaguePage = ({initialLeagueId}) => {
         <div className="p-4">
             <h2 className="text-3xl text-center font-bold my-4 mx-2">{leagueName}</h2>
 
+            <LeagueStandingsTable
+                standings={standings}
+                allSeasons={allSeasons}
+                leagueId={leagueId}
+                setLeagueId={setLeagueId}/>
+
             <div className="flex justify-center">
                 <div className="container px-2 rounded-lg shadow">
-
-                    <div role="tablist" className="tabs tabs-border">
-                        {allSeasons.map(item => (
-                            <button
-                                role="tab"
-                                key={item.id}
-                                className={`tab ${leagueId === item.id ? "tab-active text-warning" : ""}`}
-                                onClick={() => setLeagueId(item.id)}>
-                                {item.season.slug}
-                            </button>
-                        ))}
-                    </div>
-
-                    {/* Desktop table */}
-                    {/*TODO För modularisering kan allt här under flyttas ut till en component */}
-                    <table className="hidden md:table mx-auto table-zebra w-full table-pin-cols table-pin-rows">
-                        <thead>
-                        <tr>
-                            <th>Rank</th>
-                            <th>Lag</th>
-                            <th>M</th>
-                            <th>V</th>
-                            <th>O</th>
-                            <th>F</th>
-                            <th>GM</th>
-                            <th>IM</th>
-                            <th>+/-</th>
-                            <th>TP</th>
-                        </tr>
-                        </thead>
-                        <tbody>
-                        {standings.map((teamItem) => (
-                            <tr>
-                                <td>{teamItem.position}</td>
-                                <td className="flex items-center gap-4">
-                                    <img
-                                        className="w-8 h-8 object-contain"
-                                        src={teamItem.team.logo}
-                                        alt={`${teamItem.team.name} logo`}
-                                    />
-                                    <span className={"text-2xl"}>{teamItem.team.name}</span>
-                                </td>
-                                <td>{teamItem.stats.find(t => t.name === "gp").value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "w").value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "d").value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "l").value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "gf").value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "ga").value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "gd").value}</td>
-                                <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts").value}</td>
-                            </tr>
-                        ))}
-                        </tbody>
-                    </table>
                 </div>
             </div>
 

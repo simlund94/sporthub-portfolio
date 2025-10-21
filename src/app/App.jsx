@@ -50,8 +50,6 @@ function App() {
                         <Route path="/event/:id" element={<EventPage/>}/>
                         {generateLeaguePageRoutes()}
                         <Route path="/team/:id" element={<TeamPage/>}/>
-                        <Route path="/league/:id" element={<LeaguePage/>}/>
-
                     </Routes>
                 </main>
                 <Footer/>
