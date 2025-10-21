@@ -1,9 +1,11 @@
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 
 const LeagueStandingsTableWithSeasons = ({standings, allSeasons, leagueId, setLeagueId}) => {
     console.log(allSeasons);
-    const navigate = useNavigate();
+    console.log(standings)
 
+
+    const navigate = useNavigate();
     return (
         <div>
             {/* Desktop table */}
@@ -38,7 +40,8 @@ const LeagueStandingsTableWithSeasons = ({standings, allSeasons, leagueId, setLe
                 </thead>
                 <tbody>
                 {standings.map((teamItem) => (
-                    <tr>
+                    <tr className="cursor-pointer hover:bg-base-200"
+                        onClick={() => navigate(`/team/${teamItem.team.id}`)}>
                         <td>{teamItem.position}</td>
                         <td className="flex items-center gap-4">
                             <img
