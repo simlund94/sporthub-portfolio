@@ -5,7 +5,7 @@ export const SportsApi = {
     events: (date, gender) => api(`/events?fromDate=${date}&teamClass=${gender}&toDate=${date}`),
     eventsById: (id) => api(`/events/${id}?fields=all`),
     eventsByTeam: (teamId, status) => api(`/events?limit=10&status=${status}&team=${teamId}&sort=startDate:desc`),
-    allLeagues: () => api(`/leagues`),
+    allLeagues: () => api(`/leagues?limit=100`),
     leagueById: (id) => api(`/leagues/${id}`),
     teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),
