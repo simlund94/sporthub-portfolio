@@ -30,7 +30,7 @@ function App() {
             leaguesData[key].map(league => (
                 <Route
                     key={league.id}
-                    path={`/league/${league.name.toLowerCase()}/${league.teamClass.toLowerCase()}`}
+                    path={`/league/${league.id}`}
                     element={
                         <LeaguePage initialLeagueId={league.id}/>
                     }
