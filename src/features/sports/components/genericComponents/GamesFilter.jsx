@@ -2,7 +2,7 @@ export default function GamesFilter({ status, onChangeStatus, onChangeOrder, cur
     const now = new Date();
     const currentYear = now.getFullYear();
 
-    // Only allow current or cross-year formats including current year
+
     const isCurrentSeason = !currentSeason || /(^\d{4}$)|(^\d{4}[/-]\d{4}$)/.test(currentSeason)
         && currentSeason.includes(`${currentYear}`);
 
