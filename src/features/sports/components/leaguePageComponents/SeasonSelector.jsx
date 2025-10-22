@@ -1,10 +1,10 @@
-import { useLeagueAllSeasonsById } from "../../hooks/LeagueHooks.jsx";
+import {useLeagueAllSeasonsById} from "../../hooks/LeagueHooks.jsx";
 
-export default function SeasonSelector({ leagueId, setLeagueId }) {
-    const { data: seasonData, loading, err } = useLeagueAllSeasonsById(leagueId);
+export default function SeasonSelector({leagueId, setLeagueId}) {
+    const {data: seasonData, loading, err} = useLeagueAllSeasonsById(leagueId);
     const seasons = seasonData?.allSeasons || [];
 
-    if (loading) return <div className="skeleton h-10 w-48 my-2" />;
+    if (loading) return <span className="loading loading-dots loading-sm text-warning my-2 "></span>;
     if (err) return <div className="text-red-500">Fel ladda säsonger</div>;
     if (!seasons.length) return <div>Inga säsonger tillgängliga</div>;
 
@@ -28,13 +28,15 @@ export default function SeasonSelector({ leagueId, setLeagueId }) {
                 </ul>
             </details>
 
-            <div className="hidden md:tabs md:tabs-border">
+            <div role="tablist" className="hidden md:tabs md:tabs-border">
                 {seasons.map(season => (
                     <button
+                        role="tab"
                         key={season.id}
-                        className={`btn ${leagueId === season.id ? "btn-warning" : "btn-outline"}`}
-                        onClick={() => setLeagueId(season.id)}
-                    >
+                        className={`tab ${leagueId === season.id ? "tab-active text-warning" : ""}`}
+                        onClick={() => {
+                            setLeagueId(season.id);
+                        }}>
                         {season.slug}
                     </button>
                 ))}
