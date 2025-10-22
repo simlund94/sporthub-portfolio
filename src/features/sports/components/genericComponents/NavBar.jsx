@@ -66,7 +66,6 @@ export default function Navbar() {
                             </li>
                         ))}
 
-                        //TODO lägga till en sida för alla ligor!
                         <li key="alla-ligor" className="font-bold">
                             <span>Alla ligor i {item.name}</span>
                         </li>

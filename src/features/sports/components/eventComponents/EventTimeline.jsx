@@ -12,7 +12,7 @@ export default function EventTimeline({ event }) {
                     <div className="flex flex-col">
                         <div className={`${rowClass} font-bold`}>
                             <IconFactory name="goal" className="h-6 w-6" />
-                            <span>Mål {ev.count > 1 && `x${ev.count}`} {minute}</span>
+                            <span> Mål {ev.count > 1 && `x${ev.count}`}</span>
                         </div>
                         <span className={`text-sm ${playerTextAlign}`}>{ev.player?.name ?? "Okänd spelare"}</span>
                     </div>
@@ -22,7 +22,7 @@ export default function EventTimeline({ event }) {
                     <div className="flex flex-col">
                         <div className={`${rowClass} text-yellow-300 font-semibold`}>
                             <IconFactory name="yellow-card" className="h-6 w-6" />
-                            <span>Gult kort {minute}</span>
+                            <span>Gult kort </span>
                         </div>
                         <span className={`text-sm ${playerTextAlign}`}>{ev.player?.name ?? "Okänd spelare"}</span>
                     </div>
@@ -32,7 +32,7 @@ export default function EventTimeline({ event }) {
                     <div className="flex flex-col">
                         <div className={`${rowClass} text-red-600 font-semibold`}>
                             <IconFactory name="red-card" className="h-6 w-6" />
-                            <span>Rött kort {minute}</span>
+                            <span>Rött kort</span>
                         </div>
                         <span className={`text-sm ${playerTextAlign}`}>{ev.player?.name ?? "Okänd spelare"}</span>
                     </div>
@@ -42,7 +42,7 @@ export default function EventTimeline({ event }) {
                     <div className="flex flex-col">
                         <div className={`${rowClass} font-semibold`}>
                             <IconFactory name="substitution" className="h-6 w-6" />
-                            <span>Byte {minute}</span>
+                            <span>Byte </span>
                         </div>
                         <span className={`text-sm ${playerTextAlign}`}>
               In: {ev.inPlayer?.name ?? "Okänd"} <br/>
@@ -54,7 +54,7 @@ export default function EventTimeline({ event }) {
                 return (
                     <div className="flex flex-col">
                         <div className={`${rowClass} font-semibold`}>
-                            <span>Straff {minute}</span>
+                            <span>Straff </span>
                         </div>
                         <span className={`text-sm ${playerTextAlign}`}>{ev.player?.name ?? "Okänd"}</span>
                     </div>
@@ -68,7 +68,6 @@ export default function EventTimeline({ event }) {
 
     return (
         <div className="p-4">
-            <h2 className="text-xl font-bold mb-6 text-center">Matchhändelser</h2>
 
             {gameEvents.length === 0 ? (
                 <p className="text-center text-gray-500">Inga registrerade matchhändelser</p>
@@ -88,9 +87,12 @@ export default function EventTimeline({ event }) {
                                 {i !== 0 && <hr />}
                                 {/* Flip the row based on home/away */}
                                 <div className={`timeline-box ${isHomeTeam ? "timeline-start" : "timeline-end"} bg-base-200 shadow-md w-full`}>
+                                    <div className={`flex ${isHomeTeam ? "flex-row-reverse" : "flex-row"} items-end text-md text-gray-600 `}>{ev?.minute ? `${ev.minute}'` : ""}</div>
                                     <div className={`flex ${isHomeTeam ? "flex-row" : "flex-row-reverse"} items-center gap-2`}>
                                         <img src={teamLogo} alt={teamName} className="w-8 h-8 object-contain" />
+
                                         <div className="flex flex-col">
+
                                             {renderEventLabel(ev, isHomeTeam)}
                                             <p className="text-xs text-center text-gray-500 mt-1">{teamName}</p>
                                         </div>

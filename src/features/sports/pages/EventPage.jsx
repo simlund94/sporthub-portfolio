@@ -30,7 +30,7 @@ export default function EventPage() {
             <EventHeader event={event} />
             <EventStatsShots event={event} />
             <EventStatistics event={event} />
-            <div className="divider">Matchfakta</div>
+            <div className="divider text-3xl">Match Händelser</div>
             <EventTimeline event={event} />
         </div>
     );
