@@ -2,7 +2,6 @@ import IconFactory from "../icons etc/IconFactory.jsx";
 
 export default function EventTimeline({ event }) {
     const renderEventLabel = (ev, isHomeTeam) => {
-        const minute = ev.minute ? `${ev.minute}'` : "";
         const rowClass = `flex items-center gap-2 ${isHomeTeam ? "flex-row text-left" : "flex-row-reverse text-right"}`;
         const playerTextAlign = isHomeTeam ? "text-left" : "text-right";
 
