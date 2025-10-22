@@ -174,11 +174,19 @@ export function useLeagueAllSeasonsById(leagueId) {
 
                 if (!live) return;
 
-                const league = res.league || res.leagues?.[0];
-                const leagueName = league?.name || "Okänd liga";
-                const allSeasons = league?.seasons || [];
-
+                const leaguesArray = res.leagues || [];
+                const leagueName = leaguesArray[0]?.name || "Okänd liga";
+                const allSeasons = leaguesArray.map(l => ({
+                    id: l.id,
+                    slug: l.season?.slug,
+                    startDate: l.season?.startDate,
+                    endDate: l.season?.endDate,
+                }));
+                console.log("AllSeasons",allSeasons);
+                console.log("LeagueName", leagueName);
                 setData({ leagueName, allSeasons });
+
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {

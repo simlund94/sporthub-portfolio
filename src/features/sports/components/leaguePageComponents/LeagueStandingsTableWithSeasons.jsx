@@ -1,14 +1,27 @@
-import {useNavigate} from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useLeagueStandingsById } from "../../hooks/LeagueHooks.jsx";
 
-
-const LeagueStandingsTableWithSeasons = ({standings}) => {
+const LeagueStandingsTableWithSeasons = ({ leagueId }) => {
     const navigate = useNavigate();
 
-    console.log(standings)
+    const { data, loading, err } = useLeagueStandingsById(leagueId);
+
+    if (loading) return (
+        <>
+        <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+        </>
+);
+    if (err) return <div>Error loading standings</div>;
+
 
     return (
         <div>
-            {/* Desktop table */}
             <table className="hidden md:table mx-auto table-zebra w-full table-pin-cols table-pin-rows">
                 <thead>
                 <tr>
@@ -25,34 +38,29 @@ const LeagueStandingsTableWithSeasons = ({standings}) => {
                 </tr>
                 </thead>
                 <tbody>
-                {standings.map((teamItem) => (
-                    <tr className="cursor-pointer hover:bg-base-200"
-                        onClick={() => navigate(`/team/${teamItem.team.id}`)}>
+                {data.map(teamItem => (
+                    <tr key={teamItem.team.id} className="cursor-pointer hover:bg-base-200" onClick={() => navigate(`/team/${teamItem.team.id}`)}>
                         <td>{teamItem.position}</td>
                         <td className="flex items-center gap-4">
-                            <img
-                                className="w-8 h-8 object-contain"
-                                src={teamItem.team.logo}
-                                alt={`${teamItem.team.name} logo`}
-                            />
-                            <span className={"text-2xl"}>{teamItem.team.name}</span>
+                            <img className="w-8 h-8 object-contain" src={teamItem.team.logo} alt={`${teamItem.team.name} logo`} />
+                            <span className="text-2xl">{teamItem.team.name}</span>
                         </td>
-                        <td>{teamItem.stats.find(t => t.name === "gp").value}</td>
-                        <td>{teamItem.stats.find(t => t.name === "w").value}</td>
-                        <td>{teamItem.stats.find(t => t.name === "d").value}</td>
-                        <td>{teamItem.stats.find(t => t.name === "l").value}</td>
-                        <td>{teamItem.stats.find(t => t.name === "gf").value}</td>
-                        <td>{teamItem.stats.find(t => t.name === "ga").value}</td>
-                        <td>{teamItem.stats.find(t => t.name === "gd").value}</td>
-                        <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts").value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "gf")?.value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "ga")?.value}</td>
+                        <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
+                        <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
                     </tr>
                 ))}
                 </tbody>
             </table>
 
-            {/* Mobile */}
-            <div className="overflow-x-auto">
-                <table className="table mx-auto table-zebra w-full md:hidden ">
+            {/* Mobile table */}
+            <div className="overflow-x-auto md:hidden">
+                <table className="table mx-auto table-zebra w-full">
                     <thead>
                     <tr>
                         <th>Rank</th>
@@ -68,33 +76,28 @@ const LeagueStandingsTableWithSeasons = ({standings}) => {
                     </tr>
                     </thead>
                     <tbody>
-                    {standings.map((teamItem) => (
-                        <tr className="cursor-pointer hover:bg-base-200"
-                            onClick={() => navigate(`/team/${teamItem.team.id}`)}>
+                    {data.map(teamItem => (
+                        <tr key={teamItem.team.id} className="cursor-pointer hover:bg-base-200" onClick={() => navigate(`/team/${teamItem.team.id}`)}>
                             <td>{teamItem.position}</td>
                             <td className="flex items-center gap-4">
-                                <img
-                                    className="w-8 h-8 object-contain"
-                                    src={teamItem.team.logo}
-                                    alt={`${teamItem.team.name} logo`}
-                                />
+                                <img className="w-8 h-8 object-contain" src={teamItem.team.logo} alt={`${teamItem.team.name} logo`} />
                                 <span>{teamItem.team.name}</span>
                             </td>
-                            <td>{teamItem.stats.find(t => t.name === "gp").value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "w").value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "d").value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "l").value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "gf").value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "ga").value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "gd").value}</td>
-                            <td className="text-warning text-sm font-bold ">{teamItem.stats.find(t => t.name === "pts").value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "gf")?.value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "ga")?.value}</td>
+                            <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
+                            <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default LeagueStandingsTableWithSeasons
+export default LeagueStandingsTableWithSeasons;
