@@ -5,7 +5,8 @@ import EventTimeline from "../components/eventComponents/EventTimeline.jsx";
 
 import EventStatistics from "../components/eventComponents/EventStatistics.jsx";
 import EventStatsShots from "../components/eventComponents/EventStatsShots.jsx";
-import React from "react";
+
+
 
 export default function EventPage() {
     const { id } = useParams();

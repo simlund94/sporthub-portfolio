@@ -154,82 +154,81 @@ export function useLeagueWithTeamsById(leagueId) {
  * @returns {{data: unknown, loading: boolean, err: unknown}}
  */
 export function useLeagueAllSeasonsById(leagueId) {
-    const [data, setData] = useState(null);
+    const [data, setData] = useState({ leagueName: "", allSeasons: [] });
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
-    if (USE_MOCK) throw Error("Mock for hook useLeagueAllSeasons() not implemented");
-
     useEffect(() => {
-        let live = true;
         if (!leagueId) {
-            setData([]);
-            setErr(true);
-            setLoading(false);
+            setData({ leagueName: "", allSeasons: [] });
+            setErr("No leagueId provided");
             return;
         }
-        (async () => {
+
+        let live = true;
+
+        const fetchSeasons = async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return MOCK;
-                } else {
-                    const res = await SportsApi.leagueAllSeasonsById(leagueId);
-                    if (!live) return MOCK;
-                    console.log("Resultat av hämtning", res);
-                    setData(res);
-                }
+                const res = await SportsApi.leagueAllSeasonsById(leagueId);
+
+                if (!live) return;
+
+                const league = res.league || res.leagues?.[0];
+                const leagueName = league?.name || "Okänd liga";
+                const allSeasons = league?.seasons || [];
+
+                setData({ leagueName, allSeasons });
             } catch (e) {
                 if (live) setErr(e);
             } finally {
                 if (live) setLoading(false);
             }
-        })();
-        return () => {
-            live = false;
         };
+
+        fetchSeasons();
+
+        return () => { live = false; };
     }, [leagueId]);
-    return {data, loading, err};
+
+    return { data, loading, err };
 }
 
+
 export function useLeagueStandingsById(leagueId) {
-    const [data, setData] = useState(null);
+    const [standings, setStandings] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
-    if (USE_MOCK) throw Error("Mock for hook useLeagueStandingsById() not implemented");
-
     useEffect(() => {
-        let live = true;
         if (!leagueId) {
-            setData([]);
-            setErr(true);
-            setLoading(false);
+            setStandings([]);
+            setErr("No leagueId provided");
             return;
         }
-        (async () => {
+
+        let live = true;
+
+        const fetchStandings = async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                } else {
-                    const res = await SportsApi.leagueStandingsById(leagueId);
-                    if (!live) return;
-                    console.log("Resultat av hämtning", res);
-                    setData(res);
-                }
+                const res = await SportsApi.leagueStandingsById(leagueId);
+                if (!live) return;
+
+                const standingsArray = res?.groups?.[0]?.standings || [];
+                setStandings(standingsArray);
             } catch (e) {
                 if (live) setErr(e);
             } finally {
                 if (live) setLoading(false);
             }
-        })();
-        return () => {
-            live = false;
         };
+
+        fetchStandings();
+
+        return () => { live = false; };
     }, [leagueId]);
-    return {data, loading, err};
+
+    return { data: standings, loading, err };
 }
 
