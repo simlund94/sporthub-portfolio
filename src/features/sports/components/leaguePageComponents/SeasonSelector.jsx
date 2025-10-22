@@ -28,7 +28,7 @@ export default function SeasonSelector({ leagueId, setLeagueId }) {
                 </ul>
             </details>
 
-            <div className="hidden md:flex gap-2">
+            <div className="hidden md:tabs md:tabs-border">
                 {seasons.map(season => (
                     <button
                         key={season.id}
