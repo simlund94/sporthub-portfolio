@@ -13,7 +13,7 @@ export default function GamesTable({
     console.log("GamesTableItems: ",items);
 
 
-    items = items.filter(item => item.league.sport.name !== "Bowling");
+
     if (loading) {
         return (
             <div className="container max-w-4xl h-96 px-2 rounded-lg ">
@@ -36,6 +36,8 @@ export default function GamesTable({
     if (!items.length) {
         return <div className="p-4 text-center text-gray-500">Inga matcher idag</div>;
     }
+
+    items = items.filter(item => item.league.sport.name !== "Bowling");
 
     const RenderScoreOrTimeBasedOnEventStatus = (item) => {
         switch (item.item.status) {
