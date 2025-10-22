@@ -15,8 +15,7 @@ export default function TeamPage() {
     const events =  useTeamEvents(id, status)
     const leagues = useTeamStandings(id);
     console.log(leagues.leagues)
-    const navigate = useNavigate();
-
+    const navigate = useNavigate()
 
 
 
