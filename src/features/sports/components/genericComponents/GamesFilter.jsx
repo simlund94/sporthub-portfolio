@@ -1,4 +1,4 @@
-export default function GamesFilter({ status, order, onChangeStatus, onChangeOrder, currentSeason }) {
+export default function GamesFilter({ status, onChangeStatus, onChangeOrder, currentSeason }) {
     const now = new Date();
     const currentYear = now.getFullYear();
 
@@ -6,13 +6,12 @@ export default function GamesFilter({ status, order, onChangeStatus, onChangeOrd
     const isCurrentSeason = !currentSeason || /(^\d{4}$)|(^\d{4}[/-]\d{4}$)/.test(currentSeason)
         && currentSeason.includes(`${currentYear}`);
 
-    // Ensure order is automatically set depending on status
     const handleStatusChange = (newStatus) => {
         onChangeStatus(newStatus);
         if (newStatus === "UPCOMING") {
-            onChangeOrder("asc"); // show soonest first
+            onChangeOrder("asc");
         } else {
-            onChangeOrder("desc"); // show latest first
+            onChangeOrder("desc");
         }
     };
 
