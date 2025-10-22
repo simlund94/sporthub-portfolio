@@ -26,13 +26,19 @@ function App() {
         loading = loading || result.loading;
     });
 
+    function formatLeaguePath(leagueName) {
+        return leagueName
+            .replaceAll(" ", "-")
+            .replaceAll("/", "-")
+            .toLowerCase();
+    }
 
     function generateLeaguePageRoutes() {
         return Object.keys(leaguesData).flatMap(key =>
             leaguesData[key].map(league => (
                 <Route
                     key={league.id}
-                    path={`/league/${league.name.toLowerCase()}/${league.teamClass.toLowerCase()}`}
+                    path={`/league/${formatLeaguePath(league.name)}/${league.teamClass.toLowerCase()}`}
                     element={
                         <LeaguePage initialLeagueId={league.id}/>
                     }

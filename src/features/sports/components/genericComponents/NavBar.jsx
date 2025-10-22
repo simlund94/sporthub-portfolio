@@ -13,6 +13,13 @@ export default function Navbar() {
         setOpenDropdown((prev) => (prev === key ? null : key));
     };
 
+    function formatLeaguePath(leagueName) {
+        return leagueName
+            .replaceAll(" ", "-")
+            .replaceAll("/", "-")
+            .toLowerCase();
+    }
+
     const currentYear = new Date().getFullYear();
     const leagueResults = SPORTS.map((sport) => useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
@@ -59,7 +66,7 @@ export default function Navbar() {
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id}>
-                                <Link to={`/league/${l.name.toLowerCase()}/${l.teamClass.toLowerCase()}`}>
+                                <Link to={`/league/${formatLeaguePath(l.name)}/${l.teamClass.toLowerCase()}`}>
                                     {l.name} {l.name.includes("Superligan") ?
                                     (l.teamClass.includes("WOMEN") ? "(Dam)" : "(Herr)") : ""}
                                 </Link>

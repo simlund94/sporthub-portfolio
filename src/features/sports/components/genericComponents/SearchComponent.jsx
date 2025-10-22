@@ -42,7 +42,14 @@ export default function SearchComponent() {
 
     const handleSelectLeague = (league) => {
         setQuery("")
-        navigate(`/league/${league.name.toLowerCase()}/${league.teamClass.toLowerCase()}`);
+        navigate(`/league/${formatLeaguePath(league.name)}/${league.teamClass.toLowerCase()}`);
+    }
+
+    function formatLeaguePath(leagueName) {
+        return leagueName
+            .replaceAll(" ", "-")
+            .replaceAll("/", "-")
+            .toLowerCase();
     }
 
     return (<div className="relative w-full max-w-md mx-auto pl-10">
