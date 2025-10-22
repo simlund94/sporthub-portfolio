@@ -1,7 +1,7 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 
-const LeagueStandingsTableWithSeasons = ({standings, allSeasons, leagueId, setLeagueId}) => {
+
+const LeagueStandingsTableWithSeasons = ({standings}) => {
     const navigate = useNavigate();
 
     console.log(standings)
