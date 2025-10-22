@@ -40,6 +40,7 @@ const LeaguePage = ({ initialLeagueId }) => {
                 order={order}
                 onChangeStatus={setStatus}
                 onChangeOrder={setOrder}
+                currentSeason={currentSeason}
             />
 
             <GamesTable
