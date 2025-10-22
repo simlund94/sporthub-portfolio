@@ -27,7 +27,7 @@ export default function EventTimeline({ event }) {
                         <span className={`text-sm ${playerTextAlign}`}>{ev.player?.name ?? "Okänd spelare"}</span>
                     </div>
                 );
-            case "RED_CARD":
+            case "SECOND_WARNING":
                 return (
                     <div className="flex flex-col">
                         <div className={`${rowClass} text-red-600 font-semibold`}>

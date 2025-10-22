@@ -22,11 +22,11 @@ export default function EventStatsShots({ event }) {
 
                     <div className="relative flex-1 h-3 rounded-full bg-base-300 overflow-hidden">
                         <div
-                            className="absolute left-0 top-0 h-full bg-blue-500"
+                            className="absolute left-0 top-0 h-full bg-info"
                             style={{ width: `${homePercent}%` }}
                         ></div>
                         <div
-                            className="absolute right-0 top-0 h-full bg-red-500"
+                            className="absolute right-0 top-0 h-full bg-error"
                             style={{ width: `${awayPercent}%` }}
                         ></div>
                     </div>
