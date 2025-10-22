@@ -36,7 +36,7 @@ export function useEvents(date, gender) {
 }
 
 export function useEventId(id) {
-    const [data, setData] = useState(null); // <-- null, not []
+    const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
 
@@ -48,11 +48,11 @@ export function useEventId(id) {
                 if (USE_MOCK) {
                     await delay(150);
                     if (!live) return;
-                    setData(MOCK.eventsById[id]); // or whichever mock matches
+                    setData(MOCK.eventsById[id]);
                 } else {
                     const res = await SportsApi.eventsById(id);
                     if (!live) return;
-                    setData(res); // store the object directly
+                    setData(res);
                 }
             } catch (e) {
                 if (live) setErr(e);
@@ -65,6 +65,41 @@ export function useEventId(id) {
             live = false;
         };
     }, [id]);
+
+    return {data, loading, err};
+}
+
+export function useEventByLeagueId(id,status,order) {
+    const [data, setData] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        let live = true;
+        (async () => {
+            try {
+                setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.eventsById[id]);
+                } else {
+                    const res = await SportsApi.eventsByLeagueIdAndStatus(id,status,order);
+                    console.log("Api svar från eventsByLeagueIDAndStatus", res);
+                    if (!live) return;
+                    setData(res);
+                }
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        })();
+
+        return () => {
+            live = false;
+        };
+    }, [id,status]);
 
     return {data, loading, err};
 }

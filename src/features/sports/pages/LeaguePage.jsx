@@ -1,6 +1,8 @@
 import {useLeagueAllSeasonsById, useLeagueStandingsById} from "../hooks/LeagueHooks.jsx";
 import {useEffect, useState} from "react";
-import LeagueStandingsTableWithSeasons from "../components/LeagueStandingsTableWithSeasons.jsx";
+import LeagueStandingsTableWithSeasons from "../components/genericComponents/LeagueStandingsTableWithSeasons.jsx";
+import GamesTable from "../components/genericComponents/GamesTable.jsx";
+import {useEventByLeagueId} from "../hooks/EventHooks.jsx";
 
 const LeaguePage = ({initialLeagueId}) => {
     const [leagueId, setLeagueId] = useState(initialLeagueId);
@@ -11,6 +13,12 @@ const LeaguePage = ({initialLeagueId}) => {
 
     const resultAllSeasons = useLeagueAllSeasonsById(leagueId); // Hämta alla ligans säsonger
     const resultStandings = useLeagueStandingsById(leagueId); // Hämta statistik för rådande liga/säsong
+    const [order, setOrder] = useState("asc");
+    const [status, setStatus] = useState("UPCOMING");
+    const leagueData = useEventByLeagueId(leagueId, status, order);
+
+
+    console.log("LeagueData",leagueData);
 
     // Loading screen
     if (resultAllSeasons.loading || !resultAllSeasons.data) return <div>Loading...</div>
@@ -26,6 +34,7 @@ const LeaguePage = ({initialLeagueId}) => {
     console.log(resultAllSeasons);
     console.log(standings);
     console.log(allSeasons);
+
 
     return (
         <div className="p-4">
@@ -69,10 +78,40 @@ const LeaguePage = ({initialLeagueId}) => {
                 allSeasons={allSeasons}
                 leagueId={leagueId}
                 setLeagueId={setLeagueId}/>
+            <div className="container mx-auto mt-4 max-w-4xl px-4 ">
+            <button
+                type="button"
+                className={`btn mt-4 mx-2 transition-colors duration-200 ${
+                    status === "FINISHED" ? "btn-warning" : "btn-outline btn-warning"
+                }`}
+                onClick={() => {
+                    setStatus("FINISHED")
+                    setOrder("desc")
+                }}
+            >
+                Senaste matcher
+            </button>
 
-            <div className="flex justify-center">
-                <div className="container px-2 rounded-lg shadow">
-                </div>
+            <button
+                type="button"
+                className={`btn mt-4 mx-2 transition-colors duration-200 ${
+                    status === "UPCOMING" ? "btn-warning" : "btn-outline btn-warning"
+                }`}
+                onClick={() => {
+                    setStatus("UPCOMING")
+                    setOrder("asc")
+                }}
+            >
+                Kommande Matcher
+            </button>
+                    <GamesTable
+                        items={leagueData.data.events}
+                        loading={leagueData.loading}
+                        showDate= {true}
+                        error={leagueData.err}
+
+                    />
+
             </div>
 
         </div>

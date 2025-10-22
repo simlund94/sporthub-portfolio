@@ -1,4 +1,4 @@
-import IconFactory from "./icons etc/IconFactory.jsx";
+import IconFactory from "../icons etc/IconFactory.jsx";
 import {useNavigate} from "react-router-dom";
 
 export default function GamesTable({
@@ -7,7 +7,12 @@ export default function GamesTable({
                                        error = null,
                                        showDate = false,
                                    }) {
+
     const navigate = useNavigate();
+
+    console.log("GamesTableItems: ",items);
+
+
     items = items.filter(item => item.league.sport.name !== "Bowling");
     if (loading) {
         return (

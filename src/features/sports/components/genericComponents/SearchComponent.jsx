@@ -1,8 +1,8 @@
 import {useState, useMemo} from "react";
 import {useNavigate} from "react-router-dom";
-import IconFactory from "./icons etc/IconFactory.jsx";
-import {useAllTeams} from "../hooks/TeamHooks.jsx";
-import {useAllLeagues} from "../hooks/LeagueHooks.jsx";
+import IconFactory from "../icons etc/IconFactory.jsx";
+import {useAllTeams} from "../../hooks/TeamHooks.jsx";
+import {useAllLeagues} from "../../hooks/LeagueHooks.jsx";
 
 export default function SearchComponent() {
     const {
@@ -41,6 +41,7 @@ export default function SearchComponent() {
     };
 
     const handleSelectLeague = (league) => {
+        setQuery("")
         navigate(`/league/${league.name.toLowerCase()}/${league.teamClass.toLowerCase()}`);
     }
 

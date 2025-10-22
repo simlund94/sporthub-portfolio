@@ -9,6 +9,7 @@ export default function StandingsTable({
                                        }) {
     const navigate = useNavigate();
 
+
     if (loading) {
         return (
             <div className="p-4 max-w-4xl mx-auto space-y-2">

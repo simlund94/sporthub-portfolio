@@ -1,9 +1,9 @@
 import React, {useState} from "react";
-import {useLeaguesWithSportIdAndQuery} from "../hooks/LeagueHooks.jsx";
-import ThemeButton from "./icons etc/ThemeButton.jsx";
-import IconFactory from "./icons etc/IconFactory.jsx";
+import {useLeaguesWithSportIdAndQuery} from "../../hooks/LeagueHooks.jsx";
+import ThemeButton from "../icons etc/ThemeButton.jsx";
+import IconFactory from "../icons etc/IconFactory.jsx";
 import {Link} from "react-router-dom";
-import SPORTS from "../../../config.js";
+import SPORTS from "../../../../config.js";
 import SearchComponent from "./SearchComponent.jsx";
 
 export default function Navbar() {

@@ -1,8 +1,8 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTeamEvents, useTeamId, useTeamStandings} from "../hooks/TeamHooks.jsx";
 import {useState} from "react";
-import GamesTable from "../components/GamesTable.jsx";
-import StandingsTable from "../components/StandningsTable.jsx";
+import GamesTable from "../components/genericComponents/GamesTable.jsx";
+import StandingsTable from "../components/genericComponents/StandningsTable.jsx";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
 
 
@@ -62,6 +62,7 @@ export default function TeamPage() {
                     }`}
                     onClick={() => {
                         setStatus("FINISHED")
+
                     }}
                 >
                     Senaste matcher
