@@ -3,7 +3,7 @@ import {useState} from "react";
 
 const LeagueStandingsTableWithSeasons = ({standings, allSeasons, leagueId, setLeagueId}) => {
     const navigate = useNavigate();
-    console.log(allSeasons);
+
     console.log(standings)
 
     return (

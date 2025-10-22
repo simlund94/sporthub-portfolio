@@ -92,7 +92,7 @@ export default function EventTimeline({ event }) {
                                         <img src={teamLogo} alt={teamName} className="w-8 h-8 object-contain" />
                                         <div className="flex flex-col">
                                             {renderEventLabel(ev, isHomeTeam)}
-                                            <p className="text-xs text-gray-500 mt-1">{teamName}</p>
+                                            <p className="text-xs text-center text-gray-500 mt-1">{teamName}</p>
                                         </div>
                                     </div>
                                 </div>
