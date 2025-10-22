@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import LeagueStandingsTableWithSeasons from "../components/genericComponents/LeagueStandingsTableWithSeasons.jsx";
 import GamesTable from "../components/genericComponents/GamesTable.jsx";
 import {useEventByLeagueId} from "../hooks/EventHooks.jsx";
+import MatchFilter from "../components/genericComponents/GamesFilter.jsx";
 
 const LeaguePage = ({initialLeagueId}) => {
     const [leagueId, setLeagueId] = useState(initialLeagueId);
@@ -13,16 +14,13 @@ const LeaguePage = ({initialLeagueId}) => {
 
     const resultAllSeasons = useLeagueAllSeasonsById(leagueId); // Hämta alla ligans säsonger
     const resultStandings = useLeagueStandingsById(leagueId); // Hämta statistik för rådande liga/säsong
-    const [order, setOrder] = useState("asc");
+    const [order, setOrder] = useState("desc");
     const [status, setStatus] = useState("FINISHED");
     const leagueData = useEventByLeagueId(leagueId, status, order);
 
     const currentYear = new Date().getFullYear().toString();
 
-    console.log("currentYear", currentYear);
 
-
-    console.log("LeagueData",leagueData);
 
     // Loading screen
     if (resultAllSeasons.loading || !resultAllSeasons.data) return <div>Loading...</div>
@@ -34,15 +32,12 @@ const LeaguePage = ({initialLeagueId}) => {
 
     const currentSeason = allSeasons.find(l => l.id === leagueId)?.season.slug;
     const isCurrentSeason = currentSeason?.includes(currentYear);
-console.log("currentSeason",currentSeason);
-    // Debugging
-    console.log(resultAllSeasons);
-    console.log(standings);
-    console.log(allSeasons);
+
 
 
     return (
         <div className="p-4">
+
             <h1 className="text-6xl text-center font-bold my-4 mx-2 glass p-12">{leagueName}</h1>
             <div role="tablist" className="hidden md:tabs md:tabs-border">
                 {allSeasons.map(item => (
@@ -75,50 +70,42 @@ console.log("currentSeason",currentSeason);
                 </ul>
             </details>
 
-            <div className="container mt-4 max-w-4xl  mb-10">
-                <button
-                    type="button"
-                    className={`btn mt-4 mx-2 transition-colors duration-200 ${
-                        status === "FINISHED" ? "btn-warning" : "btn-outline btn-warning"
-                    }`}
-                    onClick={() => {
-                        setStatus("FINISHED")
-                        setOrder("desc")
-                    }}
-                >
-                    Senaste matcher
-                </button>
 
-                <button
-                    type="button"
-                    className={`btn mt-4 mx-2 transition-colors duration-200 ${
-                        status === "UPCOMING" ? "btn-warning" : "btn-outline btn-warning"
-                    } ${!isCurrentSeason ? "btn-disabled" : ""}`}
-                    disabled={!isCurrentSeason}
-                    onClick={() => {
-                        setStatus("UPCOMING")
-                        setOrder("asc")
-                    }}
-                >
-                    Kommande Matcher
-                </button>
+            <MatchFilter
+                onChangeStatus={setStatus}
+                status={status}
+                onChangeOrder={setOrder}
+            order={order}/>
+
                 <GamesTable
                     items={leagueData.data}
                     loading={leagueData.loading}
                     showDate= {true}
                     error={leagueData.err}
-
+                    height={"h-94"}
                 />
 
+            <div className="divider"/>
+            <h1 className="text-4xl mt-10 font-bold my-4 mx-2 glass p-6 ">Tabell: {currentSeason}</h1>
+            <div className="container mt-4 mx-auto flex flex-row gap-6">
+
+                <div className="flex flex-col gap-2 w-full md:w-1/4">
+                    <button className="btn btn-warning">Visa tabell</button>
+                    <button className="btn btn-warning">Visa skytteliga</button>
+                    <button className="btn btn-warning">Visa assist</button>
+                    <button className="btn btn-warning">Visa varnings-liga</button>
+                    <button className="btn btn-warning">Visa utvisningsliga</button>
+                </div>
+
+                <div className="flex-1">
+                    <LeagueStandingsTableWithSeasons
+                        standings={standings}
+                        allSeasons={allSeasons}
+                        leagueId={leagueId}
+                        setLeagueId={setLeagueId}
+                    />
+                </div>
             </div>
-            <h1 className="text-4xl  font-bold my-4 mx-2 glass p-2">Tabell: {currentSeason}</h1>
-            <LeagueStandingsTableWithSeasons
-                standings={standings}
-                allSeasons={allSeasons}
-                leagueId={leagueId}
-                setLeagueId={setLeagueId}/>
-
-
         </div>
     )
 

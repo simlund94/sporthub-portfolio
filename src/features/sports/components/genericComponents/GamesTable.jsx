@@ -2,21 +2,16 @@ import IconFactory from "../icons etc/IconFactory.jsx";
 import {useNavigate} from "react-router-dom";
 
 export default function GamesTable({
-                                       items = [],
-                                       loading = false,
-                                       error = null,
-                                       showDate = false,
+                                       items = [], loading = false, error = null, height = "h-92"
                                    }) {
 
     const navigate = useNavigate();
 
-    console.log("GamesTableItems: ",items);
-
+    console.log("GamesTableItems: ", items);
 
 
     if (loading) {
-        return (
-            <div className="container max-w-4xl h-96 px-2 rounded-lg ">
+        return (<div className="container max-w-4xl h-96 px-2 rounded-lg ">
 
                 <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
                 <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
@@ -25,8 +20,7 @@ export default function GamesTable({
                 <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
                 <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
 
-            </div>
-        );
+            </div>);
     }
 
     if (error) {
@@ -48,18 +42,9 @@ export default function GamesTable({
             case "UPCOMING": {
                 const date = new Date(item.item.startDate);
 
-                const formatted = showDate
-                    ? date.toLocaleString("sv-SE", {
-                        day: "2-digit",
-                        month: "short",
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        timeZone: "Europe/Stockholm",
-                    })
-                    : date.toLocaleTimeString("sv-SE", {
-                        hour: "2-digit",
-                        minute: "2-digit",
-                        timeZone: "Europe/Stockholm",
+                const formatted = date.toLocaleTimeString("sv-SE",
+                    {
+                        hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm"
                     });
 
                 return <p className="text-sm font-bold">{formatted}</p>;
@@ -67,9 +52,8 @@ export default function GamesTable({
         }
     };
 
-    return (
-        <div className="p-4">
-            <div className="container max-w-4xl h-96 px-2 overflow-x-auto rounded-lg shadow">
+    return (<div className="p-4">
+            <div className={`container max-w-4xl ${height} px-2 overflow-x-auto rounded-lg shadow`}>
 
                 {/* Desktop table */}
                 <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
@@ -85,8 +69,7 @@ export default function GamesTable({
                     </tr>
                     </thead>
                     <tbody>
-                    {items.map((item, index) => (
-                        <tr
+                    {items.map((item, index) => (<tr
                             key={index}
                             className="hover:bg-base-300 cursor-pointer"
                             onClick={() => navigate(`/event/${item.id}`)}
@@ -116,12 +99,9 @@ export default function GamesTable({
                                 />
                             </td>
                             <td>{item.facts?.arena?.name ?? "Okänd arena"}</td>
-                            <td><span>
+                            <td><span className="text-warning">
   {new Date(item.startDate).toLocaleString("sv-SE", {
-      day: "2-digit",
-      month: "short",
-      year: "numeric",
-      timeZone: "Europe/Stockholm"
+      day: "2-digit", month: "short", year: "numeric", timeZone: "Europe/Stockholm"
   })}
 </span>
 
@@ -142,8 +122,7 @@ export default function GamesTable({
                     </tr>
                     </thead>
                     <tbody>
-                    {items.map((item, index) => (
-                        <tr
+                    {items.map((item, index) => (<tr
                             key={index}
                             className="hover:bg-base-300 cursor-pointer"
                             onClick={() => navigate(`/event/${item.id}`)}
@@ -173,12 +152,10 @@ export default function GamesTable({
                                     <span>{item.visitingTeam.shortName}</span>
                                 </div>
                             </td>
-                        </tr>
-                    ))}
+                        </tr>))}
                     </tbody>
                 </table>
 
             </div>
-        </div>
-    );
+        </div>);
 }

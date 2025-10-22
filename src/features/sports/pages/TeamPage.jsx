@@ -4,6 +4,7 @@ import {useState} from "react";
 import GamesTable from "../components/genericComponents/GamesTable.jsx";
 import StandingsTable from "../components/genericComponents/StandningsTable.jsx";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
+import GamesFilter from "../components/genericComponents/GamesFilter.jsx";
 
 
 
@@ -12,7 +13,8 @@ export default function TeamPage() {
     const { data, loading, err } = useTeamId(id);
     const team = data?.team
     const [status, setStatus] = useState("FINISHED")
-    const events =  useTeamEvents(id, status)
+    const [order, setOrder] = useState("desc");
+    const events =  useTeamEvents(id, status, order)
     const leagues = useTeamStandings(id);
     console.log(leagues.leagues)
     const navigate = useNavigate()
@@ -51,42 +53,17 @@ export default function TeamPage() {
                                 loading={leagues.loading}
                                 error = {leagues.error}
                                 currentTeamId={team.id} />
-
-<p></p>
                 <h2 className="text-2xl font-bold my-4 mx-2">Matcher:</h2>
-
-                <button
-                    type="button"
-                    className={`btn mx-2 transition-colors duration-200 ${
-                        status === "FINISHED" ? "btn-warning" : "btn-outline btn-warning"
-                    }`}
-                    onClick={() => {
-                        setStatus("FINISHED")
-
-                    }}
-                >
-                    Senaste matcher
-                </button>
-
-                <button
-                    type="button"
-                    className={`btn mx-2 transition-colors duration-200 ${
-                        status === "UPCOMING" ? "btn-warning" : "btn-outline btn-warning"
-                    }`}
-                    onClick={() => {
-                        setStatus("UPCOMING")
-                    }}
-                >
-                    Kommande Matcher
-                </button>
-
-
+                <GamesFilter
+                status={status}
+                onChangeStatus={setStatus}
+                onChangeOrder={setOrder}
+                order={order}/>
 
                 <GamesTable
                     items={events.data}
                     loading={events.loading}
                     error={events.err}
-                    showDate={true}
                 />
             </div>
         </>
