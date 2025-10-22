@@ -34,7 +34,7 @@ export default function GamesTable({
     }
 
     if (!items.length) {
-        return <div className="p-4 text-center text-gray-500">Inga matcher idag</div>;
+        return <div className="p-4 text-center text-gray-500">Inga matcher</div>;
     }
 
     items = items.filter(item => item.league.sport.name !== "Bowling");

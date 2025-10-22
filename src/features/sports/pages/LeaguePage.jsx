@@ -17,6 +17,10 @@ const LeaguePage = ({initialLeagueId}) => {
     const [status, setStatus] = useState("FINISHED");
     const leagueData = useEventByLeagueId(leagueId, status, order);
 
+    const currentYear = new Date().getFullYear().toString();
+
+    console.log("currentYear", currentYear);
+
 
     console.log("LeagueData",leagueData);
 
@@ -29,7 +33,8 @@ const LeaguePage = ({initialLeagueId}) => {
     const leagueName =  resultAllSeasons.data.leagues[0].name;
 
     const currentSeason = allSeasons.find(l => l.id === leagueId)?.season.slug;
-
+    const isCurrentSeason = currentSeason?.includes(currentYear);
+console.log("currentSeason",currentSeason);
     // Debugging
     console.log(resultAllSeasons);
     console.log(standings);
@@ -38,45 +43,7 @@ const LeaguePage = ({initialLeagueId}) => {
 
     return (
         <div className="p-4">
-            <h2 className="text-6xl text-center font-bold my-4 mx-2 font-serif">{leagueName}</h2>
-            <div className="container mx-auto mt-4 max-w-4xl px-4 mb-10">
-                <button
-                    type="button"
-                    className={`btn mt-4 mx-2 transition-colors duration-200 ${
-                        status === "FINISHED" ? "btn-warning" : "btn-outline btn-warning"
-                    }`}
-                    onClick={() => {
-                        setStatus("FINISHED")
-                        setOrder("desc")
-                    }}
-                >
-                    Senaste matcher
-                </button>
-
-                <button
-                    type="button"
-                    className={`btn mt-4 mx-2 transition-colors duration-200 ${
-                        status === "UPCOMING" ? "btn-warning" : "btn-outline btn-warning"
-                    }`}
-                    onClick={() => {
-                        setStatus("UPCOMING")
-                        setOrder("asc")
-                    }}
-                >
-                    Kommande Matcher
-                </button>
-                <GamesTable
-                    items={leagueData.data}
-                    loading={leagueData.loading}
-                    showDate= {true}
-                    error={leagueData.err}
-
-                />
-
-            </div>
-
-
-            {/* Desktop season chooser*/}
+            <h1 className="text-6xl text-center font-bold my-4 mx-2 glass p-12">{leagueName}</h1>
             <div role="tablist" className="hidden md:tabs md:tabs-border">
                 {allSeasons.map(item => (
                     <button
@@ -90,7 +57,6 @@ const LeaguePage = ({initialLeagueId}) => {
                     </button>
                 ))}
             </div>
-
             {/* Mobile season chooser */}
             <details className="dropdown md:hidden">
                 <summary className="btn m-1">{currentSeason}</summary>
@@ -109,6 +75,43 @@ const LeaguePage = ({initialLeagueId}) => {
                 </ul>
             </details>
 
+            <div className="container mt-4 max-w-4xl  mb-10">
+                <button
+                    type="button"
+                    className={`btn mt-4 mx-2 transition-colors duration-200 ${
+                        status === "FINISHED" ? "btn-warning" : "btn-outline btn-warning"
+                    }`}
+                    onClick={() => {
+                        setStatus("FINISHED")
+                        setOrder("desc")
+                    }}
+                >
+                    Senaste matcher
+                </button>
+
+                <button
+                    type="button"
+                    className={`btn mt-4 mx-2 transition-colors duration-200 ${
+                        status === "UPCOMING" ? "btn-warning" : "btn-outline btn-warning"
+                    } ${!isCurrentSeason ? "btn-disabled" : ""}`}
+                    disabled={!isCurrentSeason}
+                    onClick={() => {
+                        setStatus("UPCOMING")
+                        setOrder("asc")
+                    }}
+                >
+                    Kommande Matcher
+                </button>
+                <GamesTable
+                    items={leagueData.data}
+                    loading={leagueData.loading}
+                    showDate= {true}
+                    error={leagueData.err}
+
+                />
+
+            </div>
+            <h1 className="text-4xl  font-bold my-4 mx-2 glass p-2">Tabell: {currentSeason}</h1>
             <LeagueStandingsTableWithSeasons
                 standings={standings}
                 allSeasons={allSeasons}
