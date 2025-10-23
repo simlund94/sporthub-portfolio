@@ -1,13 +1,14 @@
-import { api } from '../../lib/fetcher';
+import {api} from '../../lib/fetcher';
 
 export const SportsApi = {
     sports: () => api('/sports'), // [ {id, name} ]
     events: (date, gender) => api(`/events?fromDate=${date}&teamClass=${gender}&toDate=${date}`),
     eventsById: (id) => api(`/events/${id}?fields=all`),
     eventsByTeam: (teamId, status) => api(`/events?limit=20&status=${status}&team=${teamId}&sort=startDate:desc`),
-    eventsByLeagueIdAndStatus: (id,status,order) => api(`/events?league=${id}&status=${status}&sort=startDate:${order}`),
+    eventsByLeagueIdAndStatus: (id, status, order) => api(`/events?league=${id}&status=${status}&sort=startDate:${order}`),
     allLeagues: () => api(`/leagues?limit=100`),
     leagueById: (id) => api(`/leagues/${id}`),
+    leagueByIdWithEvents: (id) => api(`/leagues/${id}/events`),
     leaguesByTeamId: (teamId) => api(`/leagues?${teamId}`),
     teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),
@@ -16,5 +17,5 @@ export const SportsApi = {
     leagueStandingsById: (leagueId) => api(`/leagues/${leagueId}/standings`),
     teamById: (id) => api(`/teams/${id}`),
     teamStandings: (teamId) => api(`/teams/${teamId}/leagues?limit=1`),
-    allTeams: ()  => api(`/teams`),
+    allTeams: () => api(`/teams`),
 };

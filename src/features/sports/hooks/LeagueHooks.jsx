@@ -33,7 +33,9 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
                 if (live) setLoading(false);
             }
         })();
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [sportId, query]);
 
     return {data, loading, err};
@@ -62,7 +64,9 @@ export function useAllLeagues() {
                 if (live) setLoading(false);
             }
         })();
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, []);
 
     return {data, loading, err};
@@ -154,13 +158,13 @@ export function useLeagueWithTeamsById(leagueId) {
  * @returns {{data: unknown, loading: boolean, err: unknown}}
  */
 export function useLeagueAllSeasonsById(leagueId) {
-    const [data, setData] = useState({ leagueName: "", allSeasons: [] });
+    const [data, setData] = useState({leagueName: "", allSeasons: []});
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
     useEffect(() => {
         if (!leagueId) {
-            setData({ leagueName: "", allSeasons: [] });
+            setData({leagueName: "", allSeasons: []});
             setErr("No leagueId provided");
             return;
         }
@@ -182,9 +186,9 @@ export function useLeagueAllSeasonsById(leagueId) {
                     startDate: l.season?.startDate,
                     endDate: l.season?.endDate,
                 }));
-                console.log("AllSeasons",allSeasons);
+                console.log("AllSeasons", allSeasons);
                 console.log("LeagueName", leagueName);
-                setData({ leagueName, allSeasons });
+                setData({leagueName, allSeasons});
 
 
             } catch (e) {
@@ -196,10 +200,12 @@ export function useLeagueAllSeasonsById(leagueId) {
 
         fetchSeasons();
 
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [leagueId]);
 
-    return { data, loading, err };
+    return {data, loading, err};
 }
 
 
@@ -234,9 +240,49 @@ export function useLeagueStandingsById(leagueId) {
 
         fetchStandings();
 
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [leagueId]);
 
-    return { data: standings, loading, err };
+    return {data: standings, loading, err};
 }
 
+export function useLeagueByIdWithEvents(leagueId) {
+    const [standings, setStandings] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId) {
+            setStandings([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchStandings = async () => {
+            try {
+                setLoading(true);
+                const res = await SportsApi.leagueByIdWithEvents(leagueId);
+                if (!live) return;
+
+                const standingsArray = res?.groups?.[0]?.standings || [];
+                setStandings(standingsArray);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchStandings();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+
+    return {data: standings, loading, err};
+}

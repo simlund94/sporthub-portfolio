@@ -1,14 +1,15 @@
-import { useState, useEffect } from "react";
+import {useState, useEffect} from "react";
 import LeagueStandingsTableWithSeasons from "../components/leaguePageComponents/LeagueStandingsTableWithSeasons.jsx";
 import GamesTable from "../components/genericComponents/GamesTable.jsx";
 import MatchFilter from "../components/genericComponents/GamesFilter.jsx";
 import SeasonSelector from "../components/leaguePageComponents/SeasonSelector.jsx";
 import ShowDiffrentTablesSelector from "../components/leaguePageComponents/ShowDiffrentTablesSelector.jsx";
 
-import { useLeagueAllSeasonsById, useLeagueStandingsById } from "../hooks/LeagueHooks.jsx";
-import { useEventByLeagueId } from "../hooks/EventHooks.jsx";
+import {useLeagueAllSeasonsById, useLeagueStandingsById} from "../hooks/LeagueHooks.jsx";
+import {useEventByLeagueId} from "../hooks/EventHooks.jsx";
 
-const LeaguePage = ({ initialLeagueId }) => {
+
+const LeaguePage = ({initialLeagueId}) => {
     const [leagueId, setLeagueId] = useState(initialLeagueId);
     const [status, setStatus] = useState("FINISHED");
     const [order, setOrder] = useState("desc");
@@ -17,8 +18,8 @@ const LeaguePage = ({ initialLeagueId }) => {
         setLeagueId(initialLeagueId);
     }, [initialLeagueId]);
 
-    const { data: seasonData, loading: seasonsLoading, err: seasonsErr } = useLeagueAllSeasonsById(leagueId);
-    const { data: standings, loading: standingsLoading, err: standingsErr } = useLeagueStandingsById(leagueId);
+    const {data: seasonData, loading: seasonsLoading, err: seasonsErr} = useLeagueAllSeasonsById(leagueId);
+    const {data: standings, loading: standingsLoading, err: standingsErr} = useLeagueStandingsById(leagueId);
     const eventData = useEventByLeagueId(leagueId, status, order);
 
     const currentSeason = seasonData.allSeasons?.find(s => s.id === leagueId)?.slug || seasonData.allSeasons?.[0]?.slug;
@@ -51,10 +52,10 @@ const LeaguePage = ({ initialLeagueId }) => {
                 height="h-94"
             />
 
-            <div className="divider" />
+            <div className="divider"/>
             <h1 className="text-4xl mt-10 font-bold my-4 mx-2 glass p-6">Tabell: {currentSeason}</h1>
             <div className="container mt-4 mx-auto flex flex-row gap-6">
-                <ShowDiffrentTablesSelector />
+                <ShowDiffrentTablesSelector/>
 
                 <div className="flex-1">
                     <LeagueStandingsTableWithSeasons
@@ -64,6 +65,7 @@ const LeaguePage = ({ initialLeagueId }) => {
                         leagueId={leagueId}
                         setLeagueId={setLeagueId}
                     />
+
                 </div>
             </div>
         </div>
