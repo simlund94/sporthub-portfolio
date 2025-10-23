@@ -67,7 +67,7 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                     const upcomingGames = teamEvents.filter(ev => ev.status === "UPCOMING");
                     const nextMatch = upcomingGames.length > 0 ? upcomingGames[0] : null;
 
-                    // Determine opponent team (the *other* team)
+                    // Determine team side (Home/Visiting)
                     let opponent = null;
                     if (nextMatch) {
                         const isHomeTeam = nextMatch.homeTeam?.id === teamId;
