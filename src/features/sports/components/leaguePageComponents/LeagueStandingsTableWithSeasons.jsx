@@ -5,7 +5,20 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
     const navigate = useNavigate();
 
     const {data, loading, err} = useLeagueStandingsById(leagueId);
-    const {fixData} = useLeagueByIdWithEvents(leagueId);
+// Calculate date range
+    const today = new Date();
+    const laterDate = new Date(today);
+    laterDate.setDate(today.getDate() + 14);
+
+// Format as YYYY-MM-DD
+    const formatDate = (date) => date.toISOString().split("T")[0];
+
+    const fromDate = formatDate(today);
+    const toDate = formatDate(laterDate);
+
+    const {data: eventsData, loading: eventsLoading, err: eventsError} =
+        useLeagueByIdWithEvents(leagueId, "UPCOMING", fromDate, toDate);
+
 
     if (loading) return (
         <>
@@ -44,33 +57,35 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                     const teamId = teamItem.team.id;
 
                     // Get all matches involving this team
-                    const teamEvents = fixData?.events?.filter(
+                    const teamEvents = eventsData?.filter(
                         ev =>
                             ev.homeTeam?.id === teamId ||
                             ev.visitingTeam?.id === teamId
                     ) || [];
 
-                    // Separate finished and upcoming games
-                    const finishedGames = teamEvents.filter(ev => ev.status === "FINISHED");
+                    // --- Upcoming games ---
                     const upcomingGames = teamEvents.filter(ev => ev.status === "UPCOMING");
-
-                    // --- FORM (last 5 finished games) ---
-                    const lastFive = finishedGames.slice(-5);
-                    const form = lastFive.map(ev => {
-                        const isHome = ev.homeTeam.id === teamId;
-                        const homeScore = ev.homeTeamScore ?? 0;
-                        const awayScore = ev.visitingTeamScore ?? 0;
-
-                        if (homeScore === awayScore) return "D";
-                        if ((isHome && homeScore > awayScore) || (!isHome && awayScore > homeScore))
-                            return "W";
-                        return "L";
-                    }).join(" ");
-
                     const nextMatch = upcomingGames.length > 0 ? upcomingGames[0] : null;
-                    const nextMatchLabel = nextMatch
-                        ? `${nextMatch.homeTeam.name} vs ${nextMatch.visitingTeam.logos.small}`
-                        : "-";
+
+                    // Determine opponent team (the *other* team)
+                    let opponent = null;
+                    if (nextMatch) {
+                        const isHomeTeam = nextMatch.homeTeam?.id === teamId;
+                        opponent = isHomeTeam ? nextMatch.visitingTeam : nextMatch.homeTeam;
+                    }
+
+                    const nextMatchLogo = opponent?.logo ? (
+                        <div className="flex items-center gap-2">
+                            <img
+                                src={opponent.logo}
+                                alt={`${opponent.name} logo`}
+                                className="w-8 h-8 object-contain"
+                            />
+                        </div>
+                    ) : (
+                        "-"
+                    );
+
 
                     return (
                         <tr key={teamId} className="cursor-pointer hover:bg-base-200"
@@ -92,8 +107,8 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                             <td className="text-warning text-sm font-bold">
                                 {teamItem.stats.find(t => t.name === "pts")?.value}
                             </td>
-                            <td>{form}</td>
-                            <td>{nextMatchLabel}</td>
+                            <td>–{/* form placeholder for now */}</td>
+                            <td className="flex justify-center">{nextMatchLogo}</td>
                         </tr>
                     );
                 })}

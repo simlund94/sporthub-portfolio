@@ -8,7 +8,7 @@ export const SportsApi = {
     eventsByLeagueIdAndStatus: (id, status, order) => api(`/events?league=${id}&status=${status}&sort=startDate:${order}`),
     allLeagues: () => api(`/leagues?limit=100`),
     leagueById: (id) => api(`/leagues/${id}`),
-    leagueByIdWithEvents: (id, status, fromDate, toDate) => api(`/leagues/${id}/events?fields=all&status=${status}fromDate=${fromDate}&toDate=${toDate}`),
+    leagueByIdWithEvents: (id, status, fromDate, toDate) => api(`/leagues/${id}/events?fields=all&status=${status}&fromDate=${fromDate}&toDate=${toDate}`),
     leaguesByTeamId: (teamId) => api(`/leagues?${teamId}`),
     teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),

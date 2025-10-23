@@ -248,28 +248,30 @@ export function useLeagueStandingsById(leagueId) {
     return {data: standings, loading, err};
 }
 
-export function useLeagueByIdWithEvents(leagueId) {
-    const [standings, setStandings] = useState([]);
+
+export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDate) {
+    const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
     useEffect(() => {
         if (!leagueId) {
-            setStandings([]);
+            setEvents([]);
             setErr("No leagueId provided");
             return;
         }
 
         let live = true;
 
-        const fetchStandings = async () => {
+        const fetchEvents = async () => {
             try {
                 setLoading(true);
-                const res = await SportsApi.leagueByIdWithEvents(leagueId);
+                const res = await SportsApi.leagueByIdWithEvents(leagueId, status, fromDate, toDate);
                 if (!live) return;
 
-                const standingsArray = res?.groups?.[0]?.standings || [];
-                setStandings(standingsArray);
+                // adapt to your API response shape — this assumes res.events or res.data
+                const eventsArray = res?.events || res?.data || [];
+                setEvents(eventsArray);
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -277,12 +279,13 @@ export function useLeagueByIdWithEvents(leagueId) {
             }
         };
 
-        fetchStandings();
+        fetchEvents();
 
         return () => {
             live = false;
         };
-    }, [leagueId]);
+    }, [leagueId, status, fromDate, toDate]);
 
-    return {data: standings, loading, err};
+    return {data: events, loading, err};
 }
+
