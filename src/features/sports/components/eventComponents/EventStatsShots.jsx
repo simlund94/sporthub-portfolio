@@ -1,7 +1,30 @@
 import IconFactory from "../icons etc/IconFactory.jsx";
 
-export default function EventStatsShots({ event }) {
-    if (!event?.facts?.shots) return null;
+export default function EventStatsShots({event}) {
+    if (!event?.facts?.shots) return (
+        <ul className="flex flex-col items-center justify-center space-y-4 p-4 list-none">
+            <li className="flex items-center gap-2">
+                <IconFactory name="arena" className="h-8 w-8"/>
+                <span>{event.facts?.arena?.name ?? "Ej registrerat"}</span>
+            </li>
+
+            <li className="flex items-center gap-2">
+                <IconFactory name="åskådare" className="h-8 w-8"/>
+                <span>Åskådare: {event.facts?.spectators ?? "Ej registrerat"}</span>
+            </li>
+            <li className="flex items-center text-md gap-2">
+                <IconFactory name="Ref" className="h-8 w-8"/>
+                <span>
+                 Domare:{" "}
+                    {event.facts?.referees?.length
+                        ? event.facts.referees.join(", ")
+                        : "Ej registrerat"}
+                 </span>
+            </li>
+
+        </ul>
+
+    );
 
     const totalMatch = event.facts.shots.match(/^(\d+)-(\d+)/);
     if (!totalMatch) return null;
@@ -23,11 +46,11 @@ export default function EventStatsShots({ event }) {
                     <div className="relative flex-1 h-3 rounded-full bg-base-300 overflow-hidden">
                         <div
                             className="absolute left-0 top-0 h-full bg-info"
-                            style={{ width: `${homePercent}%` }}
+                            style={{width: `${homePercent}%`}}
                         ></div>
                         <div
                             className="absolute right-0 top-0 h-full bg-error"
-                            style={{ width: `${awayPercent}%` }}
+                            style={{width: `${awayPercent}%`}}
                         ></div>
                     </div>
 
@@ -36,13 +59,17 @@ export default function EventStatsShots({ event }) {
             </li>
 
             <li className="flex items-center gap-2">
-                <IconFactory name="arena" className="h-6 w-6" />
+                <IconFactory name="arena" className="h-6 w-6"/>
                 <span>{event.facts?.arena?.name ?? "Okänd"}</span>
             </li>
 
             <li className="flex items-center gap-2">
-                <IconFactory name="åskådare" className="h-6 w-6" />
+                <IconFactory name="åskådare" className="h-6 w-6"/>
                 <span>Åskådare: {event.facts?.spectators ?? "Okänd"}</span>
+            </li>
+            <li className="flex items-center text-md text-gray-600 gap-2">
+                <IconFactory name="Referee" className="h-6 w-6"/>
+                <span>Dommare: {event.facts?.referees ?? "Okänd"}</span>
             </li>
         </ul>
     );

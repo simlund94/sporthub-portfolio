@@ -22,7 +22,7 @@ export default function GamesTable({
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+            <div className="skeleton h-16 w-full mt-2 mb-2 rounded-md"></div>
 
         </div>
             </>);

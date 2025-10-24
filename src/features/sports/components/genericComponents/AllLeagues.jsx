@@ -9,16 +9,18 @@ export default function AllLeagues() {
     const navigate = useNavigate();
 
     if (leaguesLoading) {
-        return (<div className="container w-max h-96 px-2 rounded-lg ">
+        return (<>
+            <div className="container mx-auto w-full h-96 px-2 rounded-lg ">
 
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 mb-2 rounded-md"></div>
 
-        </div>);
+            </div>
+        </>);
     }
 
     if (leaguesError) {
