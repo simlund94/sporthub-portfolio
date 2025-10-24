@@ -23,7 +23,7 @@ export default function EventHeader({ event }) {
             </p>
             <div className="flex justify-around items-center">
                 <div
-                    className="flex flex-col items-center justify-center flex-1 min-w-[120px] hover:bg-base-300 rounded-lg cursor-pointer p-2"
+                    className="flex flex-col items-center justify-center flex-1 min-w-[100px] hover:bg-base-300 rounded-lg cursor-pointer p-2"
                     onClick={() => navigate(`/team/${event.homeTeam.id}`)}
                 >
                     <img src={event.homeTeam.logo} className="w-20 h-20 object-contain" alt={event.homeTeam.name} />
@@ -31,11 +31,10 @@ export default function EventHeader({ event }) {
                     <div className="divider divider-info"></div>
                 </div>
 
-                <RenderScoreBasedOnStatus
-                event={event}/>
+                <RenderScoreBasedOnStatus event={event}/>
 
                 <div
-                    className="flex flex-col items-center justify-center flex-1 min-w-[120px] hover:bg-base-300 rounded-lg cursor-pointer p-2"
+                    className="flex flex-col items-center justify-center flex-1 min-w-[100px] hover:bg-base-300 rounded-lg cursor-pointer p-2"
                     onClick={() => navigate(`/team/${event.visitingTeam.id}`)}
                 >
                     <img src={event.visitingTeam.logo} className="w-20 h-20 object-contain" alt={event.visitingTeam.name} />

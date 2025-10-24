@@ -5,7 +5,7 @@ export default function RenderScoreBasedOnStatus({ event }) {
     switch (event.status) {
         case "FINISHED":
             return (
-                <p className="text-6xl text-center mx-auto font-bold">
+                <p className="text-6xl text-center mx-auto font-bold whitespace-nowrap">
                     {event.homeTeamScore} - {event.visitingTeamScore}
                 </p>
             );
