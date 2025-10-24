@@ -264,7 +264,6 @@ export function useScoringLeadersById(leagueId) {
 
                 console.log("scoringLeaders from API", res);
 
-                // ✅ Normalize data structure
                 let normalizedData = [];
 
                 if (Array.isArray(res)) {
@@ -366,7 +365,7 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
                 const res = await SportsApi.leagueByIdWithEvents(leagueId, status, fromDate, toDate);
                 if (!live) return;
 
-                // adapt to your API response shape — this assumes res.events or res.data
+
                 const eventsArray = res?.events || res?.data || [];
                 setEvents(eventsArray);
             } catch (e) {
@@ -404,7 +403,7 @@ export function useLeagueByIdLastFiveGames(leagueId, teamId) {
             try {
                 setLoading(true);
 
-                // ✅ Call your new API endpoint
+
                 const res = await SportsApi.leagueByIdLastFiveGames(
                     leagueId,
                     "FINISHED",
@@ -413,7 +412,7 @@ export function useLeagueByIdLastFiveGames(leagueId, teamId) {
 
                 if (!live) return;
 
-                // Extract and sort by date descending (latest first)
+
                 const events = res?.events || [];
                 const sortedEvents = events
                     .filter(ev => ev.status === "FINISHED")
@@ -460,7 +459,6 @@ export function useTeamsByLeagueId(leagueId) {
 
                 if (!live) return;
 
-                // The API might return { teams: [...] } or a plain array — handle both
                 const teamList = res?.teams || res || [];
                 setTeams(teamList);
             } catch (e) {

@@ -14,12 +14,11 @@ export function useTeamId(id) {
                 setLoading(true);
                 if (USE_MOCK) {
                     await delay(150);
-                    //if (!live) return;
-                    //setData(MOCK.teamById[id]); // or whichever mock matches
+
                 } else {
                     const res = await SportsApi.teamById(id);
                     if (!live) return;
-                    setData(res); // store the object directly
+                    setData(res);
                 }
             } catch (e) {
                 if (live) setErr(e);
@@ -37,7 +36,7 @@ export function useTeamId(id) {
 }
 
 export function useTeamStandings(teamId) {
-    const [leaguesData, setLeaguesData] = useState([]);  // full league objects with standings
+    const [leaguesData, setLeaguesData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
 
