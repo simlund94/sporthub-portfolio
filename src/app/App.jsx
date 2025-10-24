@@ -8,6 +8,7 @@ import SPORTS from "../config.js";
 import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks/LeagueHooks.jsx";
 import LeaguePage from "../features/sports/pages/LeaguePage.jsx";
 import TeamPage from "../features/sports/pages/TeamPage.jsx";
+import NotFoundPage from "../features/sports/pages/NotFoundPage.jsx";
 
 function App() {
 
@@ -56,6 +57,7 @@ function App() {
                         <Route path="/event/:id" element={<EventPage/>}/>
                         {generateLeaguePageRoutes()}
                         <Route path="/team/:id" element={<TeamPage/>}/>
+                        <Route path="*" element={<NotFoundPage/>}/>
                     </Routes>
                 </main>
                 <Footer/>
