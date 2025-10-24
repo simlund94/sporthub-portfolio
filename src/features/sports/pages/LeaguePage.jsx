@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import LeagueStandingsTableWithSeasons from "../components/leaguePageComponents/LeagueStandingsTableWithSeasons.jsx";
+import LeagueStandingsTable from "../components/leaguePageComponents/LeagueStandingsTable.jsx";
 import GamesTable from "../components/genericComponents/GamesTable.jsx";
 import MatchFilter from "../components/genericComponents/GamesFilter.jsx";
 import SeasonSelector from "../components/leaguePageComponents/SeasonSelector.jsx";
@@ -34,7 +34,7 @@ const LeaguePage = ({ initialLeagueId }) => {
         switch (activeTable) {
             case "Tabell":
                 return (
-                    <LeagueStandingsTableWithSeasons
+                    <LeagueStandingsTable
                         standings={standings}
                         loading={standingsLoading}
                         error={standingsErr}

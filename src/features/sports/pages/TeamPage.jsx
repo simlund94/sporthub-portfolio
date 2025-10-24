@@ -62,6 +62,7 @@ export default function TeamPage() {
                 </div>
             </div>
             <div className="container mx-auto mt-4 max-w-4xl px-4">
+
                 <TeamSeasonSelector
                     sportId={team.sport.id}
                     gender={team.teamClass}
@@ -69,6 +70,7 @@ export default function TeamPage() {
                     leagueId={leagueId}
                     setLeagueId={setLeagueId}
                 />
+
                 <StandingsTable leagues={selectedLeague ? [selectedLeague] : []}
                                 loading={leagues.loading}
                                 error = {leagues.error}

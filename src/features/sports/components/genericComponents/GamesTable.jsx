@@ -42,7 +42,8 @@ export default function GamesTable({
             case "UPCOMING": {
                 const date = new Date(item.item.startDate);
 
-                return (<>
+                return (
+                    <>
                     <div className="gap-1">
 
                         <span className="hidden md:inline">
