@@ -121,7 +121,7 @@ export default function Navbar({leaguesData, errors, loading}) {
                 {themeComponent}
             </div>
 
-            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            {/* Modal that opens when calling the id of this object */}
             <dialog id="searchModal" className="modal modal-top">
                 <div className="modal-box overflow-visible">
                     <SearchComponent/>
