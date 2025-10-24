@@ -238,6 +238,7 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
             </table>
 
             {/* Mobile table */}
+            {/* Mobile table */}
             <div className="overflow-x-auto md:hidden">
                 <table className="table mx-auto table-zebra w-full">
                     <thead>
@@ -248,35 +249,75 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                         <th>V</th>
                         <th>O</th>
                         <th>F</th>
-                        <th>GM</th>
-                        <th>IM</th>
                         <th>+/-</th>
                         <th>TP</th>
+                        <th>Nästa</th> {/* Added this header */}
                     </tr>
                     </thead>
                     <tbody>
-                    {data.map(teamItem => (
-                        <tr key={teamItem.team.id} className="cursor-pointer hover:bg-base-200"
-                            onClick={() => navigate(`/team/${teamItem.team.id}`)}>
-                            <td>{teamItem.position}</td>
-                            <td className="flex items-center gap-4">
-                                <img className="w-8 h-8 object-contain" src={teamItem.team.logo}
-                                     alt={`${teamItem.team.name} logo`}/>
-                                <span>{teamItem.team.name}</span>
-                            </td>
-                            <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "gf")?.value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "ga")?.value}</td>
-                            <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
-                            <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
-                        </tr>
-                    ))}
+                    {data.map(teamItem => {
+                        const teamId = teamItem.team.id;
+
+                        // --- Upcoming match logic ---
+                        const teamEvents =
+                            eventsData?.filter(
+                                (ev) =>
+                                    ev.homeTeam?.id === teamId ||
+                                    ev.visitingTeam?.id === teamId
+                            ) || [];
+
+                        const upcomingGames = teamEvents.filter(
+                            (ev) => ev.status === "UPCOMING"
+                        );
+                        const nextMatch =
+                            upcomingGames.length > 0 ? upcomingGames[0] : null;
+
+                        let opponent = null;
+                        if (nextMatch) {
+                            const isHomeTeam = nextMatch.homeTeam?.id === teamId;
+                            opponent = isHomeTeam
+                                ? nextMatch.visitingTeam
+                                : nextMatch.homeTeam;
+                        }
+
+                        const nextMatchLogo = opponent?.logo ? (
+                            <div className="flex items-center gap-2">
+                                <img
+                                    src={opponent.logo}
+                                    alt={`${opponent.name} logo`}
+                                    className="w-8 h-8 object-contain"
+                                />
+                            </div>
+                        ) : (
+                            "-"
+                        );
+
+                        return (
+                            <tr key={teamId} className="cursor-pointer hover:bg-base-200"
+                                onClick={() => navigate(`/team/${teamId}`)}>
+                                <td>{teamItem.position}</td>
+                                <td className="flex items-center gap-4">
+                                    <img className="w-8 h-8 object-contain" src={teamItem.team.logo}
+                                         alt={`${teamItem.team.name} logo`}/>
+                                    <span>{teamItem.team.name}</span>
+                                </td>
+
+                                <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
+                                <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
+                                <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
+                                <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
+                                <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
+                                <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
+
+                                {/* --- NEXT MATCH --- */}
+                                <td className="flex justify-center">{nextMatchLogo}</td>
+                            </tr>
+                        )
+                    })}
                     </tbody>
                 </table>
             </div>
+
         </div>
     );
 };
