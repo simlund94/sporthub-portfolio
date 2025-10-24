@@ -61,7 +61,7 @@ export default function GamesTable({
         }
     };
 
-    return (<div className="p-4 w-max">
+    return (<div className="p-4">
         <div className={` ${height} overflow-x-auto rounded-lg shadow`}>
             <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
                 <thead>
@@ -119,7 +119,7 @@ export default function GamesTable({
                 </tbody>
             </table>
 
-            <table className="table table-compact w-max text-xs md:hidden">
+            <table className="table table-compact text-xs md:hidden">
                 <thead>
                 <tr>
                     <th>Match</th>

@@ -59,7 +59,7 @@ export default function AssistLeadersTable({leagueId}) {
                                     alt={`${player.team.name} logo`}
                                 />
                             )}
-                            <span>{player.team?.shortName || player.team?.name || "—"}</span>
+                            <span>{ player.team?.name || "—"}</span>
                         </td>
                         <td className="text-center font-semibold">{player.count}</td>
 
