@@ -9,7 +9,6 @@ export default function StandingsTable({
                                        }) {
     const navigate = useNavigate();
 
-
     if (loading) {
         return (
             <div className="p-4 max-w-4xl mx-auto space-y-2">
@@ -32,10 +31,6 @@ export default function StandingsTable({
         <div className="space-y-8">
             {leagues.map(league => (
                 <div key={league.id} className="overflow-x-auto rounded-lg shadow p-2">
-                    <h2 className="text-xl font-bold mb-2">
-                        {league.name} - {league.season?.name}
-                    </h2>
-
                     <table className="table table-zebra w-full">
                         <thead>
                         <tr>

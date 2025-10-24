@@ -1,25 +1,38 @@
 import {useNavigate, useParams} from "react-router-dom";
-import {useTeamEvents, useTeamId, useTeamStandings} from "../hooks/TeamHooks.jsx";
-import {useState} from "react";
+import {useTeamEvents, useTeamId} from "../hooks/TeamHooks.jsx";
+import {useEffect, useState} from "react";
 import GamesTable from "../components/genericComponents/GamesTable.jsx";
 import StandingsTable from "../components/genericComponents/StandningsTable.jsx";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
 import GamesFilter from "../components/genericComponents/GamesFilter.jsx";
+import TeamSeasonSelector from "../components/genericComponents/TeamSeasonSelector.jsx";
+import {useLeagueWithTeamsById} from "../hooks/LeagueHooks.jsx";
 
 
 
 export default function TeamPage() {
+    const [status, setStatus] = useState("FINISHED")
+    const [order, setOrder] = useState("desc");
+    const [leagueId, setLeagueId] = useState(null);
+
+
+    console.log("leagueId: ", leagueId);
     const { id } = useParams();
     const { data, loading, err } = useTeamId(id);
     const team = data?.team
-    const [status, setStatus] = useState("FINISHED")
-    const [order, setOrder] = useState("desc");
-    const events =  useTeamEvents(id, status, order)
-    const leagues = useTeamStandings(id);
-    console.log(leagues.leagues)
+
+    const events =  useTeamEvents(id, status, order);
+    const leagues = useLeagueWithTeamsById(leagueId);
+    const selectedLeague = Array.isArray(leagues?.data?.groups) && leagues.data.groups.length > 0
+        ? leagues.data.groups[0]
+        : null;
+
+
     const navigate = useNavigate()
 
-
+    useEffect(() => {
+        setLeagueId(leagueId);
+    }, [leagueId, setLeagueId]);
 
 
     if (loading) return (<div className="max-w-3xl mx-auto flex flex-col min-h-screen space-y-4 p-4">
@@ -49,7 +62,14 @@ export default function TeamPage() {
                 </div>
             </div>
             <div className="container mx-auto mt-4 max-w-4xl px-4">
-                <StandingsTable leagues={leagues.leagues}
+                <TeamSeasonSelector
+                    sportId={team.sport.id}
+                    gender={team.teamClass}
+                    teamId={team.id}
+                    leagueId={leagueId}
+                    setLeagueId={setLeagueId}
+                />
+                <StandingsTable leagues={selectedLeague ? [selectedLeague] : []}
                                 loading={leagues.loading}
                                 error = {leagues.error}
                                 currentTeamId={team.id} />
