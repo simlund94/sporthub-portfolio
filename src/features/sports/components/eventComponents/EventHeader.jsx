@@ -10,7 +10,9 @@ export default function EventHeader({ event }) {
             <h1 className="text-3xl font-bold text-center mb-4">
                 {event.homeTeam.name} vs {event.visitingTeam.name}
             </h1>
-            <p className="text-center text-lg mb-2">{event.league.name}</p>
+            <p className="text-center text-lg mb-2 cursor-pointer" onClick={() =>
+                navigate(`/league/${formatLeaguePath(event.league.name)}/${event.league.teamClass.toLowerCase()}`)
+            }>{event.league.name}</p>
             <p className="text-center text-lg mb-2">Omgång: {event.round ?? "Okänd"}</p>
             <p className="text-center text-warning mb-4">
                 {new Date(event.startDate).toLocaleString("sv-SE", {
@@ -45,4 +47,10 @@ export default function EventHeader({ event }) {
 
         </div>
     );
+    function formatLeaguePath(leagueName) {
+        return leagueName
+            .replaceAll(" ", "-")
+            .replaceAll("/", "-")
+            .toLowerCase();
+    }
 }
