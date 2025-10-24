@@ -174,7 +174,11 @@ export function useLeagueAllSeasonsById(leagueId) {
     return {data, loading, err};
 }
 
-
+/**
+ * Retrieve the entire standing for a specified league by leagueId
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useLeagueStandingsById(leagueId) {
     const [standings, setStandings] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -214,6 +218,11 @@ export function useLeagueStandingsById(leagueId) {
     return {data: standings, loading, err};
 }
 
+/**
+ * Retrieve the scoring table from a specified leagueId
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useScoringLeadersById(leagueId) {
     const [scoringLeaders, setScoringLeaders] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -238,7 +247,6 @@ export function useScoringLeadersById(leagueId) {
 
                 console.log("scoringLeaders from API", res);
 
-                // ✅ Normalize data structure
                 let normalizedData = [];
 
                 if (Array.isArray(res)) {
@@ -267,6 +275,11 @@ export function useScoringLeadersById(leagueId) {
     return {data: scoringLeaders, loading, err};
 }
 
+/**
+ * Retrieve the assist table from a specified leagueId
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useAssistLeadersById(leagueId) {
     const [scoringLeaders, setScoringLeaders] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -318,7 +331,15 @@ export function useAssistLeadersById(leagueId) {
     return {data: scoringLeaders, loading, err};
 }
 
-
+/**
+ * Retrieve all events from a specified leagueId, game status in a set time period
+ * using fromDate and toDate.
+ * @param leagueId
+ * @param status
+ * @param fromDate
+ * @param toDate
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDate) {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
