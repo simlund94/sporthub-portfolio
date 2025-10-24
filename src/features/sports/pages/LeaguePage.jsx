@@ -84,7 +84,7 @@ const LeaguePage = ({ initialLeagueId }) => {
             />
             </div>
             <div className="divider" />
-            <h1 className="text-2xl sm:text-3xl md:text-4xl mt-10 font-bold my-4 glass p-4 sm:p-6 text-center">
+            <h1 className="custom text-2xl sm:text-3xl md:text-4xl mt-10 font-bold my-4 glass p-4 sm:p-6 text-center">
                 {activeTable}: {currentSeason}
             </h1>
 

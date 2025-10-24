@@ -13,10 +13,10 @@ export default function SeasonSelector({leagueId, setLeagueId}) {
     return (
         <div className="my-2">
             <span className="md:hidden text-sm font-bold">Välj säsong:</span>
-            <details className="dropdown md:hidden">
+            <details className="dropdown dropdown-center md:hidden">
 
-                <summary className="btn m-1">{currentSeason}</summary>
-                <ul className="menu dropdown-content bg-base-100 shadow-sm w-52 p-2">
+                <summary className="btn m-3 btn-outline px-8">{currentSeason}</summary>
+                <ul className="menu dropdown-content bg-base-200 shadow-sm w-52 p-2 ">
                     {seasons.map(season => (
                         <li key={season.id}>
                             <button
