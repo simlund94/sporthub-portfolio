@@ -33,7 +33,9 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
                 if (live) setLoading(false);
             }
         })();
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [sportId, query]);
 
     return {data, loading, err};
@@ -62,7 +64,9 @@ export function useAllLeagues() {
                 if (live) setLoading(false);
             }
         })();
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, []);
 
     return {data, loading, err};
@@ -154,13 +158,13 @@ export function useLeagueWithTeamsById(leagueId) {
  * @returns {{data: unknown, loading: boolean, err: unknown}}
  */
 export function useLeagueAllSeasonsById(leagueId) {
-    const [data, setData] = useState({ leagueName: "", allSeasons: [] });
+    const [data, setData] = useState({leagueName: "", allSeasons: []});
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
     useEffect(() => {
         if (!leagueId) {
-            setData({ leagueName: "", allSeasons: [] });
+            setData({leagueName: "", allSeasons: []});
             setErr("No leagueId provided");
             return;
         }
@@ -182,9 +186,9 @@ export function useLeagueAllSeasonsById(leagueId) {
                     startDate: l.season?.startDate,
                     endDate: l.season?.endDate,
                 }));
-                console.log("AllSeasons",allSeasons);
+                console.log("AllSeasons", allSeasons);
                 console.log("LeagueName", leagueName);
-                setData({ leagueName, allSeasons });
+                setData({leagueName, allSeasons});
 
 
             } catch (e) {
@@ -196,10 +200,12 @@ export function useLeagueAllSeasonsById(leagueId) {
 
         fetchSeasons();
 
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [leagueId]);
 
-    return { data, loading, err };
+    return {data, loading, err};
 }
 
 
@@ -234,10 +240,12 @@ export function useLeagueStandingsById(leagueId) {
 
         fetchStandings();
 
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [leagueId]);
 
-    return { data: standings, loading, err };
+    return {data: standings, loading, err};
 }
 
 export function useScoringLeadersById(leagueId) {
@@ -290,7 +298,7 @@ export function useScoringLeadersById(leagueId) {
         };
     }, [leagueId]);
 
-    return { data: scoringLeaders, loading, err };
+    return {data: scoringLeaders, loading, err};
 }
 
 export function useAssistLeadersById(leagueId) {
@@ -341,9 +349,8 @@ export function useAssistLeadersById(leagueId) {
         };
     }, [leagueId]);
 
-    return { data: scoringLeaders, loading, err };
+    return {data: scoringLeaders, loading, err};
 }
-
 
 
 export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDate) {
@@ -404,7 +411,6 @@ export function useLeagueByIdLastFiveGames(leagueId, teamId) {
             try {
                 setLoading(true);
 
-                // ✅ Call your new API endpoint
                 const res = await SportsApi.leagueByIdLastFiveGames(
                     leagueId,
                     "FINISHED",
@@ -413,7 +419,6 @@ export function useLeagueByIdLastFiveGames(leagueId, teamId) {
 
                 if (!live) return;
 
-                // Extract and sort by date descending (latest first)
                 const events = res?.events || [];
                 const sortedEvents = events
                     .filter(ev => ev.status === "FINISHED")
@@ -435,7 +440,7 @@ export function useLeagueByIdLastFiveGames(leagueId, teamId) {
         };
     }, [leagueId, teamId]);
 
-    return { data: games, loading, err };
+    return {data: games, loading, err};
 }
 
 
@@ -477,5 +482,86 @@ export function useTeamsByLeagueId(leagueId) {
         };
     }, [leagueId]);
 
-    return { data: teams, loading, err };
+    return {data: teams, loading, err};
 }
+
+
+export function useTeamFormsByLeagueId(leagueId, teams) {
+    const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId || !teams?.length) return;
+
+        let active = true;
+        setLoading(true);
+        setError(null);
+
+        const fetchForms = async () => {
+            try {
+                const results = await Promise.all(
+                    teams.map(async (team) => {
+                        const teamId = team.id;
+
+                        const res = await SportsApi.leagueByIdLastFiveGames(
+                            leagueId,
+                            "FINISHED",
+                            teamId
+                        );
+
+                        const matches = res?.events || [];
+
+                        const sorted = matches
+                            .filter((ev) => ev.status === "FINISHED")
+                            .sort(
+                                (a, b) =>
+                                    new Date(b.startDate) - new Date(a.startDate)
+                            )
+                            .slice(0, 5);
+
+                        // Compute V/O/F JSX spans
+                        const form = sorted.map((ev) => {
+                            const isHome = ev.homeTeam?.id === teamId;
+                            const homeScore = ev.homeTeamScore ?? 0;
+                            const awayScore = ev.visitingTeamScore ?? 0;
+
+                            if (homeScore === awayScore) {
+                                return <span className="text-gray-500">O</span>;
+                            }
+                            if (
+                                (isHome && homeScore > awayScore) ||
+                                (!isHome && awayScore > homeScore)
+                            ) {
+                                return <span className="text-green-500">V</span>;
+                            }
+                            return <span className="text-red-500">F</span>;
+                        });
+
+                        return {teamId, form};
+                    })
+                );
+
+                const formMap = Object.fromEntries(
+                    results.map((r) => [r.teamId, r.form])
+                );
+
+                if (active) setFormData(formMap);
+            } catch (err) {
+                console.error("Error fetching team forms:", err);
+                if (active) setError(err);
+            } finally {
+                if (active) setLoading(false);
+            }
+        };
+
+        fetchForms();
+
+        return () => {
+            active = false;
+        };
+    }, [leagueId, teams]);
+
+    return {data: formData, loading, error};
+}
+
