@@ -85,7 +85,7 @@ export function useLeaguesId(id) {
                 } else {
                     const res = await SportsApi.leagueById(id); // kan vara {sports:[...]} eller [...]
                     if (!live) return;
-                    setData(pickList(res, 'League'));
+                    setData(pickList(res, 'leagues'));
                 }
             } catch (e) {
                 if (live) setErr(e);
