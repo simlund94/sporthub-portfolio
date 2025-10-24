@@ -7,7 +7,7 @@ import {
 import {useEffect, useState} from "react";
 import {SportsApi} from "../../api.jsx";
 
-const LeagueStandingsTableWithSeasons = ({leagueId}) => {
+const LeagueStandingsTable = ({leagueId}) => {
     const navigate = useNavigate();
 
     // --- League standings ---
@@ -322,4 +322,4 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
     );
 };
 
-export default LeagueStandingsTableWithSeasons;
+export default LeagueStandingsTable;

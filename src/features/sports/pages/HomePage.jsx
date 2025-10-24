@@ -3,6 +3,7 @@ import Hero from "../components/genericComponents/Hero.jsx";
 import {useEvents} from "../hooks/EventHooks.jsx";
 import {useState} from "react";
 import GamesTable from "../components/genericComponents/GamesTable.jsx";
+import AllLeagues from "../components/genericComponents/AllLeagues.jsx";
 
 export default function HomePage() {
 
@@ -72,6 +73,8 @@ export default function HomePage() {
                     loading={events.loading}
                     error={events.err}
                 />
+                <h2 className="text-xl font-bold my-4 mx-2">Alla ligor vi har:</h2>
+                <AllLeagues/>
             </div>
 
         </>
