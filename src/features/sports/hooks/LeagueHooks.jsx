@@ -289,16 +289,15 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
     return {data: events, loading, err};
 }
 
-
-export function useLeagueByIdLastFiveGames(leagueId) {
+export function useLeagueByIdLastFiveGames(leagueId, teamId) {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
     useEffect(() => {
-        if (!leagueId) {
+        if (!leagueId || !teamId) {
             setGames([]);
-            setErr("No leagueId provided");
+            setErr("Missing leagueId or teamId");
             return;
         }
 
@@ -308,28 +307,23 @@ export function useLeagueByIdLastFiveGames(leagueId) {
             try {
                 setLoading(true);
 
-                // Step 1: fetch all finished events for this league
-                const allFinished = await SportsApi.leagueByIdWithEvents(leagueId, "FINISHED");
-                const events = allFinished?.events || [];
-
-                // Step 2: collect unique round numbers
-                const rounds = [...new Set(events.map(ev => ev.round))].filter(Boolean);
-
-                // Step 3: sort rounds descending (latest first)
-                const sortedRounds = rounds.sort((a, b) => b - a);
-
-                // Step 4: get latest 5
-                const latestFiveRounds = sortedRounds.slice(0, 5);
-
-                // Step 5: join them into a comma-separated string for API
-                const roundString = latestFiveRounds.join(",");
-
-                // Step 6: fetch only those rounds
-                const res = await SportsApi.leagueByIdLastFiveGames(leagueId, "FINISHED", roundString);
+                // ✅ Call your new API endpoint
+                const res = await SportsApi.leagueByIdLastFiveGames(
+                    leagueId,
+                    "FINISHED",
+                    teamId
+                );
 
                 if (!live) return;
-                const lastFiveGames = res?.events || [];
-                setGames(lastFiveGames);
+
+                // Extract and sort by date descending (latest first)
+                const events = res?.events || [];
+                const sortedEvents = events
+                    .filter(ev => ev.status === "FINISHED")
+                    .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+                    .slice(0, 5); // limit to last 5
+
+                setGames(sortedEvents);
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -342,10 +336,11 @@ export function useLeagueByIdLastFiveGames(leagueId) {
         return () => {
             live = false;
         };
-    }, [leagueId]);
+    }, [leagueId, teamId]);
 
     return { data: games, loading, err };
 }
+
 
 export function useTeamsByLeagueId(leagueId) {
     const [teams, setTeams] = useState([]);
