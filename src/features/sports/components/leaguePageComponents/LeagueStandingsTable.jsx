@@ -46,7 +46,7 @@ const LeagueStandingsTable = ({leagueId}) => {
 
         let active = true;
         setFormLoading(true);
-
+//TODO FIXA TILL HOOK
         const fetchForms = async () => {
             try {
                 // Fetch all teams’ last 5 games in parallel
@@ -103,7 +103,7 @@ const LeagueStandingsTable = ({leagueId}) => {
                 if (active) setFormLoading(false);
             }
         };
-
+//TODO FIXA DENNA TILL HOOKEN
         fetchForms();
 
         return () => {
