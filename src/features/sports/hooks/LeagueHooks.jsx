@@ -345,3 +345,137 @@ export function useAssistLeadersById(leagueId) {
 }
 
 
+
+export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDate) {
+    const [events, setEvents] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId) {
+            setEvents([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchEvents = async () => {
+            try {
+                setLoading(true);
+                const res = await SportsApi.leagueByIdWithEvents(leagueId, status, fromDate, toDate);
+                if (!live) return;
+
+                // adapt to your API response shape — this assumes res.events or res.data
+                const eventsArray = res?.events || res?.data || [];
+                setEvents(eventsArray);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchEvents();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId, status, fromDate, toDate]);
+
+    return {data: events, loading, err};
+}
+
+export function useLeagueByIdLastFiveGames(leagueId, teamId) {
+    const [games, setGames] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId || !teamId) {
+            setGames([]);
+            setErr("Missing leagueId or teamId");
+            return;
+        }
+
+        let live = true;
+
+        const fetchLastFive = async () => {
+            try {
+                setLoading(true);
+
+                // ✅ Call your new API endpoint
+                const res = await SportsApi.leagueByIdLastFiveGames(
+                    leagueId,
+                    "FINISHED",
+                    teamId
+                );
+
+                if (!live) return;
+
+                // Extract and sort by date descending (latest first)
+                const events = res?.events || [];
+                const sortedEvents = events
+                    .filter(ev => ev.status === "FINISHED")
+                    .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+                    .slice(0, 5); // limit to last 5
+
+                setGames(sortedEvents);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchLastFive();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId, teamId]);
+
+    return { data: games, loading, err };
+}
+
+
+export function useTeamsByLeagueId(leagueId) {
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId) {
+            setTeams([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchTeams = async () => {
+            try {
+                setLoading(true);
+                const res = await SportsApi.teamsByLeagueId(leagueId);
+
+                if (!live) return;
+
+                // The API might return { teams: [...] } or a plain array — handle both
+                const teamList = res?.teams || res || [];
+                setTeams(teamList);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchTeams();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+
+    return { data: teams, loading, err };
+}
