@@ -68,7 +68,7 @@ const LeagueStandingsTable = ({leagueId}) => {
         return <div>Error loading league standings</div>;
     }
 
-    // --- Render table ---
+    // --- Render table for bigger screens---
     return (
         <div>
             <table className="hidden md:table mx-auto table-zebra w-full table-pin-cols table-pin-rows">
@@ -158,8 +158,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                             <td className="text-warning text-sm font-bold">
                                 {teamItem.stats.find((t) => t.name === "pts")?.value}
                             </td>
-
-                            {/* --- FORM --- */}
                             <td className="text-center font-bold text-sm whitespace-nowrap">
                                 {form.length > 0 ? form.slice().reverse().map((item, idx) => (
                                     <span key={idx} className="mr-1">
@@ -167,9 +165,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                             </span>
                                 )) : "-"}
                             </td>
-
-
-                            {/* --- NEXT MATCH --- */}
                             <td className="flex justify-center">{nextMatchLogo}</td>
                         </tr>
                     );
@@ -179,8 +174,10 @@ const LeagueStandingsTable = ({leagueId}) => {
 
             </table>
 
-            {/* Mobile table */}
-            {/* Mobile table */}
+            {/* Mobile table
+            tog bort gjorda mål, insläppta mål och lag form
+            för att bättre få plats på en mindre skärm*/}
+
             <div className="overflow-x-auto md:hidden">
                 <table className="table mx-auto table-zebra w-full">
                     <thead>
@@ -194,7 +191,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                         <th>+/-</th>
                         <th>TP</th>
                         <th>Nästa</th>
-                        {/* Added this header */}
                     </tr>
                     </thead>
                     <tbody>
@@ -244,15 +240,12 @@ const LeagueStandingsTable = ({leagueId}) => {
                                          alt={`${teamItem.team.name} logo`}/>
                                     <span>{teamItem.team.name}</span>
                                 </td>
-
                                 <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
                                 <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
-
-                                {/* --- NEXT MATCH --- */}
                                 <td className="flex justify-center">{nextMatchLogo}</td>
                             </tr>
                         )
