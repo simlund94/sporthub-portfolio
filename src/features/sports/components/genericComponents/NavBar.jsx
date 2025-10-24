@@ -1,12 +1,11 @@
 import React, {useState} from "react";
-import {useLeaguesWithSportIdAndQuery} from "../../hooks/LeagueHooks.jsx";
 import ThemeButton from "../icons etc/ThemeButton.jsx";
 import IconFactory from "../icons etc/IconFactory.jsx";
 import {Link} from "react-router-dom";
 import SPORTS from "../../../../config.js";
 import SearchComponent from "./SearchComponent.jsx";
 
-export default function Navbar() {
+export default function Navbar({leaguesData, errors, loading}) {
     const [openDropdown, setOpenDropdown] = useState(null);
 
     const handleToggle = (key) => {
@@ -19,18 +18,6 @@ export default function Navbar() {
             .replaceAll("/", "-")
             .toLowerCase();
     }
-
-    const currentYear = new Date().getFullYear();
-    const leagueResults = SPORTS.map((sport) => useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
-    const leaguesData = {};
-    const errors = {};
-    let loading = false;
-    SPORTS.forEach((sport, index) => {
-        const result = leagueResults[index];
-        leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
-        errors[sport.leagueKey] = result.error;
-        loading = loading || result.loading;
-    });
 
     const themeComponent = <ThemeButton/>
 

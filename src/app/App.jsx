@@ -11,14 +11,11 @@ import TeamPage from "../features/sports/pages/TeamPage.jsx";
 
 function App() {
 
-    // TODO duplicerad kod, skicka ner till Navbar på något vis?
     const currentYear = new Date().getFullYear();
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const leagueResults = SPORTS.map((sport) => useLeaguesWithSportIdAndQuery(sport.sportId, `&activeDate=${currentYear + sport.activeYearOffset}`));
     const leaguesData = {};
     const errors = {};
     let loading = false;
-
     SPORTS.forEach((sport, index) => {
         const result = leagueResults[index];
         leaguesData[sport.leagueKey] = result.data?.filter(l => !/final|kval/i.test(l.name)) || [];
@@ -50,7 +47,9 @@ function App() {
     return (
         <BrowserRouter>
             <div className="max-w-7xl mx-auto flex flex-col min-h-screen">
-                <Navbar />
+                <Navbar leaguesData={leaguesData}
+                        loading={loading}
+                        errors={errors}/>
                 <main className="flex-grow">
                     <Routes>
                         <Route path={"/"} element={<HomePage/>}/>
