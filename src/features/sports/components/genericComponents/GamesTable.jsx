@@ -11,7 +11,7 @@ export default function GamesTable({
 
 
     if (loading) {
-        return (<div className="container max-w-4xl h-96 px-2 rounded-lg ">
+        return (<div className="container w-max h-96 px-2 rounded-lg ">
 
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
@@ -61,8 +61,8 @@ export default function GamesTable({
         }
     };
 
-    return (<div className="p-4">
-        <div className={`container max-w-4xl ${height} px-2 overflow-x-auto rounded-lg shadow`}>
+    return (<div className="p-4 w-max">
+        <div className={` ${height} overflow-x-auto rounded-lg shadow`}>
             <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
                 <thead>
                 <tr>
@@ -119,7 +119,7 @@ export default function GamesTable({
                 </tbody>
             </table>
 
-            <table className="table table-compact w-full text-xs md:hidden">
+            <table className="table table-compact w-max text-xs md:hidden">
                 <thead>
                 <tr>
                     <th>Match</th>

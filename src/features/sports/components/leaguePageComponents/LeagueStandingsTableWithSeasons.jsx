@@ -9,12 +9,9 @@ const LeagueStandingsTableWithSeasons = ({ leagueId }) => {
 
     if (loading) return (
         <>
-        <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-    <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+            {[...Array(6)].map((_, i) => (
+                <div key={i} className="skeleton h-16 w-full mt-2 rounded-md"></div>
+            ))}
         </>
 );
     if (err) return <div>Error loading standings</div>;
