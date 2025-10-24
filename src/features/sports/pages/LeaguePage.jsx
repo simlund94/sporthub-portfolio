@@ -24,9 +24,9 @@ const LeaguePage = ({ initialLeagueId }) => {
     const currentSeason = seasonData.allSeasons?.find(s => s.id === leagueId)?.slug || seasonData.allSeasons?.[0]?.slug;
 
     return (
-        <div className="p-4">
-            <h1 className="text-6xl text-center font-bold my-4 mx-2 glass p-12">{seasonData.leagueName || "Loading league..."}</h1>
-
+        <div className="p-4 ">
+            <h1 className="text-2xl sm:text-3xl md:text-4xl mt-10 font-bold my-4 mx-2 glass p-4 sm:p-6 text-center">{seasonData.leagueName || "Loading league..."}</h1>
+            <div className="flex flex-col text-center items-center">
             <SeasonSelector
                 allSeasons={seasonData.allSeasons}
                 leagueId={leagueId}
@@ -50,13 +50,19 @@ const LeaguePage = ({ initialLeagueId }) => {
                 showDate
                 height="h-94"
             />
+            </div>
 
             <div className="divider" />
-            <h1 className="text-4xl mt-10 font-bold my-4 mx-2 glass p-6">Tabell: {currentSeason}</h1>
-            <div className="container mt-4 mx-auto flex flex-row gap-6">
-                <ShowDiffrentTablesSelector />
+            <h1 className="text-2xl sm:text-3xl md:text-4xl mt-10 font-bold my-4 mx-2 glass p-4 sm:p-6 text-center">
+                Tabell: {currentSeason}
+            </h1>
 
-                <div className="flex-1">
+            <div className="container mt-4 mx-auto flex flex-col md:flex-row gap-6">
+                <div className="w-full md:w-auto flex justify-center md:block ">
+                    <ShowDiffrentTablesSelector />
+                </div>
+
+                <div className="flex-1 overflow-x-auto">
                     <LeagueStandingsTableWithSeasons
                         standings={standings}
                         loading={standingsLoading}
