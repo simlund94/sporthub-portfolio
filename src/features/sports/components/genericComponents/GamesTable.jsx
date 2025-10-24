@@ -43,14 +43,14 @@ export default function GamesTable({
                 const date = new Date(item.item.startDate);
 
                 return (<>
-                    <div className="flex gap-1">
+                    <div className="gap-1">
 
                         <span className="hidden md:inline">
                         {date.toLocaleString("sv-SE", {
                          hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
                          })}
                         </span>
-                        <span className="md:hidden">
+                        <span className="md:hidden inline">
                           {date.toLocaleTimeString("sv-SE", {
                            day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
                             })}
@@ -144,7 +144,7 @@ export default function GamesTable({
                         </div>
                     </td>
 
-                    <td className="text-center text-warning font-semibold">
+                    <td className="text-center text-warning items-center font-semibold">
                         <RenderScoreOrTimeBasedOnEventStatus item={item}/>
                     </td>
 
