@@ -427,7 +427,7 @@ export function useTeamsByLeagueId(leagueId) {
 }
 
 /**
- * A bigger function that combines lastFiveMatches and cheking result for each game
+ * A bigger function that combines lastFiveMatches and checking result for each game
  * based on teamIds.
  * Retrieves the team ids for all teams, retrieves all events from the last five rounds.
  * compare the teamScores in the match events to determine their form.

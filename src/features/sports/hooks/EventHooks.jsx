@@ -2,6 +2,13 @@ import {useEffect, useState} from "react";
 import {SportsApi} from "../api.jsx";
 import {delay, MOCK, pickList, USE_MOCK} from "../MockData.js";
 
+/**
+ * Retrieve all events in a specified time period and filtered by gender to get male and female league
+ * separate
+ * @param date
+ * @param gender
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useEvents(date, gender) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -35,6 +42,11 @@ export function useEvents(date, gender) {
     return {data, loading, err};
 }
 
+/**
+ *Retrieve all events from a specified matchId to see all events
+ * @param id
+ * @returns {{data: unknown, loading: boolean, err: unknown}}
+ */
 export function useEventId(id) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
@@ -69,7 +81,14 @@ export function useEventId(id) {
     return {data, loading, err};
 }
 
-export function useEventByLeagueId(id,status,order) {
+/**
+ *Retrieve all events with a specified status and from a set starting date to set end date
+ * @param id
+ * @param status
+ * @param order
+ * @returns {{data: unknown, loading: boolean, err: unknown}}
+ */
+export function useEventByLeagueId(id, status, order) {
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
@@ -84,7 +103,7 @@ export function useEventByLeagueId(id,status,order) {
                     if (!live) return;
                     setData(MOCK.eventsById[id]);
                 } else {
-                    const res = await SportsApi.eventsByLeagueIdAndStatus(id,status,order);
+                    const res = await SportsApi.eventsByLeagueIdAndStatus(id, status, order);
                     console.log("Api svar från eventsByLeagueIDAndStatus", res);
                     if (!live) return;
                     setData(pickList(res, 'events'));
@@ -99,7 +118,7 @@ export function useEventByLeagueId(id,status,order) {
         return () => {
             live = false;
         };
-    }, [id,status]);
+    }, [id, status]);
 
     return {data, loading, err};
 }
