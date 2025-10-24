@@ -18,10 +18,13 @@ export default function TeamSeasonSelector({ sportId, gender, teamId, leagueId, 
 
     useEffect(() => {
         if (seasons.length && !initialized) {
+            const hasCurrent = seasons.some(s => s.id === leagueId);
+            if (!hasCurrent) {
             setLeagueId(seasons[0]?.id);
             setInitialized(true);
+            }
         }
-    }, [seasons, initialized, setLeagueId]);
+    }, [seasons, initialized, setLeagueId, leagueId]);
 
 
     if (loading) return <span className="loading loading-dots loading-sm text-warning my-2 "></span>;
