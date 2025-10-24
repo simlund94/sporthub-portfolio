@@ -31,7 +31,7 @@ export default function TeamSeasonSelector({ sportId, gender, teamId, leagueId, 
     if (err) return <div className="text-red-500">Fel ladda säsonger</div>;
     if (!seasons.length) return <div>Inga säsonger tillgängliga</div>;
 
-    const currentSeason = seasons.find(s => s.id === leagueId)?.slug || seasons[0].slug;
+    const currentSeason = seasons.find(s => s.id === leagueId)?.season.slug || seasons[0].season.slug;
 
 
     return (
