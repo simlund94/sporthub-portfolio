@@ -9,6 +9,7 @@ export const SportsApi = {
     allLeagues: () => api(`/leagues?limit=100`),
     leagueById: (id) => api(`/leagues/${id}`),
     leagueByIdWithEvents: (id, status, fromDate, toDate) => api(`/leagues/${id}/events?fields=all&status=${status}&fromDate=${fromDate}&toDate=${toDate}`),
+    leagueByIdLastFiveGames: (id, status, rounds) => api(`/leagues/${id}/events?fields=all&status=${status}&round=${rounds}`),
     leaguesByTeamId: (teamId) => api(`/leagues?${teamId}`),
     teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),

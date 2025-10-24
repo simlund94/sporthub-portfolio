@@ -289,3 +289,62 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
     return {data: events, loading, err};
 }
 
+
+export function useLeagueByIdLastFiveGames(leagueId) {
+    const [games, setGames] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId) {
+            setGames([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchLastFive = async () => {
+            try {
+                setLoading(true);
+
+                // Step 1: fetch all finished events for this league
+                const allFinished = await SportsApi.leagueByIdWithEvents(leagueId, "FINISHED");
+                const events = allFinished?.events || [];
+
+                // Step 2: collect unique round numbers
+                const rounds = [...new Set(events.map(ev => ev.round))].filter(Boolean);
+
+                // Step 3: sort rounds descending (latest first)
+                const sortedRounds = rounds.sort((a, b) => b - a);
+
+                // Step 4: get latest 5
+                const latestFiveRounds = sortedRounds.slice(0, 5);
+
+                // Step 5: join them into a comma-separated string for API
+                const roundString = latestFiveRounds.join(",");
+
+                // Step 6: fetch only those rounds
+                const res = await SportsApi.leagueByIdLastFiveGames(leagueId, "FINISHED", roundString);
+
+                if (!live) return;
+                const lastFiveGames = res?.events || [];
+                setGames(lastFiveGames);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchLastFive();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+
+    return { data: games, loading, err };
+}
+
+

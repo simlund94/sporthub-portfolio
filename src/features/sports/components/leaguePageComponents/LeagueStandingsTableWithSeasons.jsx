@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {useLeagueByIdWithEvents, useLeagueStandingsById} from "../../hooks/LeagueHooks.jsx";
+import {useLeagueByIdLastFiveGames, useLeagueByIdWithEvents, useLeagueStandingsById} from "../../hooks/LeagueHooks.jsx";
 
 const LeagueStandingsTableWithSeasons = ({leagueId}) => {
     const navigate = useNavigate();
@@ -18,6 +18,9 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
 
     const {data: eventsData, loading: eventsLoading, err: eventsError} =
         useLeagueByIdWithEvents(leagueId, "UPCOMING", fromDate, toDate);
+
+    const { data: lastFiveGames, loading: lastFiveLoading, err: lastFiveErr } = useLeagueByIdLastFiveGames(leagueId);
+
 
 
     if (loading) return (
@@ -56,14 +59,37 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                 {data.map(teamItem => {
                     const teamId = teamItem.team.id;
 
-                    // Get all matches involving this team
+                    // --- Get all matches involving this team (from eventsData for upcoming) ---
                     const teamEvents = eventsData?.filter(
-                        ev =>
-                            ev.homeTeam?.id === teamId ||
-                            ev.visitingTeam?.id === teamId
+                        ev => ev.homeTeam?.id === teamId || ev.visitingTeam?.id === teamId
                     ) || [];
 
-                    // --- Upcoming games ---
+                    // --- Get finished games for this team (from lastFiveGames) ---
+                    const finishedGames = eventsData?.filter(
+                        ev => ev.homeTeam?.id === teamId || ev.visitingTeam?.id === teamId
+                    ) || [];
+
+                    // Sort finished games by date (descending = latest first)
+                    const sortedFinished = [...finishedGames].sort(
+                        (a, b) => new Date(b.startDate) - new Date(a.startDate)
+                    );
+
+                    // Take last 5 only
+                    const recentFive = sortedFinished.slice(0, 5);
+
+                    // --- Calculate FORM (V = Win, O = Draw, F = Loss) ---
+                    const form = recentFive.map(ev => {
+                        const isHome = ev.homeTeam?.id === teamId;
+                        const homePts = ev.homeTeamPoints ?? 0;
+                        const awayPts = ev.visitingTeamPoints ?? 0;
+
+                        if (homePts === awayPts) return "O"; // draw
+                        if (isHome && homePts > awayPts) return "V"; // home win
+                        if (!isHome && awayPts > homePts) return "V"; // away win
+                        return "F"; // otherwise, loss
+                    });
+
+                    // --- Next Match (UPCOMING) ---
                     const upcomingGames = teamEvents.filter(ev => ev.status === "UPCOMING");
                     const nextMatch = upcomingGames.length > 0 ? upcomingGames[0] : null;
 
@@ -86,15 +112,19 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                         "-"
                     );
 
-
                     return (
-                        <tr key={teamId} className="cursor-pointer hover:bg-base-200"
-                            onClick={() => navigate(`/team/${teamId}`)}>
+                        <tr
+                            key={teamId}
+                            className="cursor-pointer hover:bg-base-200"
+                            onClick={() => navigate(`/team/${teamId}`)}
+                        >
                             <td>{teamItem.position}</td>
                             <td className="flex items-center gap-4">
-                                <img className="w-8 h-8 object-contain"
-                                     src={teamItem.team.logo}
-                                     alt={`${teamItem.team.name} logo`}/>
+                                <img
+                                    className="w-8 h-8 object-contain"
+                                    src={teamItem.team.logo}
+                                    alt={`${teamItem.team.name} logo`}
+                                />
                                 <span className="text-2xl">{teamItem.team.name}</span>
                             </td>
                             <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
@@ -107,7 +137,12 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
                             <td className="text-warning text-sm font-bold">
                                 {teamItem.stats.find(t => t.name === "pts")?.value}
                             </td>
-                            <td>–{/* form placeholder for now */}</td>
+
+                            <td className="text-center font-bold">
+                                {form.length > 0 ? form.join(" ") : "-"}
+                            </td>
+
+                            {/* ✅ NEXT MATCH column */}
                             <td className="flex justify-center">{nextMatchLogo}</td>
                         </tr>
                     );
