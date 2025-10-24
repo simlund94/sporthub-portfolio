@@ -1,9 +1,24 @@
-export default function ShowDiffrentTablesSelector() {
-    return(<div className="flex flex-col gap-2 w-full md:w-1/4">
-        <button className="btn btn-warning">Visa tabell</button>
-        <button className="btn btn-warning">Visa skytteliga</button>
-        <button className="btn btn-warning">Visa assist</button>
-        <button className="btn btn-warning">Visa varnings-liga</button>
-        <button className="btn btn-warning">Visa utvisningsliga</button>
-    </div>);
+export default function ShowDiffrentTablesSelector({ onChangeActiveTable, activeTable }) {
+    return (
+        <div className="flex flex-col gap-2 w-full">
+            <button
+                className={`btn ${activeTable=== "Tabell" ? "btn-warning" : "btn-outline"}`}
+                onClick={() => onChangeActiveTable("Tabell")}
+            >
+                Visa tabell
+            </button>
+            <button
+                className={`btn ${activeTable=== "Skytteliga" ? "btn-warning" : "btn-outline"}`}
+                onClick={() => onChangeActiveTable("Skytteliga")}
+            >
+                Visa skytteliga
+            </button>
+            <button
+                className={`btn ${activeTable=== "Assistliga" ? "btn-warning" : "btn-outline"}`}
+                onClick={() => onChangeActiveTable("Assistliga")}
+            >
+                Visa assistliga
+            </button>
+        </div>
+    );
 }

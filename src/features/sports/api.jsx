@@ -17,4 +17,8 @@ export const SportsApi = {
     teamById: (id) => api(`/teams/${id}`),
     teamStandings: (teamId) => api(`/teams/${teamId}/leagues?limit=1`),
     allTeams: ()  => api(`/teams`),
+leagueScoringLeadersById:(leagueId) => api(`/leagues/${leagueId}/scoring-leaders?limit=15`),
+    leagueAssistLeadersById:(leagueId) => api(`/leagues/${leagueId}/assist-leaders?limit=15`),
+        
+
 };
