@@ -1,38 +1,18 @@
+import {Link} from "react-router-dom";
+
 export default function Footer() {
     return (
-        <footer className="footer sm:footer-horizontal bg-base-200 text-base-content p-10 glass">
-
-        <aside>
-                <img
-                    src="/logo.png"
-                    className="w-36 rounded-lg px-8 "
-                />
-                <p>
-                   SportHub avancerad webb-projekt
-                    <br />
-                    Skapad av Emil, Joar, Hugo och Simon
-                </p>
+        <footer className="footer footer-vertical footer-center bg-base-300/50 text-base-content rounded p-6 glass">
+            <aside className="w-36 rounded-lg px-8">
+                <img src="/public/logo.png" alt="Sporthubs logga"/>
             </aside>
-            <nav>
-                <h6 className="footer-title">Services</h6>
-                <a className="link link-hover">Branding</a>
-                <a className="link link-hover">Design</a>
-                <a className="link link-hover">Marketing</a>
-                <a className="link link-hover">Advertisement</a>
+            <nav className="grid grid-flow-col gap-4">
+                <Link to="/about-us" className="link link-hover">Om oss</Link>
+                <Link to="/contact" className="link link-hover">Kontakt</Link>
             </nav>
-            <nav>
-                <h6 className="footer-title">Company</h6>
-                <a className="link link-hover">About us</a>
-                <a className="link link-hover">Contact</a>
-                <a className="link link-hover">Jobs</a>
-                <a className="link link-hover">Press kit</a>
-            </nav>
-            <nav>
-                <h6 className="footer-title">Legal</h6>
-                <a className="link link-hover">Terms of use</a>
-                <a className="link link-hover">Privacy policy</a>
-                <a className="link link-hover">Cookie policy</a>
-            </nav>
+            <aside>
+                <p>Copyright © {new Date().getFullYear()} - Alla rättigheter förbehållna av SportHub</p>
+            </aside>
         </footer>
     )
 }
