@@ -13,7 +13,7 @@ export const SportsApi = {
     leaguesByTeamId: (teamId) => api(`/leagues?${teamId}`),
     teamsByLeagueId: (leagueId) => api(`/leagues/${leagueId}/teams`),
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),
-    leagueWithTeamsById: (leagueId) => api(`/leagues/${leagueId}`),
+    leagueWithTeamsById: (leagueId) => api(`/leagues/${leagueId}/standings`),
     leagueAllSeasonsById: (leagueId) => api(`/leagues/${leagueId}/seasons`),
     leagueStandingsById: (leagueId) => api(`/leagues/${leagueId}/standings`),
     teamById: (id) => api(`/teams/${id}`),
@@ -23,4 +23,5 @@ leagueScoringLeadersById:(leagueId) => api(`/leagues/${leagueId}/scoring-leaders
     leagueAssistLeadersById:(leagueId) => api(`/leagues/${leagueId}/assist-leaders?limit=15`),
 
 
+    allLeaguesBySportAndGender: (sportId, gender) => api(`/leagues?sport=${sportId}&teamClass=${gender}&sort=startDate:desc`),
 };
