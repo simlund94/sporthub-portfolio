@@ -347,4 +347,43 @@ export function useLeagueByIdLastFiveGames(leagueId) {
     return { data: games, loading, err };
 }
 
+export function useTeamsByLeagueId(leagueId) {
+    const [teams, setTeams] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
 
+    useEffect(() => {
+        if (!leagueId) {
+            setTeams([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchTeams = async () => {
+            try {
+                setLoading(true);
+                const res = await SportsApi.teamsByLeagueId(leagueId);
+
+                if (!live) return;
+
+                // The API might return { teams: [...] } or a plain array — handle both
+                const teamList = res?.teams || res || [];
+                setTeams(teamList);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchTeams();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+
+    return { data: teams, loading, err };
+}

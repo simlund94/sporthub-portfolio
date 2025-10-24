@@ -11,7 +11,7 @@ export const SportsApi = {
     leagueByIdWithEvents: (id, status, fromDate, toDate) => api(`/leagues/${id}/events?fields=all&status=${status}&fromDate=${fromDate}&toDate=${toDate}`),
     leagueByIdLastFiveGames: (id, status, rounds) => api(`/leagues/${id}/events?fields=all&status=${status}&round=${rounds}`),
     leaguesByTeamId: (teamId) => api(`/leagues?${teamId}`),
-    teamsByLeague: (leagueId) => api(`/leagues/${leagueId}/teams`),
+    teamsByLeagueId: (leagueId) => api(`/leagues/${leagueId}/teams`),
     leaguesBySport: (sportId, query) => api(`/leagues?sport=${sportId}${query}`),
     leagueWithTeamsById: (leagueId) => api(`/leagues/${leagueId}`),
     leagueAllSeasonsById: (leagueId) => api(`/leagues/${leagueId}/seasons`),
