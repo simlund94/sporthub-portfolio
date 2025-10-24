@@ -16,8 +16,12 @@ const LeaguePage = ({ initialLeagueId }) => {
     const [order, setOrder] = useState("desc");
     const [activeTable, setActiveTable] = useState("Tabell");
 
+    //Ser till att ligan får "standardVärden när urlen byts ut [initialLeagueID] - Emil"
     useEffect(() => {
         setLeagueId(initialLeagueId);
+        setActiveTable("Tabell");
+        setStatus("FINISHED");
+        setOrder("desc");
     }, [initialLeagueId]);
 
     const { data: seasonData, loading: seasonsLoading, err: seasonsErr } = useLeagueAllSeasonsById(leagueId);
