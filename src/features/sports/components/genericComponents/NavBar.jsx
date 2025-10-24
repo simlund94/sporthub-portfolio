@@ -87,11 +87,11 @@ export default function Navbar({leaguesData, errors, loading}) {
                         {SPORTS.map((item) => (
                             <DropdownItem key={item.key} item={item} isMobile/>
                         ))}
-                        <li>
+                        <li className={"text-lg font-bold"}>
                             <button onClick={() => {
                                 document.getElementById("searchModal").showModal();
                             }}>
-                                Search
+                                Sök på lag/ligor
                             </button>
                         </li>
                         <li>
