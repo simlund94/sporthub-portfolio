@@ -219,7 +219,7 @@ const LeagueStandingsTableWithSeasons = ({leagueId}) => {
 
                             {/* --- FORM --- */}
                             <td className="text-center font-bold text-sm whitespace-nowrap">
-                                {form.length > 0 ? form.map((item, idx) => (
+                                {form.length > 0 ? form.reverse().map((item, idx) => (
                                     <span key={idx} className="mr-1">
                                  {item}
                             </span>
