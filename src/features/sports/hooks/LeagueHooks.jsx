@@ -240,3 +240,108 @@ export function useLeagueStandingsById(leagueId) {
     return { data: standings, loading, err };
 }
 
+export function useScoringLeadersById(leagueId) {
+    const [scoringLeaders, setScoringLeaders] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId) {
+            setScoringLeaders([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchScoringLeaders = async () => {
+            try {
+                setLoading(true);
+                setErr(null);
+
+                const res = await SportsApi.leagueScoringLeadersById(leagueId);
+                if (!live) return;
+
+                console.log("scoringLeaders from API", res);
+
+                // ✅ Normalize data structure
+                let normalizedData = [];
+
+                if (Array.isArray(res)) {
+                    normalizedData = res;
+                } else if (res?.playerStats && Array.isArray(res.playerStats)) {
+                    normalizedData = res.playerStats;
+                } else if (res?.data && Array.isArray(res.data)) {
+                    normalizedData = res.data;
+                }
+
+                setScoringLeaders(normalizedData);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchScoringLeaders();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+
+    return { data: scoringLeaders, loading, err };
+}
+
+export function useAssistLeadersById(leagueId) {
+    const [scoringLeaders, setScoringLeaders] = useState([]);
+    const [loading, setLoading] = useState(false);
+    const [err, setErr] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId) {
+            setScoringLeaders([]);
+            setErr("No leagueId provided");
+            return;
+        }
+
+        let live = true;
+
+        const fetchScoringLeaders = async () => {
+            try {
+                setLoading(true);
+                setErr(null);
+
+                const res = await SportsApi.leagueAssistLeadersById(leagueId);
+                if (!live) return;
+
+                console.log("scoringLeaders from API", res);
+                let normalizedData = [];
+
+                if (Array.isArray(res)) {
+                    normalizedData = res;
+                } else if (res?.playerStats && Array.isArray(res.playerStats)) {
+                    normalizedData = res.playerStats;
+                } else if (res?.data && Array.isArray(res.data)) {
+                    normalizedData = res.data;
+                }
+
+                setScoringLeaders(normalizedData);
+            } catch (e) {
+                if (live) setErr(e);
+            } finally {
+                if (live) setLoading(false);
+            }
+        };
+
+        fetchScoringLeaders();
+
+        return () => {
+            live = false;
+        };
+    }, [leagueId]);
+
+    return { data: scoringLeaders, loading, err };
+}
+
+

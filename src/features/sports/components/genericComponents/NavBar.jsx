@@ -60,9 +60,6 @@ export default function Navbar({leaguesData, errors, loading}) {
                             </li>
                         ))}
 
-                        <li key="alla-ligor" className="font-bold">
-                            <span>Alla ligor i {item.name}</span>
-                        </li>
                     </ul>
                 </details>
             </li>

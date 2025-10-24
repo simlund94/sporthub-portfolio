@@ -19,8 +19,6 @@ export default function SearchComponent() {
     const [query, setQuery] = useState("");
     const navigate = useNavigate();
 
-    // const allTeams = Array.isArray(teamData?.teams) ? teamData.teams : [];
-
     const loading = teamsLoading || leaguesLoading;
     const error = teamsError || leaguesError;
 

@@ -11,7 +11,7 @@ export default function GamesTable({
 
 
     if (loading) {
-        return (<div className="container max-w-4xl h-96 px-2 rounded-lg ">
+        return (<div className="container w-max h-96 px-2 rounded-lg ">
 
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
@@ -43,14 +43,14 @@ export default function GamesTable({
                 const date = new Date(item.item.startDate);
 
                 return (<>
-                    <div className="flex gap-1">
+                    <div className="gap-1">
 
                         <span className="hidden md:inline">
                         {date.toLocaleString("sv-SE", {
                          hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
                          })}
                         </span>
-                        <span className="md:hidden">
+                        <span className="md:hidden inline">
                           {date.toLocaleTimeString("sv-SE", {
                            day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
                             })}
@@ -62,7 +62,7 @@ export default function GamesTable({
     };
 
     return (<div className="p-4">
-        <div className={`container max-w-4xl ${height} px-2 overflow-x-auto rounded-lg shadow`}>
+        <div className={` ${height} overflow-x-auto rounded-lg shadow`}>
             <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
                 <thead>
                 <tr>
@@ -119,7 +119,7 @@ export default function GamesTable({
                 </tbody>
             </table>
 
-            <table className="table table-compact w-full text-xs md:hidden">
+            <table className="table table-compact text-xs md:hidden">
                 <thead>
                 <tr>
                     <th>Match</th>
@@ -144,7 +144,7 @@ export default function GamesTable({
                         </div>
                     </td>
 
-                    <td className="text-center text-warning font-semibold">
+                    <td className="text-center text-warning items-center font-semibold">
                         <RenderScoreOrTimeBasedOnEventStatus item={item}/>
                     </td>
 
