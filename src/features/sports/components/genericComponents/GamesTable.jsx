@@ -7,11 +7,15 @@ export default function GamesTable({
 
     const navigate = useNavigate();
 
-    console.log("GamesTableItems: ", items);
+
+
+    console.log("GamesTableItems: ", items, "Loading...", loading);
 
 
     if (loading) {
-        return (<div className="container w-max h-96 px-2 rounded-lg ">
+        return (
+            <>
+            <div className="container mx-auto w-full h-96 px-2 rounded-lg ">
 
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
@@ -20,7 +24,8 @@ export default function GamesTable({
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
             <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
 
-        </div>);
+        </div>
+            </>);
     }
 
     if (error) {
@@ -62,7 +67,7 @@ export default function GamesTable({
         }
     };
 
-    return (<div className="p-4">
+    return (<div className="p-4 w-full">
         <div className={` ${height} overflow-x-auto rounded-lg shadow`}>
             <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
                 <thead>

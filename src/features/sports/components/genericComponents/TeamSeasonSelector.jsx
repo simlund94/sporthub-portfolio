@@ -36,6 +36,7 @@ export default function TeamSeasonSelector({ sportId, gender, teamId, leagueId, 
 
     return (
         <div className="my-2">
+            <span className="md:hidden text-sm font-bold">Välj säsong:</span>
             <details className="dropdown md:hidden">
                 <summary className="btn m-1">{currentSeason}</summary>
                 <ul className="menu dropdown-content bg-base-100 shadow-sm w-52 p-2">

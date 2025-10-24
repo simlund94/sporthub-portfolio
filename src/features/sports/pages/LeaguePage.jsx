@@ -79,7 +79,7 @@ const LeaguePage = ({ initialLeagueId }) => {
                 items={eventData.data}
                 loading={eventData.loading}
                 error={eventData.err}
-                height="h-94"
+                height="h-[35vh]"
             />
             </div>
             <div className="divider" />
