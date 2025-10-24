@@ -72,40 +72,6 @@ export function useAllLeagues() {
     return {data, loading, err};
 }
 
-export function useLeaguesId(id) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
-                    const res = await SportsApi.leagueById(id); // kan vara {sports:[...]} eller [...]
-                    if (!live) return;
-                    setData(pickList(res, 'leagues'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        })();
-        return () => {
-            live = false;
-        };
-    }, [id]);
-
-    return {data, loading, err};
-}
-
-
 /**
  * Returns a season for a league by its unique id, with all teams in the league during that season.
  *
@@ -393,57 +359,11 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
     return {data: events, loading, err};
 }
 
-export function useLeagueByIdLastFiveGames(leagueId, teamId) {
-    const [games, setGames] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        if (!leagueId || !teamId) {
-            setGames([]);
-            setErr("Missing leagueId or teamId");
-            return;
-        }
-
-        let live = true;
-
-        const fetchLastFive = async () => {
-            try {
-                setLoading(true);
-
-                const res = await SportsApi.leagueByIdLastFiveGames(
-                    leagueId,
-                    "FINISHED",
-                    teamId
-                );
-
-                if (!live) return;
-
-                const events = res?.events || [];
-                const sortedEvents = events
-                    .filter(ev => ev.status === "FINISHED")
-                    .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-                    .slice(0, 5); // limit to last 5
-
-                setGames(sortedEvents);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchLastFive();
-
-        return () => {
-            live = false;
-        };
-    }, [leagueId, teamId]);
-
-    return {data: games, loading, err};
-}
-
-
+/**
+ * Return all teams by a specified league id
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useTeamsByLeagueId(leagueId) {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -485,7 +405,16 @@ export function useTeamsByLeagueId(leagueId) {
     return {data: teams, loading, err};
 }
 
-
+/**
+ * A bigger function that combines lastFiveMatches and cheking result for each game
+ * based on teamIds.
+ * Retrieves the team ids for all teams, retrieves all events from the last five rounds.
+ * compare the teamScores in the match events to determine their form.
+ * Print out V(win), O(draw), F(loss).
+ * @param leagueId
+ * @param teams
+ * @returns {{data: {}, loading: boolean, error: unknown}}
+ */
 export function useTeamFormsByLeagueId(leagueId, teams) {
     const [formData, setFormData] = useState({});
     const [loading, setLoading] = useState(false);
