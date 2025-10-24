@@ -84,14 +84,18 @@ export default function Navbar({leaguesData, errors, loading}) {
                     </div>
                     <ul
                         tabIndex={0}
-                        className="menu menu-sm dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
+                        className="menu dropdown-content bg-base-100 rounded-box z-10 mt-3 w-52 p-2 shadow"
                         onClick={(e) => e.stopPropagation()}
                     >
                         {SPORTS.map((item) => (
                             <DropdownItem key={item.key} item={item} isMobile/>
                         ))}
                         <li>
-                            <SearchComponent/>
+                            <button onClick={() => {
+                                document.getElementById("searchModal").showModal();
+                            }}>
+                                Search
+                            </button>
                         </li>
                         <li>
                             {themeComponent}
@@ -116,6 +120,16 @@ export default function Navbar({leaguesData, errors, loading}) {
                 <SearchComponent/>
                 {themeComponent}
             </div>
+
+            {/* Open the modal using document.getElementById('ID').showModal() method */}
+            <dialog id="searchModal" className="modal modal-top">
+                <div className="modal-box overflow-visible">
+                    <SearchComponent/>
+                </div>
+                <form method="dialog" className="modal-backdrop">
+                    <button>close</button>
+                </form>
+            </dialog>
         </div>
     );
 }
