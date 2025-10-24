@@ -8,7 +8,9 @@ import SPORTS from "../config.js";
 import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks/LeagueHooks.jsx";
 import LeaguePage from "../features/sports/pages/LeaguePage.jsx";
 import TeamPage from "../features/sports/pages/TeamPage.jsx";
-import NotFoundPage from "../features/sports/pages/NotFoundPage.jsx";
+import NotFoundPage from "../features/sports/pages/info/NotFoundPage.jsx";
+import AboutUsPage from "../features/sports/pages/info/AboutUsPage.jsx";
+import ContactPage from "../features/sports/pages/info/ContactPage.jsx";
 
 function App() {
 
@@ -53,10 +55,12 @@ function App() {
                         errors={errors}/>
                 <main className="flex-grow">
                     <Routes>
-                        <Route path={"/"} element={<HomePage/>}/>
+                        <Route path="/" element={<HomePage/>}/>
                         <Route path="/event/:id" element={<EventPage/>}/>
                         {generateLeaguePageRoutes()}
                         <Route path="/team/:id" element={<TeamPage/>}/>
+                        <Route path="/about-us" element={<AboutUsPage/>}/>
+                        <Route path="/contact" element={<ContactPage/>}/>
                         <Route path="*" element={<NotFoundPage/>}/>
                     </Routes>
                 </main>

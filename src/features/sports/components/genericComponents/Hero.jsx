@@ -22,8 +22,6 @@ export default function Hero() {
                         och följa matcher i realtid. Håll dig alltid steget före! Vi samlar in live-data om dina
                         favoritlag och sporter – allt på ett ställe.
                     </p>
-
-                    <button className="btn btn-warning mt-2">Ta mig dit!</button>
                 </div>
             </div>
         </section>
