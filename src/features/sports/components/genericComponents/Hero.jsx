@@ -2,7 +2,6 @@ export default function Hero() {
     return (
         <section className="hero bg-base-200 min-h-[60vh] glass mb-4">
             <div className="hero-content flex flex-col lg:flex-row items-center justify-center gap-8 px-6 lg:px-12 text-center lg:text-left w-full max-w-6xl mx-auto">
-                {/* IMAGE */}
                 <div className="flex justify-center w-full lg:w-1/2">
                     <img
                         src="logo.png"
@@ -11,7 +10,6 @@ export default function Hero() {
                     />
                 </div>
 
-                {/* TEXT */}
                 <div className="flex flex-col justify-center items-center lg:items-start w-full lg:w-1/2">
                     <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight">
                         Välkommen till SportHub!

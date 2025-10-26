@@ -78,7 +78,7 @@ export default function StandingsTable({
                                                 className="w-6 h-6 object-contain"
                                             />
                                         )}
-                                        <span>{teamEntry.team?.name}</span>
+                                        <span className="table-pin-cols">{teamEntry.team?.name}</span>
                                     </td>
                                     <td>{stats.gp ?? "-"}</td>
                                     <td>{stats.w ?? "-"}</td>

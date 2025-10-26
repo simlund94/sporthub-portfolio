@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {SportsApi} from "../api.jsx";
-import {delay, MOCK, pickList, USE_MOCK} from "../MockData.js";
+import { pickList} from "../MockData.js";
 
 /**
  * Retrieve all events in a specified time period and filtered by gender to get male and female league
@@ -19,15 +19,9 @@ export function useEvents(date, gender) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
                     const res = await SportsApi.events(date, gender); // kan vara {sports:[...]} eller [...]
                     if (!live) return;
                     setData(pickList(res, 'events'));
-                }
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -57,15 +51,10 @@ export function useEventId(id) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.eventsById[id]);
-                } else {
                     const res = await SportsApi.eventsById(id);
                     if (!live) return;
                     setData(res);
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -98,16 +87,11 @@ export function useEventByLeagueId(id, status, order) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.eventsById[id]);
-                } else {
                     const res = await SportsApi.eventsByLeagueIdAndStatus(id, status, order);
                     console.log("Api svar från eventsByLeagueIDAndStatus", res);
                     if (!live) return;
                     setData(pickList(res, 'events'));
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {

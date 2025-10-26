@@ -68,7 +68,7 @@ export default function Navbar({leaguesData, errors, loading}) {
 
     return (
         <div className="navbar bg-base-100 shadow-sm">
-            {/* LEFT SIDE */}
+
             <div className="navbar-start">
                 {/* Mobile menu */}
                 <div className="dropdown lg:hidden">
@@ -110,7 +110,7 @@ export default function Navbar({leaguesData, errors, loading}) {
             </div>
 
             <div className="navbar-center">
-                <Link to={"/"} className="btn btn-ghost text-4xl">SportHub</Link>
+                <Link to={"/"} className="btn btn-ghost text-4xl text-center items-center">SportHub</Link>
             </div>
 
             <div className="navbar-end hidden lg:flex">
@@ -124,7 +124,7 @@ export default function Navbar({leaguesData, errors, loading}) {
                     <SearchComponent/>
                 </div>
                 <form method="dialog" className="modal-backdrop">
-                    <button>close</button>
+                    <button>Stäng</button>
                 </form>
             </dialog>
         </div>
