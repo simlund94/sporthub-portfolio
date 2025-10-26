@@ -33,7 +33,9 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
                 if (live) setLoading(false);
             }
         })();
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [sportId, query]);
 
     return {data, loading, err};
@@ -62,41 +64,10 @@ export function useAllLeagues() {
                 if (live) setLoading(false);
             }
         })();
-        return () => { live = false; };
-    }, []);
-
-    return {data, loading, err};
-}
-
-export function useLeaguesId(id) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
-                    const res = await SportsApi.leagueById(id); // kan vara {sports:[...]} eller [...]
-                    if (!live) return;
-                    setData(pickList(res, 'leagues'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        })();
         return () => {
             live = false;
         };
-    }, [id]);
+    }, []);
 
     return {data, loading, err};
 }
@@ -202,7 +173,11 @@ export function useLeagueAllSeasonsById(leagueId) {
     return { data, loading, err };
 }
 
-
+/**
+ * Retrieve the entire standing for a specified league by leagueId
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useLeagueStandingsById(leagueId) {
     const [standings, setStandings] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -240,6 +215,11 @@ export function useLeagueStandingsById(leagueId) {
     return { data: standings, loading, err };
 }
 
+/**
+ * Retrieve the scoring table from a specified leagueId
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useScoringLeadersById(leagueId) {
     const [scoringLeaders, setScoringLeaders] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -264,6 +244,7 @@ export function useScoringLeadersById(leagueId) {
 
                 console.log("scoringLeaders from API", res);
 
+                // ✅ Normalize data structure
                 let normalizedData = [];
 
                 if (Array.isArray(res)) {
@@ -292,6 +273,11 @@ export function useScoringLeadersById(leagueId) {
     return { data: scoringLeaders, loading, err };
 }
 
+/**
+ * Retrieve the assist table from a specified leagueId
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useAssistLeadersById(leagueId) {
     const [scoringLeaders, setScoringLeaders] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -340,11 +326,18 @@ export function useAssistLeadersById(leagueId) {
         };
     }, [leagueId]);
 
-    return { data: scoringLeaders, loading, err };
+    return {data: scoringLeaders, loading, err};
 }
 
-
-
+/**
+ * Retrieve all events from a specified leagueId, game status in a set time period
+ * using fromDate and toDate.
+ * @param leagueId
+ * @param status
+ * @param fromDate
+ * @param toDate
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDate) {
     const [events, setEvents] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -385,6 +378,11 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
     return {data: events, loading, err};
 }
 
+/**
+ * Return all teams by a specified league id
+ * @param leagueId
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useLeagueByIdLastFiveGames(leagueId, teamId) {
     const [games, setGames] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -477,3 +475,93 @@ export function useTeamsByLeagueId(leagueId) {
 
     return { data: teams, loading, err };
 }
+
+/**
+ * A bigger function that combines lastFiveMatches and checking result for each game
+ * based on teamIds.
+ * Retrieves the team ids for all teams, retrieves all events from the last five rounds.
+ * compare the teamScores in the match events to determine their form.
+ * Print out V(win), O(draw), F(loss).
+ * @param leagueId
+ * @param teams
+ * @returns {{data: {}, loading: boolean, error: unknown}}
+ */
+export function useTeamFormsByLeagueId(leagueId, teams) {
+    const [formData, setFormData] = useState({});
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        if (!leagueId || !teams?.length) return;
+
+        let active = true;
+        setLoading(true);
+        setError(null);
+
+        const fetchForms = async () => {
+            try {
+                const results = await Promise.all(
+                    teams.map(async (team) => {
+                        const teamId = team.id;
+
+                        const res = await SportsApi.leagueByIdLastFiveGames(
+                            leagueId,
+                            "FINISHED",
+                            teamId
+                        );
+
+                        const matches = res?.events || [];
+
+                        const sorted = matches
+                            .filter((ev) => ev.status === "FINISHED")
+                            .sort(
+                                (a, b) =>
+                                    new Date(b.startDate) - new Date(a.startDate)
+                            )
+                            .slice(0, 5);
+
+                        // Compute V/O/F JSX spans
+                        const form = sorted.map((ev) => {
+                            const isHome = ev.homeTeam?.id === teamId;
+                            const homeScore = ev.homeTeamScore ?? 0;
+                            const awayScore = ev.visitingTeamScore ?? 0;
+
+                            if (homeScore === awayScore) {
+                                return <span className="text-gray-500">O</span>;
+                            }
+                            if (
+                                (isHome && homeScore > awayScore) ||
+                                (!isHome && awayScore > homeScore)
+                            ) {
+                                return <span className="text-green-500">V</span>;
+                            }
+                            return <span className="text-red-500">F</span>;
+                        });
+
+                        return {teamId, form};
+                    })
+                );
+
+                const formMap = Object.fromEntries(
+                    results.map((r) => [r.teamId, r.form])
+                );
+
+                if (active) setFormData(formMap);
+            } catch (err) {
+                console.error("Error fetching team forms:", err);
+                if (active) setError(err);
+            } finally {
+                if (active) setLoading(false);
+            }
+        };
+
+        fetchForms();
+
+        return () => {
+            active = false;
+        };
+    }, [leagueId, teams]);
+
+    return {data: formData, loading, error};
+}
+

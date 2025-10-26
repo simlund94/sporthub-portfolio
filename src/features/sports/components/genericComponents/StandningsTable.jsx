@@ -1,5 +1,5 @@
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 export default function StandingsTable({
                                            leagues = [],
@@ -9,10 +9,11 @@ export default function StandingsTable({
                                        }) {
     const navigate = useNavigate();
 
+
     if (loading) {
         return (
             <div className="p-4 max-w-4xl mx-auto space-y-2">
-                {Array.from({ length: 10 }).map((_, idx) => (
+                {Array.from({length: 10}).map((_, idx) => (
                     <div key={idx} className="skeleton h-12 w-full rounded-md"></div>
                 ))}
             </div>

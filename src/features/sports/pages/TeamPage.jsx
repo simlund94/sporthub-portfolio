@@ -9,7 +9,6 @@ import TeamSeasonSelector from "../components/genericComponents/TeamSeasonSelect
 import {useLeagueWithTeamsById} from "../hooks/LeagueHooks.jsx";
 
 
-
 export default function TeamPage() {
     const [status, setStatus] = useState("FINISHED")
     const [order, setOrder] = useState("desc");
@@ -17,11 +16,11 @@ export default function TeamPage() {
 
 
     console.log("leagueId: ", leagueId);
-    const { id } = useParams();
-    const { data, loading, err } = useTeamId(id);
+    const {id} = useParams();
+    const {data, loading, err} = useTeamId(id);
     const team = data?.team
 
-    const events =  useTeamEvents(id, status, order);
+    const events = useTeamEvents(id, status, order);
     const leagues = useLeagueWithTeamsById(leagueId);
     const selectedLeague = Array.isArray(leagues?.data?.groups) && leagues.data.groups.length > 0
         ? leagues.data.groups[0]
@@ -55,7 +54,8 @@ export default function TeamPage() {
                     <div className="flex flex-col items-center">
                         <img src={team.logo} className="w-30 h-30 object-contain" alt={team.name}/>
                         <span className="text-3xl font-bold text-center mb-4">{team.name}</span>
-                        <span className="text-xl font-bold text-center mb-4">{team.teamClass === "WOMEN" ? "Dam" :"Herr"}</span>
+                        <span
+                            className="text-xl font-bold text-center mb-4">{team.teamClass === "WOMEN" ? "Dam" : "Herr"}</span>
                         <IconFactory name="arena" className="h-8 w-8"/>
                         <span className="text-3xl font-bold text-center mb-4">{team.arena?.name ?? "Okänd"}</span>
                     </div>
@@ -73,14 +73,15 @@ export default function TeamPage() {
 
                 <StandingsTable leagues={selectedLeague ? [selectedLeague] : []}
                                 loading={leagues.loading}
-                                error = {leagues.error}
-                                currentTeamId={team.id} />
+                                error={leagues.error}
+                                currentTeamId={team.id}/>
+
                 <h2 className="text-2xl font-bold my-4 mx-2">Matcher:</h2>
                 <GamesFilter
-                status={status}
-                onChangeStatus={setStatus}
-                onChangeOrder={setOrder}
-                order={order}/>
+                    status={status}
+                    onChangeStatus={setStatus}
+                    onChangeOrder={setOrder}
+                    order={order}/>
 
                 <GamesTable
                     items={events.data}
@@ -91,6 +92,6 @@ export default function TeamPage() {
         </>
 
 
-)
+    )
 
 }
