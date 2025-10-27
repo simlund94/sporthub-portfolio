@@ -11,7 +11,7 @@ export default function RenderScoreBasedOnStatus({ event }) {
             );
 
         case "ONGOING":
-            return <p className="text-6xl font-bold">Matchen spelas fortfarande</p>;
+            return <p className="text-xl font-bold items-center text-center justify-center">Matchen spelas<span className="loading text-center loading-dots loading-md"></span></p>;
 
         case "UPCOMING":
             return (

@@ -1,18 +1,25 @@
-import {Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function Footer() {
     return (
-        <footer className="footer footer-vertical footer-center bg-base-300/50 text-base-content rounded p-6 glass">
-            <aside className="w-36 rounded-lg px-8">
-                <img src="/logo.png" alt="Sporthubs logga"/>
+        <footer className="flex flex-col items-center justify-center gap-4 bg-base-300/50 text-base-content rounded p-6 glass">
+            <aside className="w-36">
+                <img src="/logo.png" alt="Sporthubs logga" className="rounded-lg" />
             </aside>
-            <nav className="grid grid-flow-col gap-4">
-                <Link to="/about-us" className="link link-hover">Om oss</Link>
-                <Link to="/contact" className="link link-hover">Kontakt</Link>
+
+            <nav className="flex flex-col sm:flex-row gap-3 sm:gap-6 text-center">
+                <Link to="/about-us" className="link link-hover">
+                    Om oss
+                </Link>
+                <Link to="/contact" className="link link-hover">
+                    Kontakt
+                </Link>
             </nav>
             <aside>
-                <p>Copyright © {new Date().getFullYear()} - Alla rättigheter förbehållna av SportHub</p>
+                <p className="text-xs text-center">
+                    © {new Date().getFullYear()} SportHub — Alla rättigheter förbehållna
+                </p>
             </aside>
         </footer>
-    )
+    );
 }

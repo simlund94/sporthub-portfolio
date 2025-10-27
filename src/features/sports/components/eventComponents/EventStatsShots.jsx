@@ -60,16 +60,16 @@ export default function EventStatsShots({event}) {
 
             <li className="flex items-center gap-2">
                 <IconFactory name="arena" className="h-6 w-6"/>
-                <span>{event.facts?.arena?.name ?? "Okänd"}</span>
+                <span>Arena: {event.facts?.arena?.name ?? "Okänd"}</span>
             </li>
 
             <li className="flex items-center gap-2">
                 <IconFactory name="åskådare" className="h-6 w-6"/>
-                <span>Åskådare: {event.facts?.spectators ?? "Okänd"}</span>
+                <span>Åskådare: {event.facts?.spectators ?? "Ej rapporterat"}</span>
             </li>
             <li className="flex items-center text-md text-gray-600 gap-2">
                 <IconFactory name="Referee" className="h-6 w-6"/>
-                <span>Dommare: {event.facts?.referees ?? "Okänd"}</span>
+                <span>Domare: {event.facts?.referees ?? "Ej rapporterad"}</span>
             </li>
         </ul>
     );

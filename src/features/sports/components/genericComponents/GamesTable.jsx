@@ -8,24 +8,22 @@ export default function GamesTable({
     const navigate = useNavigate();
 
 
-
     console.log("GamesTableItems: ", items, "Loading...", loading);
 
 
     if (loading) {
-        return (
-            <>
+        return (<>
             <div className="container mx-auto w-full h-96 px-2 rounded-lg ">
 
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
-            <div className="skeleton h-16 w-full mt-2 mb-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 rounded-md"></div>
+                <div className="skeleton h-16 w-full mt-2 mb-2 rounded-md"></div>
 
-        </div>
-            </>);
+            </div>
+        </>);
     }
 
     if (error) {
@@ -43,23 +41,26 @@ export default function GamesTable({
             case "FINISHED":
                 return <p className="text-sm font-bold">{item.item.homeTeamScore} - {item.item.visitingTeamScore}</p>;
             case "ONGOING":
-                return <p className="text-sm font-bold">Matchen spelas fortfarande</p>;
+                return <p className="text-sm font-bold">Matchen spelas</p>;
             case "UPCOMING": {
                 const date = new Date(item.item.startDate);
 
-                return (
-                    <>
+                return (<>
                     <div className="gap-1">
 
                         <span className="hidden md:inline">
                         {date.toLocaleString("sv-SE", {
-                         hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
-                         })}
+                            hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
+                        })}
                         </span>
                         <span className="md:hidden inline">
                           {date.toLocaleTimeString("sv-SE", {
-                           day: "2-digit", month: "short", hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
-                            })}
+                              day: "2-digit",
+                              month: "short",
+                              hour: "2-digit",
+                              minute: "2-digit",
+                              timeZone: "Europe/Stockholm",
+                          })}
                         </span>
                     </div>
                 </>);
@@ -68,8 +69,8 @@ export default function GamesTable({
     };
 
     return (<div className="p-4 w-full">
-        <div className={` ${height} overflow-x-auto rounded-lg shadow`}>
-            <table className="hidden md:table table-zebra w-full table-pin-cols table-pin-rows">
+        <div className={`${height} overflow-x-auto rounded-lg shadow hidden md:block`}>
+            <table className="table table-zebra w-full table-pin-cols table-pin-rows">
                 <thead>
                 <tr>
                     <th>Sport</th>
@@ -82,13 +83,14 @@ export default function GamesTable({
                 </tr>
                 </thead>
                 <tbody>
-                {items.map((item, index) => (<tr
+                {items.map((item, index) => (
+                    <tr
                         key={index}
                         className="hover:bg-base-300 cursor-pointer"
                         onClick={() => navigate(`/event/${item.id}`)}
                     >
                         <td className="text-center">
-                            <IconFactory name={item.league.sport.name} className="h-5 w-5 mx-auto"/>
+                            <IconFactory name={item.league.sport.name} className="h-5 w-5 mx-auto" />
                         </td>
                         <td>{item.league.name}</td>
                         <td className="flex items-center gap-2">
@@ -97,12 +99,11 @@ export default function GamesTable({
                                 src={item.homeTeam.logos.small}
                                 alt={`${item.homeTeam.name} logo`}
                             />
-                            <span className="float-right">{item.homeTeam.name}</span>
+                            <span>{item.homeTeam.name}</span>
                         </td>
                         <td className="text-center text-warning font-semibold">
-                            <RenderScoreOrTimeBasedOnEventStatus item={item}/>
+                            <RenderScoreOrTimeBasedOnEventStatus item={item} />
                         </td>
-
                         <td className="flex items-center gap-2">
                             <span>{item.visitingTeam.name}</span>
                             <img
@@ -112,20 +113,22 @@ export default function GamesTable({
                             />
                         </td>
                         <td>{item.facts?.arena?.name ?? "Okänd arena"}</td>
-                        <td><span>
-  {new Date(item.startDate).toLocaleString("sv-SE", {
-      day: "2-digit", month: "short", year: "numeric", timeZone: "Europe/Stockholm"
-  })}
-</span>
-
+                        <td>
+                            {new Date(item.startDate).toLocaleString("sv-SE", {
+                                day: "2-digit",
+                                month: "short",
+                                year: "numeric",
+                                timeZone: "Europe/Stockholm",
+                            })}
                         </td>
                     </tr>
-
                 ))}
                 </tbody>
             </table>
+        </div>
 
-            <table className="table table-compact text-xs md:hidden">
+        <div className="overflow-y-auto max-h-[45vh]">
+            <table className="table table-sm text-xs md:hidden w-full">
                 <thead>
                 <tr>
                     <th>Match</th>
@@ -134,40 +137,42 @@ export default function GamesTable({
                 </tr>
                 </thead>
                 <tbody>
-                {items.map((item, index) => (<tr
-                    key={index}
-                    className="hover:bg-base-300 cursor-pointer"
-                    onClick={() => navigate(`/event/${item.id}`)}
-                >
-                    <td>
-                        <div className="flex items-center justify-center gap-2">
-                            <span>{item.homeTeam.shortName}</span>
-                            <img
-                                className="w-8 h-8 object-contain"
-                                src={item.homeTeam.logos.small}
-                                alt={item.homeTeam.abbreviation}
-                            />
-                        </div>
-                    </td>
+                {items.map((item, index) => (
+                    <tr
+                        key={index}
+                        className="hover:bg-base-300 cursor-pointer h-10"
+                        onClick={() => navigate(`/event/${item.id}`)}
+                    >
+                        <td className="py-1 px-0">
+                            <div className="flex flex-row-reverse text-right">
+                                <img
+                                    className="w-6 h-6 object-contain"
+                                    src={item.homeTeam.logos.small}
+                                    alt={item.homeTeam.abbreviation}
+                                />
+                                <span>{item.homeTeam?.abbreviation ?? item.homeTeam?.shortName}</span>
+                            </div>
+                        </td>
 
-                    <td className="text-center text-warning items-center font-semibold">
-                        <RenderScoreOrTimeBasedOnEventStatus item={item}/>
-                    </td>
+                        <td className="text-center text-warning font-semibold text-[11px] py-1 px-0">
+                            <RenderScoreOrTimeBasedOnEventStatus item={item} />
+                        </td>
 
-                    <td>
-                        <div className="flex items-center justify-center gap-2">
-                            <img
-                                className="w-8 h-8 object-contain"
-                                src={item.visitingTeam.logos.small}
-                                alt={item.visitingTeam.abbreviation}
-                            />
-                            <span>{item.visitingTeam.shortName}</span>
-                        </div>
-                    </td>
-                </tr>))}
+                        <td className="py-1 px-0 mx-0">
+                            <div className="flex items-center justify-start gap-1">
+                                <img
+                                    className="w-6 h-6 object-contain px-0"
+                                    src={item.visitingTeam.logos.small}
+                                    alt={item.visitingTeam.abbreviation}
+                                />
+                                <span>{item.visitingTeam?.abbreviation ?? item.visitingTeam.shortName}</span>
+                            </div>
+                        </td>
+                    </tr>
+                ))}
                 </tbody>
             </table>
-
         </div>
+
     </div>);
 }

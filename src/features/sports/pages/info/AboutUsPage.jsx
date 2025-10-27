@@ -2,7 +2,7 @@ export default function AboutUsPage() {
     const team = [
         {
             name: "Emil Lindström Moffatt",
-            img: "https://media.licdn.com/dms/image/v2/D4D03AQGMHrGdtsZaoQ/profile-displayphoto-shrink_200_200/B4DZgt_hFTH4AY-/0/1753118283882?e=1762992000&v=beta&t=TA8GWMsk55nm7H8Qmt4aIGkwK7eWlynjrG58XPyeBcc",
+            img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
             email: "emilmoff@hotmail.com",
             github: "23emli04",
             linkedin: "https://www.linkedin.com/in/emil-lindstr%C3%B6m-moffatt-a27165221/",
