@@ -1,11 +1,17 @@
+/**
+ *Klass som visar liga ställningen för en angiven liga via {leagueId}
+ *
+ */
+
+
 import {useNavigate} from "react-router-dom";
 import {
     useLeagueByIdWithEvents,
     useLeagueStandingsById,
-    useTeamsByLeagueId
+    useTeamsByLeagueId,
+    useTeamFormsByLeagueId
 } from "../../hooks/LeagueHooks.jsx";
-import {useEffect, useState} from "react";
-import {SportsApi} from "../../api.jsx";
+
 
 const LeagueStandingsTable = ({leagueId}) => {
     const navigate = useNavigate();
@@ -13,7 +19,7 @@ const LeagueStandingsTable = ({leagueId}) => {
     // --- League standings ---
     const {data, loading, err} = useLeagueStandingsById(leagueId);
 
-    // --- Calculate date range for upcoming matches ---
+    // --- Set for current date and range for upcoming matches ---
     const today = new Date();
     const laterDate = new Date(today);
     laterDate.setDate(today.getDate() + 14);
@@ -22,94 +28,25 @@ const LeagueStandingsTable = ({leagueId}) => {
     const fromDate = formatDate(today);
     const toDate = formatDate(laterDate);
 
-    // --- Upcoming matches ---
     const {
         data: eventsData,
         loading: eventsLoading,
         err: eventsError,
     } = useLeagueByIdWithEvents(leagueId, "UPCOMING", fromDate, toDate);
 
-    // --- All teams in league ---
+    // --- All team ids ---
     const {
         data: teams,
         loading: teamsLoading,
         err: teamsErr,
     } = useTeamsByLeagueId(leagueId);
 
-    // --- Form data for each team ---
-    const [formData, setFormData] = useState({}); // { [teamId]: ["V", "O", "F", ...] }
-    const [formLoading, setFormLoading] = useState(false);
+    const {
+        data: formData,
+        loading: formLoading,
+        error: formError,
+    } = useTeamFormsByLeagueId(leagueId, teams);
 
-    // Fetch last 5 games for each team (parallel)
-    useEffect(() => {
-        if (!leagueId || !teams?.length) return;
-
-        let active = true;
-        setFormLoading(true);
-//TODO FIXA TILL HOOK
-        const fetchForms = async () => {
-            try {
-                // Fetch all teams’ last 5 games in parallel
-                const results = await Promise.all(
-                    teams.map(async (team) => {
-                        const teamId = team.id;
-
-                        const res = await SportsApi.leagueByIdLastFiveGames(
-                            leagueId,
-                            "FINISHED",
-                            teamId
-                        );
-
-                        const matches = res?.events || [];
-
-                        // Sort by date descending, keep latest 5
-                        const sorted = matches
-                            .filter((ev) => ev.status === "FINISHED")
-                            .sort(
-                                (a, b) =>
-                                    new Date(b.startDate) - new Date(a.startDate)
-                            )
-                            .slice(0, 5);
-
-                        // Compute V/O/F
-                        const form = sorted.map((ev) => {
-                            const isHome = ev.homeTeam?.id === teamId;
-                            const homeScore = ev.homeTeamScore ?? 0;
-                            const awayScore = ev.visitingTeamScore ?? 0;
-
-                            if (homeScore === awayScore) {
-                                return <span className="text-gray-500">O</span>;
-                            }
-                            if ((isHome && homeScore > awayScore) || (!isHome && awayScore > homeScore)) {
-                                return <span className="text-green-500">V</span>;
-                            }
-                            return <span className="text-red-500">F</span>;
-                        });
-
-
-                        return {teamId, form};
-                    })
-                );
-
-                // Convert array into object for easier access
-                const formMap = Object.fromEntries(
-                    results.map((r) => [r.teamId, r.form])
-                );
-
-                if (active) setFormData(formMap);
-            } catch (e) {
-                console.error("Error fetching team forms:", e);
-            } finally {
-                if (active) setFormLoading(false);
-            }
-        };
-//TODO FIXA DENNA TILL HOOKEN
-        fetchForms();
-
-        return () => {
-            active = false;
-        };
-    }, [leagueId, teams]);
 
     // --- Loading states ---
     if (loading || teamsLoading || formLoading || eventsLoading) {
@@ -122,11 +59,16 @@ const LeagueStandingsTable = ({leagueId}) => {
         );
     }
 
+    if (err || teamsErr || eventsError || formError) {
+        return <div>Error loading league standings</div>;
+    }
+
+
     if (err || teamsErr || eventsError) {
         return <div>Error loading league standings</div>;
     }
 
-    // --- Render table ---
+    // --- Render table for bigger screens---
     return (
         <div>
             <table className="hidden md:table mx-auto table-zebra w-full table-pin-cols table-pin-rows">
@@ -216,8 +158,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                             <td className="text-warning text-sm font-bold">
                                 {teamItem.stats.find((t) => t.name === "pts")?.value}
                             </td>
-
-                            {/* --- FORM --- */}
                             <td className="text-center font-bold text-sm whitespace-nowrap">
                                 {form.length > 0 ? form.slice().reverse().map((item, idx) => (
                                     <span key={idx} className="mr-1">
@@ -225,9 +165,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                             </span>
                                 )) : "-"}
                             </td>
-
-
-                            {/* --- NEXT MATCH --- */}
                             <td className="flex justify-center">{nextMatchLogo}</td>
                         </tr>
                     );
@@ -237,8 +174,10 @@ const LeagueStandingsTable = ({leagueId}) => {
 
             </table>
 
-            {/* Mobile table */}
-            {/* Mobile table */}
+            {/* Mobile table
+            removed scored goals, conceded goals and team form
+            to better fit a smaller screen*/}
+
             <div className="overflow-x-auto md:hidden">
                 <table className="table mx-auto table-zebra w-full">
                     <thead>
@@ -251,7 +190,7 @@ const LeagueStandingsTable = ({leagueId}) => {
                         <th>F</th>
                         <th>+/-</th>
                         <th>TP</th>
-                        <th>Nästa</th> {/* Added this header */}
+                        <th>Nästa</th>
                     </tr>
                     </thead>
                     <tbody>
@@ -301,15 +240,12 @@ const LeagueStandingsTable = ({leagueId}) => {
                                          alt={`${teamItem.team.name} logo`}/>
                                     <span>{teamItem.team.name}</span>
                                 </td>
-
                                 <td>{teamItem.stats.find(t => t.name === "gp")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
                                 <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
-
-                                {/* --- NEXT MATCH --- */}
                                 <td className="flex justify-center">{nextMatchLogo}</td>
                             </tr>
                         )

@@ -2,6 +2,11 @@ import {useEffect, useState} from "react";
 import {SportsApi} from "../api.jsx";
 import {delay, MOCK, pickList, USE_MOCK} from "../MockData.js";
 
+/**
+ * Retrieves all available information about a specified team by teamId
+ * @param id
+ * @returns {{data: unknown, loading: boolean, err: unknown}}
+ */
 export function useTeamId(id) {
     const [data, setData] = useState(null); // <-- null, not []
     const [loading, setLoading] = useState(true);
@@ -132,7 +137,11 @@ export function useTeamEvents(teamId, status) {
     return {data, loading, err};
 }
 
-export function useAllTeams(){
+/**
+ * Retrieves an array of all available teams from the api
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
+export function useAllTeams() {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
     const [err, setErr] = useState(null);
@@ -165,6 +174,12 @@ export function useAllTeams(){
     return {data, loading, err};
 }
 
+/**
+ * Retrieves all leagues from a sportId with a set gender and startDate descending
+ * @param sportId
+ * @param gender
+ * @returns {{data: *[], loading: boolean, err: unknown}}
+ */
 export function useLeaguesBySportAndGender(sportId, gender) {
     const [data, setData] = useState([]);
     const [loading, setLoading] = useState(true);
