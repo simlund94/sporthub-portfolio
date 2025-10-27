@@ -21,7 +21,7 @@ export default function HomePage() {
 
                 <button
                     type="button"
-                    className={`btn mx-2 transition-colors duration-200 ${
+                    className={`btn mx-2 transition-colors duration-200 mb-2 ${
                     chosenGender === "ALL" ? "btn-warning" : "btn-outline btn-warning"
                 }`}
                     onClick={() => {
@@ -33,7 +33,7 @@ export default function HomePage() {
 
                 <button
                     type="button"
-                    className={`btn mx-2 transition-colors duration-200 ${
+                    className={`btn mx-2 transition-colors duration-200 mb-2 ${
                         chosenGender === "MEN" ? "btn-warning" : "btn-outline btn-warning"
                     }`}
                     onClick={() => {
@@ -44,7 +44,7 @@ export default function HomePage() {
                 </button>
                 <button
                     type="button"
-                    className={`btn mx-2 transition-colors duration-200 ${
+                    className={`btn mx-2 transition-colors duration-200 mb-2 ${
                         chosenGender === "WOMEN" ? "btn-warning" : "btn-outline btn-warning"
                     }`}
                     onClick={() => {
@@ -55,7 +55,7 @@ export default function HomePage() {
                 </button>
                 <input
                     type="date"
-                    className="input input-warning mx-2"
+                    className="input input-warning mx-2 mb-2"
                     value={selectedDate}
                     onChange={(e) => {
                         const value = e.target.value;
