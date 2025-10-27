@@ -6,28 +6,27 @@ export default function AboutUsPage() {
             email: "emilmoff@hotmail.com",
             github: "23emli04",
             linkedin: "https://www.linkedin.com/in/emil-lindstr%C3%B6m-moffatt-a27165221/",
-            phone: "0707641841",
         },
         {
             name: "Joar Morén",
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
-            email: "",
-            github: "",
-            linkedin: "",
+            email: "Joar.Moren@live.se",
+            github: "https://github.com/baronzapp",
+            linkedin: "Kommer snart",
         },
         {
             name: "Hugo",
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
-            email: "",
-            github: "",
-            linkedin: "",
+            email: "TODO",
+            github: "https://github.com/HugoBjorklund",
+            linkedin: "TODO",
         },
         {
             name: "Simon Lundgren",
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
-            email: "",
-            github: "",
-            linkedin: ""
+            email: "sim.lund@outlook.com",
+            github: "https://github.com/simlund94",
+            linkedin: "www.linkedin.com/in/simon-lundgren-32174a137/"
         },
     ];
 
