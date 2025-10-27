@@ -37,6 +37,8 @@ Applikationen integrerar ett API från everysport.com, där viss mängd data har
 ---
 ## Filstruktur
 
+
+'''plaintext
 src
 ├── app
 │   ├── App.css
