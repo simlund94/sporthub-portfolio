@@ -25,6 +25,17 @@ export default function TeamSeasonSelector({ sportId, gender, teamId, leagueId, 
             setInitialized(true);
         }
     }, [seasons, initialized, setLeagueId, leagueId]);
+    //Hantera att stänga details
+    useEffect(() => {
+        const handleClickOutside = (event) => {
+            if (detailsRef.current && !detailsRef.current.contains(event.target)) {
+                detailsRef.current.removeAttribute("open");
+            }
+        };
+
+        document.addEventListener("click", handleClickOutside);
+        return () => document.removeEventListener("click", handleClickOutside);
+    }, []);
 
     if (loading) return <span className="loading loading-dots loading-sm text-warning my-2 "></span>;
     if (err) return <div className="text-red-500">Fel ladda säsonger</div>;

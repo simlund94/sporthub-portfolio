@@ -6,8 +6,8 @@ export default function EventHeader({ event }) {
 
     return (
         <div>
-            <a className="link cursor-pointer" onClick={() => navigate(-1)}>Tillbaka</a>
-            <h1 className="text-3xl font-bold text-center mb-4">
+            <a className="link cursor-pointer mx-auto" onClick={() => navigate(-1)}>Tillbaka</a>
+            <h1 className="text-3xl font-bold text-center mt-2 mb-4">
                 {event.homeTeam.name} vs {event.visitingTeam.name}
             </h1>
             <p className="text-center text-lg mb-2 cursor-pointer" onClick={() =>
