@@ -57,7 +57,7 @@ const LeaguePage = ({initialLeagueId}) => {
 
     return (
         <div className="p-4 ">
-            <h1 className="text-2xl sm:text-3xl md:text-4xl mt-10 font-bold my-4 glass p-4 sm:p-6 text-center">{seasonData.leagueName || "Laddar liga..."}</h1>
+            <h1 className="text-2xl sm:text-3xl md:text-4xl mt-4 font-bold my-4 glass p-4 sm:p-6 text-center">{seasonData.leagueName || "Laddar liga..."}</h1>
             <div className="flex flex-col text-center items-center">
                 <SeasonSelector
                     allSeasons={seasonData.allSeasons}
