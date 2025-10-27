@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {SportsApi} from '../api.jsx';
-import {USE_MOCK, MOCK, delay, pickList} from '../MockData.js';
+import { pickList} from '../MockData.js';
 
 export function useLeaguesWithSportIdAndQuery(sportId, query) {
     const [data, setData] = useState([]);
@@ -18,15 +18,11 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.leaguesBySport[sportId] ?? []);
-                } else {
-                    const res = await SportsApi.leaguesBySport(sportId, query);
-                    if (!live) return;
-                    setData(pickList(res, 'leagues'));
-                }
+
+                const res = await SportsApi.leaguesBySport(sportId, query);
+                if (!live) return;
+                setData(pickList(res, 'leagues'));
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -51,13 +47,10 @@ export function useAllLeagues() {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                } else {
                     const res = await SportsApi.allLeagues();
                     if (!live) return;
                     setData(pickList(res, 'leagues'));
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -95,16 +88,12 @@ export function useLeagueWithTeamsById(leagueId) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.leaguesBySport[leagueId] ?? []);
-                } else {
+
                     const res = await SportsApi.leagueWithTeamsById(leagueId);
                     if (!live) return;
                     console.log("Resultat av hämtning", res);
                     setData(res);
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -125,13 +114,13 @@ export function useLeagueWithTeamsById(leagueId) {
  * @returns {{data: unknown, loading: boolean, err: unknown}}
  */
 export function useLeagueAllSeasonsById(leagueId) {
-    const [data, setData] = useState({ leagueName: "", allSeasons: [] });
+    const [data, setData] = useState({leagueName: "", allSeasons: []});
     const [loading, setLoading] = useState(false);
     const [err, setErr] = useState(null);
 
     useEffect(() => {
         if (!leagueId) {
-            setData({ leagueName: "", allSeasons: [] });
+            setData({leagueName: "", allSeasons: []});
             setErr("No leagueId provided");
             return;
         }
@@ -153,9 +142,9 @@ export function useLeagueAllSeasonsById(leagueId) {
                     startDate: l.season?.startDate,
                     endDate: l.season?.endDate,
                 }));
-                console.log("AllSeasons",allSeasons);
+                console.log("AllSeasons", allSeasons);
                 console.log("LeagueName", leagueName);
-                setData({ leagueName, allSeasons });
+                setData({leagueName, allSeasons});
 
 
             } catch (e) {
@@ -167,10 +156,12 @@ export function useLeagueAllSeasonsById(leagueId) {
 
         fetchSeasons();
 
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [leagueId]);
 
-    return { data, loading, err };
+    return {data, loading, err};
 }
 
 /**
@@ -209,10 +200,12 @@ export function useLeagueStandingsById(leagueId) {
 
         fetchStandings();
 
-        return () => { live = false; };
+        return () => {
+            live = false;
+        };
     }, [leagueId]);
 
-    return { data: standings, loading, err };
+    return {data: standings, loading, err};
 }
 
 /**
@@ -243,8 +236,6 @@ export function useScoringLeadersById(leagueId) {
                 if (!live) return;
 
                 console.log("scoringLeaders from API", res);
-
-                // ✅ Normalize data structure
                 let normalizedData = [];
 
                 if (Array.isArray(res)) {
@@ -270,7 +261,7 @@ export function useScoringLeadersById(leagueId) {
         };
     }, [leagueId]);
 
-    return { data: scoringLeaders, loading, err };
+    return {data: scoringLeaders, loading, err};
 }
 
 /**
@@ -378,64 +369,6 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
     return {data: events, loading, err};
 }
 
-/**
- * Return all teams by a specified league id
- * @param leagueId
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
-export function useLeagueByIdLastFiveGames(leagueId, teamId) {
-    const [games, setGames] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        if (!leagueId || !teamId) {
-            setGames([]);
-            setErr("Missing leagueId or teamId");
-            return;
-        }
-
-        let live = true;
-
-        const fetchLastFive = async () => {
-            try {
-                setLoading(true);
-
-
-                const res = await SportsApi.leagueByIdLastFiveGames(
-                    leagueId,
-                    "FINISHED",
-                    teamId
-                );
-
-                if (!live) return;
-
-
-                const events = res?.events || [];
-                const sortedEvents = events
-                    .filter(ev => ev.status === "FINISHED")
-                    .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-                    .slice(0, 5); // limit to last 5
-
-                setGames(sortedEvents);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchLastFive();
-
-        return () => {
-            live = false;
-        };
-    }, [leagueId, teamId]);
-
-    return { data: games, loading, err };
-}
-
-
 export function useTeamsByLeagueId(leagueId) {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(false);
@@ -473,7 +406,7 @@ export function useTeamsByLeagueId(leagueId) {
         };
     }, [leagueId]);
 
-    return { data: teams, loading, err };
+    return {data: teams, loading, err};
 }
 
 /**

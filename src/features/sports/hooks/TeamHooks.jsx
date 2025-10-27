@@ -1,6 +1,6 @@
 import {useEffect, useState} from "react";
 import {SportsApi} from "../api.jsx";
-import {delay, MOCK, pickList, USE_MOCK} from "../MockData.js";
+import {pickList} from "../MockData.js";
 
 /**
  * Retrieves all available information about a specified team by teamId
@@ -17,15 +17,10 @@ export function useTeamId(id) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    //if (!live) return;
-                    //setData(MOCK.teamById[id]); // or whichever mock matches
-                } else {
                     const res = await SportsApi.teamById(id);
                     if (!live) return;
                     setData(res);
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -57,15 +52,10 @@ export function useTeamEvents(teamId, status) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
                     const res = await SportsApi.eventsByTeam(teamId, status)
                     if (!live) return;
                     setData(pickList(res, 'events'));
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -94,15 +84,9 @@ export function useAllTeams() {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
                     const res = await SportsApi.allTeams();
                     if (!live) return;
                     setData(pickList(res, "teams"));
-                }
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -133,15 +117,10 @@ export function useLeaguesBySportAndGender(sportId, gender) {
         (async () => {
             try {
                 setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
                     const res = await SportsApi.allLeaguesBySportAndGender(sportId, gender); // kan vara {sports:[...]} eller [...]
                     if (!live) return;
                     setData(pickList(res, 'leagues'));
-                }
+
             } catch (e) {
                 if (live) setErr(e);
             } finally {

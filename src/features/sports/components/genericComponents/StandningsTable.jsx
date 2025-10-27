@@ -30,8 +30,8 @@ export default function StandingsTable({
 
     return (
         <div className="space-y-8">
-            {leagues.map(league => (
-                <div key={league.id} className="overflow-x-auto rounded-lg shadow p-2">
+            {leagues.map((league, i) => (
+                <div key={league.id ?? `league-${i}`} className="overflow-x-auto rounded-lg shadow p-2">
                     <table className="table table-zebra w-full">
                         <thead>
                         <tr>
@@ -50,11 +50,11 @@ export default function StandingsTable({
                         <tbody>
                         {league.standings.map((teamEntry, idx) => {
                             const isCurrentTeam = currentTeamId === teamEntry.team?.id;
-                            const stats = teamEntry.stats?.reduce((acc, s) => {
-                                acc[s.name] = s.value;
-                                return acc;
-                            }, {}) || {};
-
+                            const stats =
+                                teamEntry.stats?.reduce((acc, s) => {
+                                    acc[s.name] = s.value;
+                                    return acc;
+                                }, {}) || {};
 
                             const borderClass =
                                 teamEntry.lineThicknessBelow === 1
@@ -65,8 +65,10 @@ export default function StandingsTable({
 
                             return (
                                 <tr
-                                    key={teamEntry.team?.id || idx}
-                                    className={`cursor-pointer hover:bg-base-200 ${isCurrentTeam ? "text-warning" : ""} ${borderClass}`}
+                                    key={`${league.id}-${teamEntry.team?.id ?? idx}`}
+                                    className={`cursor-pointer hover:bg-base-200 ${
+                                        isCurrentTeam ? "text-warning" : ""
+                                    } ${borderClass}`}
                                     onClick={() => navigate(`/team/${teamEntry.team.id}`)}
                                 >
                                     <td>{teamEntry.position}</td>
@@ -78,7 +80,7 @@ export default function StandingsTable({
                                                 className="w-6 h-6 object-contain"
                                             />
                                         )}
-                                        <span>{teamEntry.team?.name}</span>
+                                        <span className="table-pin-cols">{teamEntry.team?.name}</span>
                                     </td>
                                     <td>{stats.gp ?? "-"}</td>
                                     <td>{stats.w ?? "-"}</td>

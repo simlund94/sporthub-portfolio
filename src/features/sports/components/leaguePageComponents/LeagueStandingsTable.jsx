@@ -16,10 +16,9 @@ import {
 const LeagueStandingsTable = ({leagueId}) => {
     const navigate = useNavigate();
 
-    // --- League standings ---
     const {data, loading, err} = useLeagueStandingsById(leagueId);
 
-    // --- Set for current date and range for upcoming matches ---
+
     const today = new Date();
     const laterDate = new Date(today);
     laterDate.setDate(today.getDate() + 14);
@@ -34,7 +33,6 @@ const LeagueStandingsTable = ({leagueId}) => {
         err: eventsError,
     } = useLeagueByIdWithEvents(leagueId, "UPCOMING", fromDate, toDate);
 
-    // --- All team ids ---
     const {
         data: teams,
         loading: teamsLoading,
@@ -47,8 +45,6 @@ const LeagueStandingsTable = ({leagueId}) => {
         error: formError,
     } = useTeamFormsByLeagueId(leagueId, teams);
 
-
-    // --- Loading states ---
     if (loading || teamsLoading || formLoading || eventsLoading) {
         return (
             <>
@@ -67,8 +63,6 @@ const LeagueStandingsTable = ({leagueId}) => {
     if (err || teamsErr || eventsError) {
         return <div>Error loading league standings</div>;
     }
-
-    // --- Render table for bigger screens---
     return (
         <div>
             <table className="hidden md:table mx-auto table-zebra w-full table-pin-cols table-pin-rows">
@@ -94,7 +88,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                 {data.map((teamItem) => {
                     const teamId = teamItem.team.id;
 
-                    // --- Upcoming match logic ---
                     const teamEvents =
                         eventsData?.filter(
                             (ev) =>
@@ -128,7 +121,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                         "-"
                     );
 
-                    // --- Form for this team ---
                     const form = formData[teamId] || [];
 
                     return (
@@ -182,14 +174,14 @@ const LeagueStandingsTable = ({leagueId}) => {
                 <table className="table mx-auto table-zebra w-full">
                     <thead>
                     <tr>
-                        <th>Rank</th>
                         <th>Lag</th>
                         <th>M</th>
                         <th>V</th>
                         <th>O</th>
                         <th>F</th>
-                        <th>+/-</th>
                         <th>TP</th>
+                        <th>+/-</th>
+
                         <th>Nästa</th>
                     </tr>
                     </thead>
@@ -234,7 +226,6 @@ const LeagueStandingsTable = ({leagueId}) => {
                         return (
                             <tr key={teamId} className="cursor-pointer hover:bg-base-200"
                                 onClick={() => navigate(`/team/${teamId}`)}>
-                                <td>{teamItem.position}</td>
                                 <td className="flex items-center gap-4">
                                     <img className="w-8 h-8 object-contain" src={teamItem.team.logo}
                                          alt={`${teamItem.team.name} logo`}/>
@@ -244,8 +235,9 @@ const LeagueStandingsTable = ({leagueId}) => {
                                 <td>{teamItem.stats.find(t => t.name === "w")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "d")?.value}</td>
                                 <td>{teamItem.stats.find(t => t.name === "l")?.value}</td>
-                                <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
+
                                 <td className="text-warning text-sm font-bold">{teamItem.stats.find(t => t.name === "pts")?.value}</td>
+                                <td>{teamItem.stats.find(t => t.name === "gd")?.value}</td>
                                 <td className="flex justify-center">{nextMatchLogo}</td>
                             </tr>
                         )
