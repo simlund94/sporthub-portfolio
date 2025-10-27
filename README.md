@@ -37,18 +37,23 @@ Applikationen integrerar ett API från everysport.com, där viss mängd data har
 ---
 ## Filstruktur
 
-
 src
 ├── app
 │   ├── App.css
 │   ├── App.jsx
 │   ├── index.css
 │   └── main.jsx
+├── assets
+│   └── icons
+│       ├── floorball.svg
+│       ├── hockeystick.svg
+│       ├── matcher.svg
+│       └── soccer.svg
 ├── config.js
 ├── features
 │   └── sports
-│       ├── api.jsx //API calls
-│       ├── components //Komponenter
+│       ├── api.jsx
+│       ├── components
 │       │   ├── eventComponents
 │       │   │   ├── EventHeader.jsx
 │       │   │   ├── EventStatistics.jsx
