@@ -1,17 +1,17 @@
-# 🏆 Sportdata Plattform
+# SportHub
 
 En webbaserad applikation byggd med **React**, **React Router**, **Tailwind CSS** och **DaisyUI** som hämtar och visualiserar sportdata från ett externt API.  
 Applikationen presenterar ligor, tabeller, lag och statistik i ett modernt och responsivt gränssnitt byggt i React.
 
 ---
 
-## 🌍 Syfte
+## Syfte
 
 Målet med plattformen är att ge användare en överskådlig och attraktiv presentation av sportdata i realtid.  
 Applikationen integrerar ett API från everysport.com, där viss mängd data har gjorts tillgänglig genom tilldelad API-nyckel
 ---
 
-## 🚀 Funktioner
+## Funktioner
 
 - Hämtar ligor, tabeller och lagdata från ett sport-API  
 - Filtrering efter sport och säsong  
@@ -24,7 +24,7 @@ Applikationen integrerar ett API från everysport.com, där viss mängd data har
 
 ---
 
-## 🧱 Teknologier
+## Teknologier
 
 | Teknologi | Användning |
 |------------|-------------|
