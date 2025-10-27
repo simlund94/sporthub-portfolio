@@ -67,7 +67,7 @@ export default function Navbar({ leaguesData, errors, loading }) {
                         {!loading &&
                             !error &&
                             leagues.map((l) => (
-                                <li key={l.id} onClick={() => setOpenDropdown(null)}>
+                                <li key={l.id}>
                                     <Link to={`/league/${formatLeaguePath(l.name)}/${l.teamClass.toLowerCase()}`}>
                                         {l.name}{" "}
                                         {l.name.includes("Superligan")
