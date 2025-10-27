@@ -10,7 +10,6 @@ import {useEventByLeagueId} from "../hooks/EventHooks.jsx";
 import ScoringLeadersTable from "../components/leaguePageComponents/ScoringLeadersTable.jsx";
 import AssistLeadersTable from "../components/leaguePageComponents/AssistLeadersTable.jsx";
 
-
 const LeaguePage = ({initialLeagueId}) => {
     const [leagueId, setLeagueId] = useState(initialLeagueId);
     const [status, setStatus] = useState("FINISHED");
@@ -44,9 +43,9 @@ const LeaguePage = ({initialLeagueId}) => {
                     />
                 );
             case "Skytteliga":
-                return <ScoringLeadersTable leagueId={leagueId} />;
+                return <ScoringLeadersTable leagueId={leagueId}/>;
             case "Assistliga":
-                return <AssistLeadersTable leagueId={leagueId} />;
+                return <AssistLeadersTable leagueId={leagueId}/>;
             default:
                 return (
                     <div className="text-center text-gray-500">
@@ -75,7 +74,6 @@ const LeaguePage = ({initialLeagueId}) => {
                     onChangeOrder={setOrder}
                     currentSeason={currentSeason}
                 />
-
             <GamesTable
                 items={eventData.data}
                 loading={eventData.loading}
@@ -83,7 +81,7 @@ const LeaguePage = ({initialLeagueId}) => {
                 height="h-[35vh]"
             />
             </div>
-            <div className="divider" />
+            <div className="divider"/>
             <h1 className="custom text-2xl sm:text-3xl md:text-4xl mt-10 font-bold my-4 glass p-4 sm:p-6 text-center">
                 {activeTable}: {currentSeason}
             </h1>
@@ -91,7 +89,7 @@ const LeaguePage = ({initialLeagueId}) => {
             <div className="container mt-4 mx-auto flex flex-col md:flex-row gap-6">
                 <div className="w-full md:w-auto flex justify-center md:block ">
                     <ShowDiffrentTablesSelector onChangeActiveTable={setActiveTable}
-                    activeTable={activeTable}/>
+                                                activeTable={activeTable}/>
                 </div>
 
                 <div className="flex-1 overflow-x-auto">

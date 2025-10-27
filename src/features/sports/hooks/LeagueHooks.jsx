@@ -1,6 +1,6 @@
 import {useEffect, useState} from 'react';
 import {SportsApi} from '../api.jsx';
-import { pickList} from '../MockData.js';
+import {USE_MOCK, MOCK, delay, pickList} from '../MockData.js';
 
 export function useLeaguesWithSportIdAndQuery(sportId, query) {
     const [data, setData] = useState([]);
@@ -18,20 +18,22 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
         (async () => {
             try {
                 setLoading(true);
-
-                const res = await SportsApi.leaguesBySport(sportId, query);
-                if (!live) return;
-                setData(pickList(res, 'leagues'));
-
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.leaguesBySport[sportId] ?? []);
+                } else {
+                    const res = await SportsApi.leaguesBySport(sportId, query);
+                    if (!live) return;
+                    setData(pickList(res, 'leagues'));
+                }
             } catch (e) {
                 if (live) setErr(e);
             } finally {
                 if (live) setLoading(false);
             }
         })();
-        return () => {
-            live = false;
-        };
+        return () => { live = false; };
     }, [sportId, query]);
 
     return {data, loading, err};
@@ -47,10 +49,13 @@ export function useAllLeagues() {
         (async () => {
             try {
                 setLoading(true);
+                if (USE_MOCK) {
+                    await delay(150);
+                } else {
                     const res = await SportsApi.allLeagues();
                     if (!live) return;
                     setData(pickList(res, 'leagues'));
-
+                }
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -64,7 +69,6 @@ export function useAllLeagues() {
 
     return {data, loading, err};
 }
-
 
 /**
  * Returns a season for a league by its unique id, with all teams in the league during that season.
@@ -88,12 +92,16 @@ export function useLeagueWithTeamsById(leagueId) {
         (async () => {
             try {
                 setLoading(true);
-
+                if (USE_MOCK) {
+                    await delay(150);
+                    if (!live) return;
+                    setData(MOCK.leaguesBySport[leagueId] ?? []);
+                } else {
                     const res = await SportsApi.leagueWithTeamsById(leagueId);
                     if (!live) return;
                     console.log("Resultat av hämtning", res);
                     setData(res);
-
+                }
             } catch (e) {
                 if (live) setErr(e);
             } finally {
@@ -156,9 +164,7 @@ export function useLeagueAllSeasonsById(leagueId) {
 
         fetchSeasons();
 
-        return () => {
-            live = false;
-        };
+        return () => { live = false; };
     }, [leagueId]);
 
     return {data, loading, err};
@@ -200,9 +206,7 @@ export function useLeagueStandingsById(leagueId) {
 
         fetchStandings();
 
-        return () => {
-            live = false;
-        };
+        return () => { live = false; };
     }, [leagueId]);
 
     return {data: standings, loading, err};
@@ -236,6 +240,7 @@ export function useScoringLeadersById(leagueId) {
                 if (!live) return;
 
                 console.log("scoringLeaders from API", res);
+
                 let normalizedData = [];
 
                 if (Array.isArray(res)) {
@@ -368,6 +373,8 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
 
     return {data: events, loading, err};
 }
+
+
 
 export function useTeamsByLeagueId(leagueId) {
     const [teams, setTeams] = useState([]);

@@ -167,8 +167,8 @@ const LeagueStandingsTable = ({leagueId}) => {
             </table>
 
             {/* Mobile table
-            tog bort gjorda mål, insläppta mål och lag form
-            för att bättre få plats på en mindre skärm*/}
+            removed scored goals, conceded goals and team form
+            to better fit a smaller screen*/}
 
             <div className="overflow-x-auto md:hidden">
                 <table className="table mx-auto table-zebra w-full">

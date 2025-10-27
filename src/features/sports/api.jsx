@@ -20,6 +20,6 @@ export const SportsApi = {
     allLeaguesBySportAndGender: (sportId, gender) => api(`/leagues?sport=${sportId}&teamClass=${gender}&sort=startDate:desc`),
     //Teams
     teamById: (id) => api(`/teams/${id}`),
-    teamStandings: (teamId) => api(`/teams/${teamId}/leagues?limit=1`),
     allTeams: () => api(`/teams`),
+
 };
