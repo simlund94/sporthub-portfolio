@@ -44,7 +44,7 @@ export default function AllLeagues() {
         <div className="h-max overflow-x-auto">
             <table className="table table-pin-rows bg-base-200 w-full">
                 {Object.entries(leaguesBySport).map(([sport, leagues]) => (
-                    <>
+                    <React.Fragment key={sport}>
                         <thead>
                         <tr>
                             <th className="text-lg font-bold bg-base-300">{sport}</th>
@@ -70,7 +70,7 @@ export default function AllLeagues() {
                             </tr>
                         ))}
                         </tbody>
-                    </>
+                    </React.Fragment>
                 ))}
             </table>
         </div>

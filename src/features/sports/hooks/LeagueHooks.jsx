@@ -369,64 +369,6 @@ export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDa
     return {data: events, loading, err};
 }
 
-/**
- * Return all teams by a specified league id
- * @param leagueId
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
-export function useLeagueByIdLastFiveGames(leagueId, teamId) {
-    const [games, setGames] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        if (!leagueId || !teamId) {
-            setGames([]);
-            setErr("Missing leagueId or teamId");
-            return;
-        }
-
-        let live = true;
-
-        const fetchLastFive = async () => {
-            try {
-                setLoading(true);
-
-
-                const res = await SportsApi.leagueByIdLastFiveGames(
-                    leagueId,
-                    "FINISHED",
-                    teamId
-                );
-
-                if (!live) return;
-
-
-                const events = res?.events || [];
-                const sortedEvents = events
-                    .filter(ev => ev.status === "FINISHED")
-                    .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
-                    .slice(0, 5);
-
-                setGames(sortedEvents);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchLastFive();
-
-        return () => {
-            live = false;
-        };
-    }, [leagueId, teamId]);
-
-    return {data: games, loading, err};
-}
-
-
 export function useTeamsByLeagueId(leagueId) {
     const [teams, setTeams] = useState([]);
     const [loading, setLoading] = useState(false);
