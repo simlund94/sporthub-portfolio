@@ -35,3 +35,64 @@ Applikationen integrerar ett API från everysport.com, där viss mängd data har
 | **Custom Hooks** | Abstraktion av dataloggik |
 
 ---
+## Filstruktur
+
+```plaintext
+src
+├── app
+│   ├── App.css
+│   ├── App.jsx
+│   ├── index.css
+│   └── main.jsx
+├── assets
+│   └── icons
+│       ├── floorball.svg
+│       ├── hockeystick.svg
+│       ├── matcher.svg
+│       └── soccer.svg
+├── config.js
+├── features
+│   └── sports
+│       ├── api.jsx
+│       ├── components
+│       │   ├── eventComponents
+│       │   │   ├── EventHeader.jsx
+│       │   │   ├── EventStatistics.jsx
+│       │   │   ├── EventStatsShots.jsx
+│       │   │   ├── EventTimeline.jsx
+│       │   │   └── RenderScoreBasedOnStatus.jsx
+│       │   ├── genericComponents
+│       │   │   ├── AllLeagues.jsx
+│       │   │   ├── Footer.jsx
+│       │   │   ├── GamesFilter.jsx
+│       │   │   ├── GamesTable.jsx
+│       │   │   ├── Hero.jsx
+│       │   │   ├── NavBar.jsx
+│       │   │   ├── SearchComponent.jsx
+│       │   │   ├── StandningsTable.jsx
+│       │   │   └── TeamSeasonSelector.jsx
+│       │   ├── icons etc
+│       │   │   ├── IconFactory.jsx
+│       │   │   └── ThemeButton.jsx
+│       │   └── leaguePageComponents
+│       │       ├── AssistLeadersTable.jsx
+│       │       ├── LeagueStandingsTable.jsx
+│       │       ├── ScoringLeadersTable.jsx
+│       │       ├── SeasonSelector.jsx
+│       │       └── ShowDiffrentTablesSelector.jsx
+│       ├── hooks
+│       │   ├── EventHooks.jsx
+│       │   ├── LeagueHooks.jsx
+│       │   └── TeamHooks.jsx
+│       ├── MockData.js
+│       └── pages
+│           ├── EventPage.jsx
+│           ├── HomePage.jsx
+│           ├── info
+│           │   ├── AboutUsPage.jsx
+│           │   ├── ContactPage.jsx
+│           │   └── NotFoundPage.jsx
+│           ├── LeaguePage.jsx
+│           └── TeamPage.jsx
+└── lib
+    └── fetcher.jsx
