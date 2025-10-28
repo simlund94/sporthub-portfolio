@@ -11,21 +11,21 @@ export default function AboutUsPage() {
             name: "Joar Morén",
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
             email: "Joar.Moren@live.se",
-            github: "https://github.com/baronzapp",
+            github: "baronzapp",
             linkedin: "Kommer snart",
         },
         {
             name: "Hugo",
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
             email: "TODO",
-            github: "https://github.com/HugoBjorklund",
+            github: "HugoBjorklund",
             linkedin: "TODO",
         },
         {
             name: "Simon Lundgren",
             img: "https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fdata.ipic.ai%2Fimages%2FYbKhQrGQY2nJXVX_1712121324.png&f=1&nofb=1",
             email: "sim.lund@outlook.com",
-            github: "https://github.com/simlund94",
+            github: "simlund94",
             linkedin: "www.linkedin.com/in/simon-lundgren-32174a137/"
         },
     ];
