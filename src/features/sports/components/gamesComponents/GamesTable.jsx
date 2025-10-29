@@ -1,5 +1,6 @@
 import IconFactory from "../icons etc/IconFactory.jsx";
 import {useNavigate} from "react-router-dom";
+import RenderScoreOrTimeBasedOnEventStatus from "./RenderScoreBasedOnStatus.jsx";
 
 export default function GamesTable({
                                        items = [], loading = false, error = null, height = "h-92"

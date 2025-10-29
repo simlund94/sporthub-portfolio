@@ -1,11 +1,5 @@
 import { useEffect, useState } from "react";
 
-/**
- * Generic data-fetching hook with lifecycle management
- * @param {() => Promise<any>} apiCall - async function to fetch data
- * @param {Array<any>} deps - dependency array
- * @param {any} defaultValue - optional default state
- */
 export default function useFetchApi(apiCall, deps = [], defaultValue = []) {
     const [data, setData] = useState(defaultValue);
     const [loading, setLoading] = useState(false);

@@ -1,507 +1,158 @@
-import {useEffect, useState} from 'react';
-import {SportsApi} from '../api.jsx';
-import {USE_MOCK, MOCK, delay, pickList} from '../MockData.js';
+import useFetchApi from "./GenericDataFetchHook.jsx";
+import { SportsApi } from "../api.jsx";
+import { USE_MOCK, MOCK, delay, pickList } from "../MockData.js";
 
 export function useLeaguesWithSportIdAndQuery(sportId, query) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
+    return useFetchApi(async () => {
+        if (!sportId) throw new Error("Missing sportId");
 
-    useEffect(() => {
-        let live = true;
-        if (!sportId) {
-            setData([]);
-            setErr(true);
-            setLoading(false);
-            return;
+        if (USE_MOCK) {
+            await delay(150);
+            return MOCK.leaguesBySport[sportId] ?? [];
         }
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.leaguesBySport[sportId] ?? []);
-                } else {
-                    const res = await SportsApi.leaguesBySport(sportId, query);
-                    if (!live) return;
-                    setData(pickList(res, 'leagues'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        })();
-        return () => { live = false; };
-    }, [sportId, query]);
 
-    return {data, loading, err};
+        const res = await SportsApi.leaguesBySport(sportId, query);
+        return pickList(res, "leagues");
+    }, [sportId, query]);
 }
 
 export function useAllLeagues() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                } else {
-                    const res = await SportsApi.allLeagues();
-                    if (!live) return;
-                    setData(pickList(res, 'leagues'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        })();
-        return () => {
-            live = false;
-        };
+    return useFetchApi(async () => {
+        if (USE_MOCK) {
+            await delay(150);
+            return MOCK.allLeagues;
+        }
+        const res = await SportsApi.allLeagues();
+        return pickList(res, "leagues");
     }, []);
-
-    return {data, loading, err};
 }
 
-/**
- * Returns a season for a league by its unique id, with all teams in the league during that season.
- *
- * @param leagueId the unique season league id
- * @returns {{data: unknown, loading: boolean, err: unknown}}
- */
-export function useLeagueWithTeamsById(leagueId) {
-    const [data, setData] = useState(null);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        if (!leagueId) {
-            setData([]);
-            setErr(true);
-            setLoading(false);
-            return;
-        }
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.leaguesBySport[leagueId] ?? []);
-                } else {
-                    const res = await SportsApi.leagueWithTeamsById(leagueId);
-                    if (!live) return;
-                    console.log("Resultat av hämtning", res);
-                    setData(res);
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        })();
-        return () => {
-            live = false;
-        };
-    }, [leagueId]);
-    return {data, loading, err};
-}
-
-/**
- * Returns a list of ALL seasons for a league by providing the unique league season id for ANY season in that league.
- *
- * @param leagueId the unique league season id
- * @returns {{data: unknown, loading: boolean, err: unknown}}
- */
-export function useLeagueAllSeasonsById(leagueId) {
-    const [data, setData] = useState({leagueName: "", allSeasons: []});
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        if (!leagueId) {
-            setData({leagueName: "", allSeasons: []});
-            setErr("No leagueId provided");
-            return;
-        }
-
-        let live = true;
-
-        const fetchSeasons = async () => {
-            try {
-                setLoading(true);
-                const res = await SportsApi.leagueAllSeasonsById(leagueId);
-
-                if (!live) return;
-
-                const leaguesArray = res.leagues || [];
-                const leagueName = leaguesArray[0]?.name || "Okänd liga";
-                const allSeasons = leaguesArray.map(l => ({
-                    id: l.id,
-                    slug: l.season?.slug,
-                    startDate: l.season?.startDate,
-                    endDate: l.season?.endDate,
-                }));
-                console.log("AllSeasons", allSeasons);
-                console.log("LeagueName", leagueName);
-                setData({leagueName, allSeasons});
-
-
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchSeasons();
-
-        return () => { live = false; };
-    }, [leagueId]);
-
-    return {data, loading, err};
-}
-
-/**
- * Retrieve the entire standing for a specified league by leagueId
- * @param leagueId
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
 export function useLeagueStandingsById(leagueId) {
-    const [standings, setStandings] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
 
-    useEffect(() => {
-        if (!leagueId) {
-            setStandings([]);
-            setErr("No leagueId provided");
-            return;
-        }
-
-        let live = true;
-
-        const fetchStandings = async () => {
-            try {
-                setLoading(true);
-                const res = await SportsApi.leagueStandingsById(leagueId);
-                if (!live) return;
-
-                const standingsArray = res?.groups?.[0]?.standings || [];
-                setStandings(standingsArray);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchStandings();
-
-        return () => { live = false; };
+        const res = await SportsApi.leagueStandingsById(leagueId);
+        return res?.groups?.[0]?.standings ?? [];
     }, [leagueId]);
-
-    return {data: standings, loading, err};
 }
 
-/**
- * Retrieve the scoring table from a specified leagueId
- * @param leagueId
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
+
 export function useScoringLeadersById(leagueId) {
-    const [scoringLeaders, setScoringLeaders] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
 
-    useEffect(() => {
-        if (!leagueId) {
-            setScoringLeaders([]);
-            setErr("No leagueId provided");
-            return;
-        }
-
-        let live = true;
-
-        const fetchScoringLeaders = async () => {
-            try {
-                setLoading(true);
-                setErr(null);
-
-                const res = await SportsApi.leagueScoringLeadersById(leagueId);
-                if (!live) return;
-
-                console.log("scoringLeaders from API", res);
-
-                let normalizedData = [];
-
-                if (Array.isArray(res)) {
-                    normalizedData = res;
-                } else if (res?.playerStats && Array.isArray(res.playerStats)) {
-                    normalizedData = res.playerStats;
-                } else if (res?.data && Array.isArray(res.data)) {
-                    normalizedData = res.data;
-                }
-
-                setScoringLeaders(normalizedData);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchScoringLeaders();
-
-        return () => {
-            live = false;
-        };
+        const res = await SportsApi.leagueScoringLeadersById(leagueId);
+        if (Array.isArray(res)) return res;
+        if (res?.playerStats) return res.playerStats;
+        if (res?.data) return res.data;
+        return [];
     }, [leagueId]);
-
-    return {data: scoringLeaders, loading, err};
 }
 
-/**
- * Retrieve the assist table from a specified leagueId
- * @param leagueId
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
+
 export function useAssistLeadersById(leagueId) {
-    const [scoringLeaders, setScoringLeaders] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
 
-    useEffect(() => {
-        if (!leagueId) {
-            setScoringLeaders([]);
-            setErr("No leagueId provided");
-            return;
-        }
-
-        let live = true;
-
-        const fetchScoringLeaders = async () => {
-            try {
-                setLoading(true);
-                setErr(null);
-
-                const res = await SportsApi.leagueAssistLeadersById(leagueId);
-                if (!live) return;
-
-                console.log("scoringLeaders from API", res);
-                let normalizedData = [];
-
-                if (Array.isArray(res)) {
-                    normalizedData = res;
-                } else if (res?.playerStats && Array.isArray(res.playerStats)) {
-                    normalizedData = res.playerStats;
-                } else if (res?.data && Array.isArray(res.data)) {
-                    normalizedData = res.data;
-                }
-
-                setScoringLeaders(normalizedData);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchScoringLeaders();
-
-        return () => {
-            live = false;
-        };
+        const res = await SportsApi.leagueAssistLeadersById(leagueId);
+        if (Array.isArray(res)) return res;
+        if (res?.playerStats) return res.playerStats;
+        if (res?.data) return res.data;
+        return [];
     }, [leagueId]);
-
-    return {data: scoringLeaders, loading, err};
 }
-
-/**
- * Retrieve all events from a specified leagueId, game status in a set time period
- * using fromDate and toDate.
- * @param leagueId
- * @param status
- * @param fromDate
- * @param toDate
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
-export function useLeagueByIdWithEvents(leagueId, status = "ALL", fromDate, toDate) {
-    const [events, setEvents] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        if (!leagueId) {
-            setEvents([]);
-            setErr("No leagueId provided");
-            return;
-        }
-
-        let live = true;
-
-        const fetchEvents = async () => {
-            try {
-                setLoading(true);
-                const res = await SportsApi.leagueByIdWithEvents(leagueId, status, fromDate, toDate);
-                if (!live) return;
-
-
-                const eventsArray = res?.events || res?.data || [];
-                setEvents(eventsArray);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchEvents();
-
-        return () => {
-            live = false;
-        };
-    }, [leagueId, status, fromDate, toDate]);
-
-    return {data: events, loading, err};
-}
-
-
-
 export function useTeamsByLeagueId(leagueId) {
-    const [teams, setTeams] = useState([]);
-    const [loading, setLoading] = useState(false);
-    const [err, setErr] = useState(null);
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
 
-    useEffect(() => {
-        if (!leagueId) {
-            setTeams([]);
-            setErr("No leagueId provided");
-            return;
-        }
-
-        let live = true;
-
-        const fetchTeams = async () => {
-            try {
-                setLoading(true);
-                const res = await SportsApi.teamsByLeagueId(leagueId);
-
-                if (!live) return;
-
-                const teamList = res?.teams || res || [];
-                setTeams(teamList);
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
-            }
-        };
-
-        fetchTeams();
-
-        return () => {
-            live = false;
-        };
+        const res = await SportsApi.teamsByLeagueId(leagueId);
+        return res?.teams || res || [];
     }, [leagueId]);
-
-    return {data: teams, loading, err};
 }
 
-/**
- * A bigger function that combines lastFiveMatches and checking result for each game
- * based on teamIds.
- * Retrieves the team ids for all teams, retrieves all events from the last five rounds.
- * compare the teamScores in the match events to determine their form.
- * Print out V(win), O(draw), F(loss).
- * @param leagueId
- * @param teams
- * @returns {{data: {}, loading: boolean, error: unknown}}
- */
+export function useLeagueByIdWithEvents(
+    leagueId,
+    status = "ALL",
+    fromDate,
+    toDate
+) {
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
+
+        const res = await SportsApi.leagueByIdWithEvents(
+            leagueId,
+            status,
+            fromDate,
+            toDate
+        );
+
+        return res?.events || res?.data || [];
+    }, [leagueId, status, fromDate, toDate]);
+}
+
+export function useLeagueWithTeamsById(leagueId) {
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
+
+        const res = await SportsApi.leagueWithTeamsById(leagueId);
+        return res;
+    }, [leagueId]);
+}
+
+export function useLeagueAllSeasonsById(leagueId) {
+    return useFetchApi(async () => {
+        if (!leagueId) throw new Error("No leagueId provided");
+
+        const res = await SportsApi.leagueAllSeasonsById(leagueId);
+        const leaguesArray = res.leagues || [];
+
+        const leagueName = leaguesArray[0]?.name || "Okänd liga";
+        const allSeasons = leaguesArray.map((l) => ({
+            id: l.id,
+            slug: l.season?.slug,
+            startDate: l.season?.startDate,
+            endDate: l.season?.endDate,
+        }));
+
+        return { leagueName, allSeasons };
+    }, [leagueId]);
+}
 export function useTeamFormsByLeagueId(leagueId, teams) {
-    const [formData, setFormData] = useState({});
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState(null);
+    return useFetchApi(async () => {
+        if (!leagueId || !teams?.length)
+            throw new Error("Missing leagueId or team list");
 
-    useEffect(() => {
-        if (!leagueId || !teams?.length) return;
-
-        let active = true;
-        setLoading(true);
-        setError(null);
-
-        const fetchForms = async () => {
-            try {
-                const results = await Promise.all(
-                    teams.map(async (team) => {
-                        const teamId = team.id;
-
-                        const res = await SportsApi.leagueByIdLastFiveGames(
-                            leagueId,
-                            "FINISHED",
-                            teamId
-                        );
-
-                        const matches = res?.events || [];
-
-                        const sorted = matches
-                            .filter((ev) => ev.status === "FINISHED")
-                            .sort(
-                                (a, b) =>
-                                    new Date(b.startDate) - new Date(a.startDate)
-                            )
-                            .slice(0, 5);
-
-                        // Compute V/O/F JSX spans
-                        const form = sorted.map((ev) => {
-                            const isHome = ev.homeTeam?.id === teamId;
-                            const homeScore = ev.homeTeamScore ?? 0;
-                            const awayScore = ev.visitingTeamScore ?? 0;
-
-                            if (homeScore === awayScore) {
-                                return <span className="text-gray-500">O</span>;
-                            }
-                            if (
-                                (isHome && homeScore > awayScore) ||
-                                (!isHome && awayScore > homeScore)
-                            ) {
-                                return <span className="text-green-500">V</span>;
-                            }
-                            return <span className="text-red-500">F</span>;
-                        });
-
-                        return {teamId, form};
-                    })
+        const results = await Promise.all(
+            teams.map(async (team) => {
+                const teamId = team.id;
+                const res = await SportsApi.leagueByIdLastFiveGames(
+                    leagueId,
+                    "FINISHED",
+                    teamId
                 );
 
-                const formMap = Object.fromEntries(
-                    results.map((r) => [r.teamId, r.form])
-                );
+                const matches = res?.events || [];
+                const sorted = matches
+                    .filter((ev) => ev.status === "FINISHED")
+                    .sort((a, b) => new Date(b.startDate) - new Date(a.startDate))
+                    .slice(0, 5);
 
-                if (active) setFormData(formMap);
-            } catch (err) {
-                console.error("Error fetching team forms:", err);
-                if (active) setError(err);
-            } finally {
-                if (active) setLoading(false);
-            }
-        };
+                const form = sorted.map((ev) => {
+                    const isHome = ev.homeTeam?.id === teamId;
+                    const homeScore = ev.homeTeamScore ?? 0;
+                    const awayScore = ev.visitingTeamScore ?? 0;
 
-        fetchForms();
+                    if (homeScore === awayScore) return "O"; // draw
+                    if ((isHome && homeScore > awayScore) || (!isHome && awayScore > homeScore))
+                        return "V"; // win
+                    return "F"; // loss
+                });
 
-        return () => {
-            active = false;
-        };
+                return { teamId, form };
+            })
+        );
+
+        return Object.fromEntries(results.map((r) => [r.teamId, r.form]));
     }, [leagueId, teams]);
-
-    return {data: formData, loading, error};
 }
 
