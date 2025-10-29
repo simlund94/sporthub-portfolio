@@ -26,6 +26,8 @@ export default function EventStatsShots({event}) {
 
     );
 
+    //Lite specifikt för hockeyn
+
     const totalMatch = event.facts.shots.match(/^(\d+)-(\d+)/);
     if (!totalMatch) return null;
 

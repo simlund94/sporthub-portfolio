@@ -2,7 +2,7 @@ import Hero from "../components/genericComponents/Hero.jsx";
 
 import {useEvents} from "../hooks/EventHooks.jsx";
 import {useState} from "react";
-import GamesTable from "../components/genericComponents/GamesTable.jsx";
+import GamesTable from "../components/gamesComponents/GamesTable.jsx";
 import AllLeagues from "../components/genericComponents/AllLeagues.jsx";
 
 export default function HomePage() {

@@ -6,11 +6,6 @@ export default function GamesTable({
                                    }) {
 
     const navigate = useNavigate();
-
-
-    console.log("GamesTableItems: ", items, "Loading...", loading);
-
-
     if (loading) {
         return (<>
             <div className="container mx-auto w-full h-96 px-2 rounded-lg ">
@@ -35,38 +30,6 @@ export default function GamesTable({
     }
 
     items = items.filter(item => item.league.sport.name !== "Bowling");
-
-    const RenderScoreOrTimeBasedOnEventStatus = (item) => {
-        switch (item.item.status) {
-            case "FINISHED":
-                return <p className="text-sm font-bold">{item.item.homeTeamScore} - {item.item.visitingTeamScore}</p>;
-            case "ONGOING":
-                return <p className="text-sm font-bold">Matchen spelas</p>;
-            case "UPCOMING": {
-                const date = new Date(item.item.startDate);
-
-                return (<>
-                    <div className="gap-1">
-
-                        <span className="hidden md:inline">
-                        {date.toLocaleString("sv-SE", {
-                            hour: "2-digit", minute: "2-digit", timeZone: "Europe/Stockholm",
-                        })}
-                        </span>
-                        <span className="md:hidden inline">
-                          {date.toLocaleTimeString("sv-SE", {
-                              day: "2-digit",
-                              month: "short",
-                              hour: "2-digit",
-                              minute: "2-digit",
-                              timeZone: "Europe/Stockholm",
-                          })}
-                        </span>
-                    </div>
-                </>);
-            }
-        }
-    };
 
     return (<div className="p-4 w-full">
         <div className={`${height} overflow-x-auto rounded-lg shadow hidden md:block`}>
@@ -126,6 +89,8 @@ export default function GamesTable({
                 </tbody>
             </table>
         </div>
+
+        {/*För mobil*/}
 
         <div className="overflow-y-auto max-h-[45vh]">
             <table className="table table-sm text-xs md:hidden w-full">

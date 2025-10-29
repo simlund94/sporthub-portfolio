@@ -1,5 +1,14 @@
 import React from "react";
 
+/**
+ * En klass som egentligen används som en skräphög under sängen där man bara tryckt ner kod för att dölja den och göra resterande av koden
+ * mer lättläslig. Lite som att städa genom att trycka ner saker i garderoben.
+ * @param name
+ * @param className
+ * @returns {React.JSX.Element|null}
+ * @constructor
+ */
+
 const IconFactory = ({name, className}) => {
     const s = name?.toLowerCase?.() || "";
 
@@ -65,8 +74,6 @@ const IconFactory = ({name, className}) => {
             </svg>
         );
     }
-
-    // 🥍 Floorball / Innebandy
     if (s === "floorball" || s === "innebandy") {
         return (
             <svg

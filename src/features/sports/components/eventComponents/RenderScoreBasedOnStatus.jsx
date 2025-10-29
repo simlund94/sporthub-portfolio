@@ -1,6 +1,5 @@
 export default function RenderScoreBasedOnStatus({ event }) {
     if (!event) return null;
-    console.log(event.status)
 
     switch (event.status) {
         case "FINISHED":

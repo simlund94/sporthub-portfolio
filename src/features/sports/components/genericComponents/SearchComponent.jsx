@@ -3,6 +3,7 @@ import {useNavigate} from "react-router-dom";
 import IconFactory from "../icons etc/IconFactory.jsx";
 import {useAllTeams} from "../../hooks/TeamHooks.jsx";
 import {useAllLeagues} from "../../hooks/LeagueHooks.jsx";
+import formatLeaguePath from "../formatLeaguePath.jsx";
 
 export default function SearchComponent() {
     const {
@@ -44,14 +45,6 @@ export default function SearchComponent() {
         document.getElementById("searchModal").close();
         navigate(`/league/${formatLeaguePath(league.name)}/${league.teamClass.toLowerCase()}`);
     }
-
-    function formatLeaguePath(leagueName) {
-        return leagueName
-            .replaceAll(" ", "-")
-            .replaceAll("/", "-")
-            .toLowerCase();
-    }
-
     return (
         <div className="relative w-full max-w-md mx-auto">
             {/* Search input */}

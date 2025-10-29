@@ -1,5 +1,6 @@
 import { useNavigate } from "react-router-dom";
 import RenderScoreBasedOnStatus from "./RenderScoreBasedOnStatus";
+import formatLeaguePath from "../formatLeaguePath.jsx";
 
 export default function EventHeader({ event }) {
     const navigate = useNavigate();
@@ -47,10 +48,4 @@ export default function EventHeader({ event }) {
 
         </div>
     );
-    function formatLeaguePath(leagueName) {
-        return leagueName
-            .replaceAll(" ", "-")
-            .replaceAll("/", "-")
-            .toLowerCase();
-    }
 }

@@ -1,7 +1,7 @@
 import {useState, useEffect} from "react";
 import LeagueStandingsTable from "../components/leaguePageComponents/LeagueStandingsTable.jsx";
-import GamesTable from "../components/genericComponents/GamesTable.jsx";
-import MatchFilter from "../components/genericComponents/GamesFilter.jsx";
+import GamesTable from "../components/gamesComponents/GamesTable.jsx";
+import MatchFilter from "../components/gamesComponents/GamesFilter.jsx";
 import SeasonSelector from "../components/leaguePageComponents/SeasonSelector.jsx";
 import ShowDiffrentTablesSelector from "../components/leaguePageComponents/ShowDiffrentTablesSelector.jsx";
 

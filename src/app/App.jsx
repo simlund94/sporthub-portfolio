@@ -26,13 +26,6 @@ function App() {
         loading = loading || result.loading;
     });
 
-    function formatLeaguePath(leagueName) {
-        return leagueName
-            .replaceAll(" ", "-")
-            .replaceAll("/", "-")
-            .toLowerCase();
-    }
-
     function generateLeaguePageRoutes() {
         return Object.keys(leaguesData).flatMap(key =>
             leaguesData[key].map(league => (
