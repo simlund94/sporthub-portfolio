@@ -1,6 +1,7 @@
 import { useAllLeagues } from "../../hooks/LeagueHooks.jsx";
 import { useNavigate } from "react-router-dom";
 import React from "react";
+import formatLeaguePath from "../formatLeaguePath.jsx";
 
 const currentYear = new Date().getFullYear();
 
@@ -77,9 +78,3 @@ export default function AllLeagues() {
     );
 }
 
-function formatLeaguePath(leagueName) {
-    return leagueName
-        .replaceAll(" ", "-")
-        .replaceAll("/", "-")
-        .toLowerCase();
-}

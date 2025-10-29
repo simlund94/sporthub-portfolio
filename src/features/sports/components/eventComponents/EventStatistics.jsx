@@ -1,7 +1,6 @@
 export default function EventStatistics({event}) {
 
     const stats = event?.statistics;
-    console.log("EventStatistics", stats);
     if (!stats) return null;
 
 

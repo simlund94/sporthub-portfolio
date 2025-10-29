@@ -11,6 +11,7 @@ import TeamPage from "../features/sports/pages/TeamPage.jsx";
 import NotFoundPage from "../features/sports/pages/info/NotFoundPage.jsx";
 import AboutUsPage from "../features/sports/pages/info/AboutUsPage.jsx";
 import ContactPage from "../features/sports/pages/info/ContactPage.jsx";
+import formatLeaguePath from "../features/sports/components/formatLeaguePath.jsx";
 
 function App() {
 
@@ -25,13 +26,6 @@ function App() {
         errors[sport.leagueKey] = result.error;
         loading = loading || result.loading;
     });
-
-    function formatLeaguePath(leagueName) {
-        return leagueName
-            .replaceAll(" ", "-")
-            .replaceAll("/", "-")
-            .toLowerCase();
-    }
 
     function generateLeaguePageRoutes() {
         return Object.keys(leaguesData).flatMap(key =>

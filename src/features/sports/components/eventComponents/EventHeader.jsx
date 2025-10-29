@@ -1,13 +1,14 @@
 import { useNavigate } from "react-router-dom";
 import RenderScoreBasedOnStatus from "./RenderScoreBasedOnStatus";
+import formatLeaguePath from "../formatLeaguePath.jsx";
 
 export default function EventHeader({ event }) {
     const navigate = useNavigate();
 
     return (
         <div>
-            <a className="link cursor-pointer" onClick={() => navigate(-1)}>Tillbaka</a>
-            <h1 className="text-3xl font-bold text-center mb-4">
+            <a className="link cursor-pointer mx-auto" onClick={() => navigate(-1)}>Tillbaka</a>
+            <h1 className="text-3xl font-bold text-center mt-2 mb-4">
                 {event.homeTeam.name} vs {event.visitingTeam.name}
             </h1>
             <p className="text-center text-lg mb-2 cursor-pointer" onClick={() =>
@@ -47,10 +48,4 @@ export default function EventHeader({ event }) {
 
         </div>
     );
-    function formatLeaguePath(leagueName) {
-        return leagueName
-            .replaceAll(" ", "-")
-            .replaceAll("/", "-")
-            .toLowerCase();
-    }
 }
