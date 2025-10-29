@@ -1,213 +1,96 @@
-import {useEffect, useState} from "react";
-import {SportsApi} from "../api.jsx";
-import {delay, MOCK, pickList, USE_MOCK} from "../MockData.js";
+import { SportsApi } from "../api.jsx";
+import { delay, MOCK, pickList, USE_MOCK } from "../MockData.js";
+import useFetchApi from "./GenericDataFetchHook.jsx";
 
-/**
- * Retrieves all available information about a specified team by teamId
- * @param id
- * @returns {{data: unknown, loading: boolean, err: unknown}}
- */
+
 export function useTeamId(id) {
-    const [data, setData] = useState(null); // <-- null, not []
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-
-                } else {
-                    const res = await SportsApi.teamById(id);
-                    if (!live) return;
-                    setData(res);
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
+    return useFetchApi(
+        async () => {
+            if (USE_MOCK) {
+                await delay(150);
+                return MOCK.teams?.find(t => t.id === id) || null;
+            } else {
+                return await SportsApi.teamById(id);
             }
-        })();
-
-        return () => {
-            live = false;
-        };
-    }, [id]);
-
-    return {data, loading, err};
+        },
+        [id],
+        null
+    );
 }
 
 export function useTeamStandings(teamId) {
-    const [leaguesData, setLeaguesData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
+    return useFetchApi(
+        async () => {
+            if (!teamId) return [];
 
-    useEffect(() => {
-        if (!teamId) return;
-
-        let live = true;
-
-        (async () => {
-            try {
-                setLoading(true);
-                setErr(null);
-
-                let res;
-
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    res = MOCK.standings;
-                } else {
-                    res = await SportsApi.teamStandings(teamId);
-                }
-
-                if (!live) return;
-
-                const leagues = res.data?.leagues || res.leagues || [];
-                const processedLeagues = leagues.map(league => {
-                    const standingsArray = [];
-
-                    (league.groups || []).forEach(group => {
-                        if (Array.isArray(group.standings)) {
-                            standingsArray.push(...group.standings);
-                        }
-                    });
-
-                    return {
-                        ...league,
-                        standings: standingsArray
-                    };
-                });
-                setLeaguesData(processedLeagues);
-
-            } catch (e) {
-                if (live) setErr(e.message || "Unknown error");
-            } finally {
-                if (live) setLoading(false);
+            let res;
+            if (USE_MOCK) {
+                await delay(150);
+                res = MOCK.standings;
+            } else {
+                res = await SportsApi.teamStandings(teamId);
             }
-        })();
 
-        return () => {
-            live = false;
-        };
-    }, [teamId]);
-
-    return { leagues: leaguesData, loading, err };
+            const leagues = res.data?.leagues || res.leagues || [];
+            return leagues.map(league => {
+                const standingsArray = [];
+                (league.groups || []).forEach(group => {
+                    if (Array.isArray(group.standings)) {
+                        standingsArray.push(...group.standings);
+                    }
+                });
+                return { ...league, standings: standingsArray };
+            });
+        },
+        [teamId],
+        []
+    );
 }
-
-
-
-
-
 
 export function useTeamEvents(teamId, status) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
-                    const res = await SportsApi.eventsByTeam(teamId, status)
-                    if (!live) return;
-                    setData(pickList(res, 'events'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
+    return useFetchApi(
+        async () => {
+            if (USE_MOCK) {
+                await delay(150);
+                return MOCK.sports;
+            } else {
+                const res = await SportsApi.eventsByTeam(teamId, status);
+                return pickList(res, "events");
             }
-        })();
-        return () => {
-            live = false;
-        };
-    }, [teamId, status]);
-
-    return {data, loading, err};
+        },
+        [teamId, status],
+        []
+    );
 }
 
-/**
- * Retrieves an array of all available teams from the api
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
 export function useAllTeams() {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
-                    const res = await SportsApi.allTeams();
-                    if (!live) return;
-                    setData(pickList(res, "teams"));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
+    return useFetchApi(
+        async () => {
+            if (USE_MOCK) {
+                await delay(150);
+                return MOCK.sports;
+            } else {
+                const res = await SportsApi.allTeams();
+                return pickList(res, "teams");
             }
-        })();
-        return () => {
-            live = false;
-        };
-    }, []);
-
-    return {data, loading, err};
+        },
+        [],
+        []
+    );
 }
 
-/**
- * Retrieves all leagues from a sportId with a set gender and startDate descending
- * @param sportId
- * @param gender
- * @returns {{data: *[], loading: boolean, err: unknown}}
- */
 export function useLeaguesBySportAndGender(sportId, gender) {
-    const [data, setData] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [err, setErr] = useState(null);
-
-    useEffect(() => {
-        let live = true;
-        (async () => {
-            try {
-                setLoading(true);
-                if (USE_MOCK) {
-                    await delay(150);
-                    if (!live) return;
-                    setData(MOCK.sports);
-                } else {
-                    const res = await SportsApi.allLeaguesBySportAndGender(sportId, gender); // kan vara {sports:[...]} eller [...]
-                    if (!live) return;
-                    setData(pickList(res, 'leagues'));
-                }
-            } catch (e) {
-                if (live) setErr(e);
-            } finally {
-                if (live) setLoading(false);
+    return useFetchApi(
+        async () => {
+            if (USE_MOCK) {
+                await delay(150);
+                return MOCK.sports;
+            } else {
+                const res = await SportsApi.allLeaguesBySportAndGender(sportId, gender);
+                return pickList(res, "leagues");
             }
-        })();
-        return () => {
-            live = false;
-        };
-    }, [sportId, gender]);
-    return {data, loading, err};
+        },
+        [sportId, gender],
+        []
+    );
 }
