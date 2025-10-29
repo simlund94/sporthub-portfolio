@@ -1,16 +1,10 @@
 import useFetchApi from "./GenericDataFetchHook.jsx";
 import { SportsApi } from "../api.jsx";
-import { USE_MOCK, MOCK, delay, pickList } from "../MockData.js";
+import { pickList } from "../MockData.js";
 
 export function useLeaguesWithSportIdAndQuery(sportId, query) {
     return useFetchApi(async () => {
         if (!sportId) throw new Error("Missing sportId");
-
-        if (USE_MOCK) {
-            await delay(150);
-            return MOCK.leaguesBySport[sportId] ?? [];
-        }
-
         const res = await SportsApi.leaguesBySport(sportId, query);
         return pickList(res, "leagues");
     }, [sportId, query]);
@@ -18,10 +12,7 @@ export function useLeaguesWithSportIdAndQuery(sportId, query) {
 
 export function useAllLeagues() {
     return useFetchApi(async () => {
-        if (USE_MOCK) {
-            await delay(150);
-            return MOCK.allLeagues;
-        }
+
         const res = await SportsApi.allLeagues();
         return pickList(res, "leagues");
     }, []);
@@ -142,10 +133,10 @@ export function useTeamFormsByLeagueId(leagueId, teams) {
                     const homeScore = ev.homeTeamScore ?? 0;
                     const awayScore = ev.visitingTeamScore ?? 0;
 
-                    if (homeScore === awayScore) return "O"; // draw
+                    if (homeScore === awayScore) return "O";
                     if ((isHome && homeScore > awayScore) || (!isHome && awayScore > homeScore))
-                        return "V"; // win
-                    return "F"; // loss
+                        return "V";
+                    return "F";
                 });
 
                 return { teamId, form };

@@ -1,24 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+
 import ThemeButton from "../icons etc/ThemeButton.jsx";
-import IconFactory from "../icons etc/IconFactory.jsx";
+
 import { Link } from "react-router-dom";
 import SPORTS from "../../../../config.js";
 import SearchComponent from "./SearchComponent.jsx";
 import DropdownItem from "./DropdownItem.jsx";
 
 export default function Navbar({ leaguesData, errors, loading }) {
-    const [openDropdown, setOpenDropdown] = useState(null);
-    const dropdownRef = useRef(null);
-
-    useEffect(() => {
-        const handleClickOutside = (e) => {
-            if (openDropdown && dropdownRef.current && !dropdownRef.current.contains(e.target)) {
-                setOpenDropdown(null);
-            }
-        };
-        document.addEventListener("click", handleClickOutside);
-        return () => document.removeEventListener("click", handleClickOutside);
-    }, [openDropdown]);
 
     const themeComponent = <ThemeButton />;
 
@@ -51,8 +39,6 @@ export default function Navbar({ leaguesData, errors, loading }) {
                                 leagues={leaguesData[item.leagueKey]}
                                 error={errors[item.leagueKey]}
                                 loading={loading}
-                                openDropdown={openDropdown}
-                                setOpenDropdown={setOpenDropdown}
                                 isMobile
                             />
                         ))}
@@ -74,8 +60,6 @@ export default function Navbar({ leaguesData, errors, loading }) {
                             leagues={leaguesData[item.leagueKey]}
                             error={errors[item.leagueKey]}
                             loading={loading}
-                            openDropdown={openDropdown}
-                            setOpenDropdown={setOpenDropdown}
                         />
                     ))}
                 </ul>
