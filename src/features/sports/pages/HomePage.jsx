@@ -7,8 +7,7 @@ import AllLeagues from "../components/genericComponents/AllLeagues.jsx";
 
 export default function HomePage() {
 
-    const currentDate = new Date()
-    const date = currentDate.getFullYear() + '-' + (currentDate.getMonth() + 1) + '-' + currentDate.getDate()
+    const date = new Date().toISOString().slice(0, 10);
     const [chosenGender, setChosenGender] = useState("ALL")
     const [selectedDate, setSelectedDate] = useState(date)
     const events = useEvents(selectedDate, chosenGender)
