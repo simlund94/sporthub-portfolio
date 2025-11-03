@@ -23,7 +23,7 @@ export default function GamesTable({
     }
 
     if (error) {
-        return <div className="p-4 text-center text-red-500">{error}</div>;
+        return <div className="p-4 text-center text-red-500">Oops, något gick fel!</div>;
     }
 
     if (!items.length) {

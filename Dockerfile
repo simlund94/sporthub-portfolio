@@ -10,7 +10,6 @@ RUN apt-get update && \
     apt-get install -y nodejs && \
     npm install -g npm
 
-# Set working directory
 WORKDIR /app
 
 # Copy package files and install dependencies
