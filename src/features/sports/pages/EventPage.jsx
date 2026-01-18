@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useEventId } from "../hooks/EventHooks.jsx";
-import EventHeader from "../components/eventComponents/EventHeader.jsx";
-import EventTimeline from "../components/eventComponents/EventTimeline.jsx";
+import EventHeader from "../components/event-components/EventHeader.jsx";
+import EventTimeline from "../components/event-components/EventTimeline.jsx";
 
-import EventStatistics from "../components/eventComponents/EventStatistics.jsx";
-import EventStatsShots from "../components/eventComponents/EventStatsShots.jsx";
+import EventStatistics from "../components/event-components/EventStatistics.jsx";
+import EventStatsShots from "../components/event-components/EventStatsShots.jsx";
 
 
 

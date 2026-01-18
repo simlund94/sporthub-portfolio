@@ -1,7 +1,7 @@
 import './App.css'
 import HomePage from "../features/sports/pages/HomePage.jsx";
-import Navbar from "../features/sports/components/genericComponents/NavBar.jsx";
-import Footer from "../features/sports/components/genericComponents/Footer.jsx";
+import Navbar from "../features/sports/components/generic-components/NavBar.jsx";
+import Footer from "../features/sports/components/generic-components/Footer.jsx";
 import {BrowserRouter, Route, Routes} from "react-router-dom";
 import EventPage from "../features/sports/pages/EventPage.jsx";
 import SPORTS from "../config.js";
@@ -33,9 +33,7 @@ function App() {
                 <Route
                     key={league.id}
                     path={`/league/${formatLeaguePath(league.name)}/${league.teamClass.toLowerCase()}`}
-                    element={
-                        <LeaguePage initialLeagueId={league.id}/>
-                    }
+                    element={<LeaguePage initialLeagueId={league.id}/>}
                 />
             ))
         );

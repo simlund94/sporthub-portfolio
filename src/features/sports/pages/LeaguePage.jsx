@@ -1,14 +1,14 @@
 import {useState, useEffect} from "react";
-import LeagueStandingsTable from "../components/leaguePageComponents/LeagueStandingsTable.jsx";
-import GamesTable from "../components/gamesComponents/GamesTable.jsx";
-import MatchFilter from "../components/gamesComponents/GamesFilter.jsx";
-import SeasonSelector from "../components/leaguePageComponents/SeasonSelector.jsx";
-import ShowDiffrentTablesSelector from "../components/leaguePageComponents/ShowDiffrentTablesSelector.jsx";
+import LeagueStandingsTable from "../components/league-page-components/LeagueStandingsTable.jsx";
+import GamesTable from "../components/games-components/GamesTable.jsx";
+import MatchFilter from "../components/games-components/GamesFilter.jsx";
+import SeasonSelector from "../components/league-page-components/SeasonSelector.jsx";
+import ShowDiffrentTablesSelector from "../components/league-page-components/ShowDiffrentTablesSelector.jsx";
 
 import {useLeagueAllSeasonsById, useLeagueStandingsById} from "../hooks/LeagueHooks.jsx";
 import {useEventByLeagueId} from "../hooks/EventHooks.jsx";
-import ScoringLeadersTable from "../components/leaguePageComponents/ScoringLeadersTable.jsx";
-import AssistLeadersTable from "../components/leaguePageComponents/AssistLeadersTable.jsx";
+import ScoringLeadersTable from "../components/league-page-components/ScoringLeadersTable.jsx";
+import AssistLeadersTable from "../components/league-page-components/AssistLeadersTable.jsx";
 
 const LeaguePage = ({initialLeagueId}) => {
     const [leagueId, setLeagueId] = useState(initialLeagueId);

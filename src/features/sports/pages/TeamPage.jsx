@@ -1,11 +1,11 @@
 import {useNavigate, useParams} from "react-router-dom";
 import {useTeamEvents, useTeamId} from "../hooks/TeamHooks.jsx";
 import {useEffect, useState} from "react";
-import GamesTable from "../components/gamesComponents/GamesTable.jsx";
-import StandingsTable from "../components/genericComponents/StandningsTable.jsx";
+import GamesTable from "../components/games-components/GamesTable.jsx";
+import StandingsTable from "../components/generic-components/StandningsTable.jsx";
 import IconFactory from "../components/icons etc/IconFactory.jsx";
-import GamesFilter from "../components/gamesComponents/GamesFilter.jsx";
-import TeamSeasonSelector from "../components/genericComponents/TeamSeasonSelector.jsx";
+import GamesFilter from "../components/games-components/GamesFilter.jsx";
+import TeamSeasonSelector from "../components/generic-components/TeamSeasonSelector.jsx";
 import {useLeagueWithTeamsById} from "../hooks/LeagueHooks.jsx";
 
 
