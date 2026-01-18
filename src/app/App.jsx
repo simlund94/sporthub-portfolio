@@ -2,7 +2,7 @@ import './App.css'
 import HomePage from "../features/sports/pages/HomePage.jsx";
 import Navbar from "../features/sports/components/generic-components/NavBar.jsx";
 import Footer from "../features/sports/components/generic-components/Footer.jsx";
-import {BrowserRouter, Route, Routes} from "react-router-dom";
+import {HashRouter, Route, Routes} from "react-router-dom";
 import EventPage from "../features/sports/pages/EventPage.jsx";
 import SPORTS from "../config.js";
 import {useLeaguesWithSportIdAndQuery} from "../features/sports/hooks/LeagueHooks.jsx";
@@ -40,7 +40,7 @@ function App() {
     }
 
     return (
-        <BrowserRouter>
+        <HashRouter basename={"/sporthub-portfolio"}>
             <div className="max-w-7xl mx-auto flex flex-col min-h-screen">
                 <Navbar leaguesData={leaguesData}
                         loading={loading}
@@ -58,7 +58,7 @@ function App() {
                 </main>
                 <Footer/>
             </div>
-        </BrowserRouter>
+        </HashRouter>
     )
 }
 
