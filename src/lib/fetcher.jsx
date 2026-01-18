@@ -1,5 +1,5 @@
 const BASE = '/api'; // proxas i dev
-const API_KEY = '26192887ec48f76ab54167238ae16688';
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 export async function api(path, init = {}) {
   const sep = path.includes('?') ? '&' : '?';
