@@ -1,3 +1,5 @@
+import simonProfile from '../../../../assets/images/simon-profile.jpg';
+
 export default function AboutUsPage() {
 
     const team = [
@@ -24,7 +26,7 @@ export default function AboutUsPage() {
         },
         {
             name: "Simon Lundgren",
-            img: "../../../../assets/images/simon-profile.jpg",
+            img: simonProfile,
             email: "sim.lund@outlook.com",
             github: "simlund94",
             linkedin: "www.linkedin.com/in/simon-lundgren-32174a137/"
