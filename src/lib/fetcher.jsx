@@ -1,4 +1,6 @@
-const BASE = '/api'; // proxas i dev
+const BASE = import.meta.env.PROD
+    ?'https://api.everysport.com/v1'
+    :'/api';
 const API_KEY = import.meta.env.VITE_API_KEY;
 
 export async function api(path, init = {}) {
