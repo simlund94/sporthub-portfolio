@@ -7,7 +7,7 @@ export default defineConfig({
         tailwindcss(),
         react(),
     ],
-    base: "/sporthub-portfolio/",
+    base: process.env.NODE_ENV === "production" ? "/sporthub-portfolio/" : "/",
     server: {
         proxy: {
             "/api": {
