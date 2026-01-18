@@ -40,7 +40,7 @@ function App() {
     }
 
     return (
-        <HashRouter basename={"/sporthub-portfolio"}>
+        <HashRouter >
             <div className="max-w-7xl mx-auto flex flex-col min-h-screen">
                 <Navbar leaguesData={leaguesData}
                         loading={loading}
