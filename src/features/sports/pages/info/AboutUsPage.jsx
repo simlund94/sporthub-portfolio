@@ -1,6 +1,5 @@
 export default function AboutUsPage() {
 
-
     const team = [
         {
             name: "Emil Lindström Moffatt",
@@ -25,7 +24,7 @@ export default function AboutUsPage() {
         },
         {
             name: "Simon Lundgren",
-            img: "/src/assets/images/simon-profile.jpg",
+            img: "../../../../assets/images/simon-profile.jpg",
             email: "sim.lund@outlook.com",
             github: "simlund94",
             linkedin: "www.linkedin.com/in/simon-lundgren-32174a137/"
