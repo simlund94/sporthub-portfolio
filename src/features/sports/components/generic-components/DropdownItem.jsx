@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import {useState} from "react";
+import {useNavigate} from "react-router-dom";
 import IconFactory from "../icons etc/IconFactory.jsx";
 import formatLeaguePath from "../formatLeaguePath.jsx";
 
@@ -11,7 +11,7 @@ export default function DropdownItem({
                                          isMobile = false,
                                      }) {
     const [open, setOpen] = useState(false);
-    const navigate = useNavigate(); // ✅ must be top-level
+    const navigate = useNavigate();
 
     if (isMobile) {
         return (
@@ -21,13 +21,14 @@ export default function DropdownItem({
                     onClick={() => setOpen((prev) => !prev)}
                 >
                     <span>{item.name}</span>
-                    <IconFactory name={item.icon} className="inline-block w-4 h-4 stroke-current" />
+                    <IconFactory name={item.icon} className="inline-block w-4 h-4 stroke-current"/>
                     <svg
                         viewBox="0 0 20 20"
                         fill="currentColor"
                         className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
                     >
-                        <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" />
+                        <path
+                            d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"/>
                     </svg>
                 </button>
 
@@ -36,10 +37,13 @@ export default function DropdownItem({
                         {loading && (
                             <li>
                                 Laddar
-                                <span className="loading loading-dots loading-xs ml-2" />
+                                <span className="loading loading-dots loading-xs ml-2"/>
                             </li>
                         )}
                         {error && <li className="text-red-500">Error loading leagues</li>}
+                        {!loading && !error && leagues.length === 0 && (
+                            <li className="text-gray-500">No leagues available</li>
+                        )}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id} className="ml-2 w-full">
                                 <button
@@ -73,13 +77,14 @@ export default function DropdownItem({
                 className="btn btn-ghost text-lg font-semibold m-1 flex items-center justify-between w-full"
             >
                 <span>{item.name}</span>
-                <IconFactory name={item.icon} className="inline-block w-6 h-6 stroke-current" />
+                <IconFactory name={item.icon} className="inline-block w-6 h-6 stroke-current"/>
                 <svg
                     viewBox="0 0 20 20"
                     fill="currentColor"
                     className={`w-5 h-5 text-gray-400 transition-transform duration-200 ${open ? "rotate-180" : ""}`}
                 >
-                    <path d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" />
+                    <path
+                        d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z"/>
                 </svg>
             </div>
 
@@ -87,10 +92,13 @@ export default function DropdownItem({
                 {loading && (
                     <li>
                         Laddar
-                        <span className="loading loading-dots loading-xs ml-2" />
+                        <span className="loading loading-dots loading-xs ml-2"/>
                     </li>
                 )}
                 {error && <li className="text-red-500">Error loading leagues</li>}
+                {!loading && !error && leagues.length === 0 && (
+                    <li className="text-gray-500">No leagues available</li>
+                )}
                 {!loading && !error && leagues.map((l) => (
                     <li key={l.id}>
                         <button
@@ -98,7 +106,7 @@ export default function DropdownItem({
                             onClick={() => {
                                 navigate(`/league/${formatLeaguePath(l.name)}/${l.teamClass.toLowerCase()}`);
                             }
-                        }
+                            }
                         >
                             {l.name}{" "}
                             {l.name.includes("Superligan")
