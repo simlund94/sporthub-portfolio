@@ -88,7 +88,7 @@ export function useEventByLeagueId(id, status, order) {
             try {
                 setLoading(true);
                     const res = await SportsApi.eventsByLeagueIdAndStatus(id, status, order);
-                    console.log("Api svar från eventsByLeagueIDAndStatus", res);
+                    // console.log("Api svar från eventsByLeagueIDAndStatus", res);
                     if (!live) return;
                     setData(pickList(res, 'events'));
 

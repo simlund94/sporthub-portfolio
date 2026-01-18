@@ -15,7 +15,7 @@ export default function TeamPage() {
     const [leagueId, setLeagueId] = useState(null);
 
 
-    console.log("leagueId: ", leagueId);
+    // console.log("leagueId: ", leagueId);
     const {id} = useParams();
     const {data, loading, err} = useTeamId(id);
     const team = data?.team

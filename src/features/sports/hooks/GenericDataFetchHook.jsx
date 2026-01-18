@@ -7,7 +7,6 @@ export default function useFetchApi(apiCall, deps = [], defaultValue = []) {
 
     useEffect(() => {
         let live = true;
-
         const fetchData = async () => {
             try {
                 setLoading(true);
@@ -20,7 +19,6 @@ export default function useFetchApi(apiCall, deps = [], defaultValue = []) {
                 if (live) setLoading(false);
             }
         };
-
         fetchData();
         return () => {
             live = false;

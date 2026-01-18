@@ -12,7 +12,7 @@ export default function EventPage() {
     const { id } = useParams();
     const { data, loading, err } = useEventId(id);
     const event = data?.event;
-    console.log("event", event);
+    // console.log("event", event);
     if (loading) return  (
 
         <div className="p-4 max-w-3xl mx-auto">
