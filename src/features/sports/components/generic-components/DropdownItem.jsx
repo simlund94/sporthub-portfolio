@@ -42,7 +42,7 @@ export default function DropdownItem({
                         )}
                         {error && <li className="text-red-500">Error loading leagues</li>}
                         {!loading && !error && leagues.length === 0 && (
-                            <li className="text-gray-500">No leagues available</li>
+                            <li className="text-gray-500">Inga ligor tillgängliga</li>
                         )}
                         {!loading && !error && leagues.map((l) => (
                             <li key={l.id} className="ml-2 w-full">
@@ -97,7 +97,7 @@ export default function DropdownItem({
                 )}
                 {error && <li className="text-red-500">Error loading leagues</li>}
                 {!loading && !error && leagues.length === 0 && (
-                    <li className="text-gray-500">No leagues available</li>
+                    <li className="text-gray-500">Inga ligor tillgängliga</li>
                 )}
                 {!loading && !error && leagues.map((l) => (
                     <li key={l.id}>
